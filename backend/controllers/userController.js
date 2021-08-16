@@ -9,8 +9,18 @@ const registerUser = asyncHandler(async (req, res) => {
   const { userName, firstName, lastName, email, password, image } = req.body;
 
   const userExists =
-    (await User.findOne({ email: email })) ||
-    (await User.findOne({ userNameLower: userName.toLowerCase() }));
+    (await User.findOne({
+      email: {
+        $regex: email,
+        $options: "i",
+      },
+    })) ||
+    (await User.findOne({
+      userName: {
+        $regex: userName,
+        $options: "i",
+      },
+    }));
 
   if (userExists) {
     res.status(400);
@@ -45,4 +55,46 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser };
+//@desc Auth user & get token
+//@route POST /api/users/login
+//@access Public
+const authUser = asyncHandler(async (req, res) => {
+  const { userName, password } = req.body;
+  let user;
+
+  if (
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      userName.toLowerCase()
+    )
+  ) {
+    user = await User.findOne({
+      email: {
+        $regex: userName,
+        $options: "i",
+      },
+    });
+  } else {
+    user = await User.findOne({
+      userName: {
+        $regex: userName,
+        $options: "i",
+      },
+    });
+  }
+
+  if (user && (await user.matchPassword(password))) {
+    res.json({
+      _id: user._id,
+      userName: user.userName,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(401);
+    throw new Error("Invalid email or password");
+  }
+});
+
+export { registerUser, authUser };

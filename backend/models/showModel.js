@@ -1,20 +1,33 @@
 import mongoose from "mongoose";
 
-const roleSchema = mongoose.Schema(
-  {
-    castMemberId: {
-      type: String,
-      required: true,
-    },
-    role: {
-      type: String,
-      required: true,
-    },
+const performanceSchema = mongoose.Schema({
+  venueId: {
+    type: String,
+    required: true,
   },
-  {
-    timestamps: true,
-  }
-);
+  date: {
+    type: Date,
+    required: true,
+  },
+});
+
+const roleSchema = mongoose.Schema({
+  castMemberId: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: String,
+    required: true,
+  },
+});
+
+const imageSchema = mongoose.Schema({
+  image: {
+    type: String,
+    required: true,
+  },
+});
 
 const showSchema = mongoose.Schema(
   {
@@ -34,7 +47,13 @@ const showSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    synopsis: {
+      type: String,
+      required: true,
+    },
+    images: [imageSchema],
     roles: [roleSchema],
+    performances: [performanceSchema],
   },
   {
     timestamps: true,
