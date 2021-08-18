@@ -12,6 +12,7 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import userRoutes from "./routes/userRoutes.js";
 import venueRoutes from "./routes/venueRoutes.js";
 import showRoutes from "./routes/showRoutes.js";
+import castMemberRoutes from "./routes/castMemberRoutes.js";
 
 let credentials = {};
 
@@ -61,6 +62,7 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/venues", venueRoutes);
 app.use("/api/shows", showRoutes);
+app.use("/api/castmembers/", castMemberRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/build")));
@@ -73,6 +75,9 @@ if (process.env.NODE_ENV === "production") {
     res.send("API is running");
   });
 }
+
+app.use(notFound);
+app.use(errorHandler);
 
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);

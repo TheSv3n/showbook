@@ -15,6 +15,10 @@ const castMemberSchema = mongoose.Schema(
       required: true,
       default: "/uploads/defaultUser.jpg",
     },
+    company: {
+      type: String,
+      required: false,
+    },
     isUser: {
       type: Boolean,
       required: true,
