@@ -28,7 +28,8 @@ const linkCastMemberAccount = asyncHandler(async (req, res) => {
   const castMember = await CastMember.findById(req.params.id);
 
   if (castMember) {
-    //TODO
+    castMember.isUser = true;
+    castMember.userId = userId;
 
     await castMember.save();
     res.status(201).json({ message: "Cast Member Linked to Account" });
@@ -38,4 +39,4 @@ const linkCastMemberAccount = asyncHandler(async (req, res) => {
   }
 });
 
-export { createCastMember };
+export { createCastMember, linkCastMemberAccount };
