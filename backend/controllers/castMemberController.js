@@ -20,6 +20,20 @@ const createCastMember = asyncHandler(async (req, res) => {
   res.status(201).json(createdCastMember);
 });
 
+//@desc Fetch cast member
+//@route GET /api/castmembers/:id
+//@access Public
+const getCastMember = asyncHandler(async (req, res) => {
+  const castMember = await CastMember.findById(req.params.id);
+
+  if (castMember) {
+    res.json(castMember);
+  } else {
+    res.status(404);
+    throw new Error("Cast Member not Found");
+  }
+});
+
 //@desc Link cast member to Showbook account
 //@route PUT /api/castmembers/:id/linkaccount
 //@access Private/Admin
@@ -39,4 +53,4 @@ const linkCastMemberAccount = asyncHandler(async (req, res) => {
   }
 });
 
-export { createCastMember, linkCastMemberAccount };
+export { createCastMember, getCastMember, linkCastMemberAccount };

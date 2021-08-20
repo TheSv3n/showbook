@@ -13,7 +13,7 @@ const castMemberSchema = mongoose.Schema(
     image: {
       type: String,
       required: true,
-      default: "/uploads/defaultUser.jpg",
+      default: "/uploads/defaultCastMember.jpg",
     },
     company: {
       type: String,
