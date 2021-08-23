@@ -1,5 +1,24 @@
 import mongoose from "mongoose";
 
+const reviewSchema = mongoose.Schema({
+  user: {
+    type: String,
+    required: true,
+  },
+  performanceId: {
+    type: String,
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+  },
+  comment: {
+    type: String,
+    required: false,
+  },
+});
+
 const performanceSchema = mongoose.Schema({
   venueId: {
     type: String,
@@ -54,12 +73,13 @@ const showSchema = mongoose.Schema(
     images: [imageSchema],
     roles: [roleSchema],
     performances: [performanceSchema],
+    reviews: [reviewSchema],
   },
   {
     timestamps: true,
   }
 );
 
-const Show = mongoose.model("Company", showSchema);
+const Show = mongoose.model("Show", showSchema);
 
 export default Show;

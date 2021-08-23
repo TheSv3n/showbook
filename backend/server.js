@@ -13,6 +13,7 @@ import userRoutes from "./routes/userRoutes.js";
 import venueRoutes from "./routes/venueRoutes.js";
 import showRoutes from "./routes/showRoutes.js";
 import castMemberRoutes from "./routes/castMemberRoutes.js";
+import companyRoutes from "./routes/companyRoutes.js";
 
 let credentials = {};
 
@@ -63,6 +64,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/venues", venueRoutes);
 app.use("/api/shows", showRoutes);
 app.use("/api/castmembers/", castMemberRoutes);
+app.use("/api/companies/", companyRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/build")));
