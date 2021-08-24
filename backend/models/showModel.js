@@ -28,6 +28,15 @@ const performanceSchema = mongoose.Schema({
     type: Date,
     required: true,
   },
+  notes: {
+    type: String,
+    required: false,
+  },
+  isCancelled: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 const roleSchema = mongoose.Schema({

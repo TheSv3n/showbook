@@ -24,6 +24,35 @@ const createShow = asyncHandler(async (req, res) => {
   res.status(201).json(createdShow);
 });
 
+//@desc Fetch All Shows
+//@route GET /api/shows
+//@access Public
+const getAllShows = asyncHandler(async (req, res) => {
+  const pageSize = 8;
+  const page = Number(req.query.pageNumber) || 1;
+  const ranked = req.query.ranked;
+
+  const keyword = req.query.keyword
+    ? {
+        $or: [
+          {
+            title: {
+              $regex: req.query.keyword,
+              $options: "i",
+            },
+          },
+        ],
+      }
+    : {};
+
+  const count = await Show.countDocuments({ ...keyword });
+  const shows = await Show.find({ ...keyword })
+    .sort(ranked === "true" ? { rating: -1 } : { createdAt: -1 })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+  res.json({ shows, page, pages: Math.ceil(count / pageSize), count });
+});
+
 //@desc Fetch show
 //@route GET /api/shows/:id
 //@access Public
@@ -60,4 +89,4 @@ const addPerformance = asyncHandler(async (req, res) => {
   }
 });
 
-export { createShow, getShow, addPerformance };
+export { createShow, getAllShows, getShow, addPerformance };
