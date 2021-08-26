@@ -3,7 +3,6 @@ import {
   SHOW_CREATE_REQUEST,
   SHOW_CREATE_SUCCESS,
   SHOW_CREATE_FAIL,
-  SHOW_CREATE_RESET,
   SHOW_LIST_REQUEST,
   SHOW_LIST_SUCCESS,
   SHOW_LIST_FAIL,
@@ -64,3 +63,61 @@ export const listShows =
       });
     }
   };
+
+export const getShowInfo = (showId, update) => async (dispatch, getState) => {
+  try {
+    if (!update) {
+      dispatch({
+        type: SHOW_DETAILS_REQUEST,
+      });
+    }
+
+    const { data } = await axios.get(`/api/shows/${showId}`);
+
+    dispatch({
+      type: SHOW_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SHOW_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const createShow = (show) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: SHOW_CREATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.post(`/api/shows/`, show, config);
+
+    dispatch({
+      type: SHOW_CREATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SHOW_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
