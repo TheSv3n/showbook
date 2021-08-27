@@ -10,7 +10,7 @@ function App() {
   return (
     <>
       <Router>
-        <Sidebar />
+        {/*<Sidebar />*/}
         <Route path="/" component={MainFeedScreen} exact />
         <Route path="/show/:id" component={ShowScreen} />
       </Router>
