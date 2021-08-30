@@ -14,6 +14,7 @@ const createShow = asyncHandler(async (req, res) => {
     synopsis,
     company,
     director,
+    coverImage,
     images,
     roles,
     performances,

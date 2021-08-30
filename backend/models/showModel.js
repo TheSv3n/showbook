@@ -80,6 +80,11 @@ const showSchema = mongoose.Schema(
       required: true,
     },
     images: [imageSchema],
+    coverImage: {
+      type: String,
+      required: true,
+      default: "/uploads/defaultShow.jpg",
+    },
     roles: [roleSchema],
     performances: [performanceSchema],
     reviews: [reviewSchema],
