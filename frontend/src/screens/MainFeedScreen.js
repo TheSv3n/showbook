@@ -8,7 +8,6 @@ const MainFeedScreen = ({ match }) => {
   const dispatch = useDispatch();
 
   const [showTopRated, setShowTopRated] = useState(false);
-  const [searchActive, setSearchActive] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
 
   const showList = useSelector((state) => state.showList);
@@ -21,6 +20,7 @@ const MainFeedScreen = ({ match }) => {
     <>
       <section class="bg-dark p-5 text-center ">
         <div class="container">
+          <h2 class="text-center text-white">Shows</h2>
           <div class="row g-4">
             {shows &&
               shows.map((show) => {

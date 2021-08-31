@@ -33,4 +33,18 @@ const getCompany = asyncHandler(async (req, res) => {
   }
 });
 
-export { createCompany, getCompany };
+//@desc Get Company name
+//@route GET /api/companies/:id/name
+//@access Public
+const getCompanyName = asyncHandler(async (req, res) => {
+  const company = await Company.findById(req.params.id);
+
+  if (company) {
+    res.json(company.name);
+  } else {
+    res.status(404);
+    throw new Error("Company not Found");
+  }
+});
+
+export { createCompany, getCompany, getCompanyName };
