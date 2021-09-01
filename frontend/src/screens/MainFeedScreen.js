@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listShows } from "../actions/showActions";
+import { Container, Row } from "react-bootstrap";
+import Loader from "../components/Loader";
 import FeedShowCard from "../components/FeedShowCard";
 
 const MainFeedScreen = ({ match }) => {
@@ -18,16 +20,20 @@ const MainFeedScreen = ({ match }) => {
   }, [dispatch, searchKeyword, showTopRated, searchString]);
   return (
     <>
-      <section class="bg-dark p-5 text-center ">
-        <div class="container">
-          <h2 class="text-center text-white">Shows</h2>
-          <div class="row g-4">
-            {shows &&
-              shows.map((show) => {
-                return <FeedShowCard key={show.id} show={show} />;
-              })}
-          </div>
-        </div>
+      <section className="bg-dark p-5 text-center">
+        {loading ? (
+          <Loader />
+        ) : (
+          <Container>
+            <h2 className="text-center text-white">Shows</h2>
+            <Row className="g-4">
+              {shows &&
+                shows.map((show) => {
+                  return <FeedShowCard key={show.id} show={show} />;
+                })}
+            </Row>
+          </Container>
+        )}
       </section>
     </>
   );
