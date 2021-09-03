@@ -5,6 +5,7 @@ import { Image, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import Loader from "../components/Loader";
 import RatingWidget from "../components/RatingWidget";
+import ImageCarousel from "../components/ImageCarousel";
 
 const ShowScreen = ({ match }) => {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const ShowScreen = ({ match }) => {
     }
   }, [dispatch, showId, show]);
   return (
-    <section class="bg-dark p-5 ">
+    <section className="bg-dark p-5 ">
       {loading ? (
         <Loader />
       ) : (
@@ -38,7 +39,7 @@ const ShowScreen = ({ match }) => {
               <h2 className="text-white">{show.title}</h2>
               <h5 className="text-secondary">By {companyName}</h5>
             </Row>
-            <Row>
+            <Row className="mb-4">
               <Col md={9}>
                 <Image src={show.coverImage} alt={show.title} fluid></Image>
               </Col>
@@ -48,21 +49,31 @@ const ShowScreen = ({ match }) => {
                   <div>{show.director}</div>
                 </Row>
                 <Row>
-                  <h5 className="text-secondary">About </h5>
+                  <h5 className="text-secondary mt-1">About </h5>
                   <div>{show.synopsis}</div>
                 </Row>
                 <Row>
-                  <h5 className="text-secondary">Rating </h5>
-                  <span className="mx-2">
-                    <RatingWidget
-                      value={show.rating}
-                      text={""}
-                      color={"white"}
-                    />
-                  </span>
-                  <div>from {show.reviews.length} reviews</div>
+                  <h5 className="text-secondary mt-1">Rating </h5>
+                  {show.reviews && show.reviews.length > 0 ? (
+                    <>
+                      <span className="mx-2">
+                        <RatingWidget
+                          value={show.rating}
+                          text={""}
+                          color={"white"}
+                        />
+                      </span>
+                      <div>from {show.reviews.length} reviews</div>
+                    </>
+                  ) : (
+                    <div>No Reviews</div>
+                  )}
                 </Row>
               </Col>
+            </Row>
+            <Row>
+              <h5 className="text-secondary">Images</h5>
+              <ImageCarousel images={show.images} />
             </Row>
           </Container>
         )

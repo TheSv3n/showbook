@@ -98,4 +98,25 @@ const addPerformance = asyncHandler(async (req, res) => {
   }
 });
 
-export { createShow, getAllShows, getShow, addPerformance };
+//@desc Add Image
+//route PUT /api/shows/:id/images
+//@access Private
+const addImage = asyncHandler(async (req, res) => {
+  const { image } = req.body;
+  const show = await Show.findById(req.params.id);
+
+  if (show) {
+    const newImage = {
+      image: image,
+    };
+
+    show.images.push(newImage);
+    await show.save();
+    res.status(201).json({ message: "Image Added" });
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
+});
+
+export { createShow, getAllShows, getShow, addPerformance, addImage };
