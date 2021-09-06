@@ -73,7 +73,7 @@ const ShowScreen = ({ match }) => {
             </Row>
             <Row>
               <h5 className="text-secondary">Images</h5>
-              <ImageCarousel images={show.images} />
+              <ImageCarousel images={show.images} show={4} />
             </Row>
           </Container>
         )
