@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Image, Col } from "react-bootstrap";
 import "../css/carousel.css";
 
-const ImageCarousel = ({ images, show }) => {
+const ImageCarousel = ({
+  images,
+  show,
+  updateShowModal,
+  startIndex,
+  updateStartIndex,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [length, setLength] = useState(images.length);
 
@@ -18,9 +24,19 @@ const ImageCarousel = ({ images, show }) => {
     }
   };
 
+  const handleStartIndex = (id) => {
+    let tempImages = [...images];
+    let index = tempImages.findIndex((image) => {
+      return image._id === id.toString();
+    });
+    updateStartIndex(index);
+    updateShowModal();
+  };
+
   useEffect(() => {
     setLength(images.length);
-  }, [images]);
+    setCurrentIndex(startIndex);
+  }, [images, startIndex]);
 
   return (
     <div className="carousel-container">
@@ -41,7 +57,14 @@ const ImageCarousel = ({ images, show }) => {
             {images.map((image) => (
               <div>
                 <div style={{ padding: 8 }}>
-                  <Image src={image.image} alt={image.name} fluid />
+                  <Image
+                    src={image.image}
+                    alt={image.name}
+                    fluid
+                    onClick={() => {
+                      handleStartIndex(image._id);
+                    }}
+                  />
                 </div>
               </div>
             ))}
