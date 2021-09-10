@@ -56,7 +56,10 @@ const ImageCarousel = ({
           >
             {images.map((image) => (
               <div>
-                <div style={{ padding: 8 }}>
+                <div
+                  style={{ padding: 8 }}
+                  className={`${show > 1 ? "thumbnail" : ""}`}
+                >
                   <Image
                     src={image.image}
                     alt={image.name}
