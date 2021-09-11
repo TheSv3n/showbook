@@ -119,4 +119,42 @@ const addImage = asyncHandler(async (req, res) => {
   }
 });
 
-export { createShow, getAllShows, getShow, addPerformance, addImage };
+//@desc Add Review
+//route PUT /api/shows/:id/reviews
+//@access Private
+const addReview = asyncHandler(async (req, res) => {
+  const { performanceId, comment, rating } = req.body;
+  const show = await Show.findById(req.params.id);
+
+  if (show) {
+    const newReview = {
+      performanceId: performanceId,
+      comment: comment,
+      rating: rating,
+      user: req.user._id,
+    };
+
+    show.reviews.push(newReview);
+
+    show.numReviews = show.reviews.length;
+
+    show.rating =
+      show.reviews.reduce((acc, review) => review.rating + acc, 0) /
+      show.reviews.length;
+
+    await show.save();
+    res.status(201).json({ message: "Review Added" });
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
+});
+
+export {
+  createShow,
+  getAllShows,
+  getShow,
+  addPerformance,
+  addImage,
+  addReview,
+};

@@ -7,6 +7,7 @@ import Loader from "../components/Loader";
 import RatingWidget from "../components/RatingWidget";
 import ImageCarousel from "../components/ImageCarousel";
 import ImageModal from "../components/ImageModal";
+import ReviewElement from "../components/ReviewElement";
 
 const ShowScreen = ({ match }) => {
   const dispatch = useDispatch();
@@ -99,6 +100,14 @@ const ShowScreen = ({ match }) => {
                   updateShowModal={updateShowModal}
                   startIndex={0}
                 />
+              </Row>
+              <Row>
+                <h5 className="text-secondary">Reviews</h5>
+                <ul className="list-group">
+                  {show.reviews.map((review) => {
+                    return <ReviewElement review={review} key={review._id} />;
+                  })}
+                </ul>
               </Row>
             </Container>
           </>

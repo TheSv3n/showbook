@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image, Col } from "react-bootstrap";
+import { Image } from "react-bootstrap";
 import "../css/carousel.css";
 
 const ImageCarousel = ({
@@ -56,14 +56,12 @@ const ImageCarousel = ({
           >
             {images.map((image) => (
               <div>
-                <div
-                  style={{ padding: 8 }}
-                  className={`${show > 1 ? "thumbnail" : ""}`}
-                >
+                <div style={{ padding: 8 }}>
                   <Image
                     src={image.image}
                     alt={image.name}
                     fluid
+                    className={`${show > 1 ? "thumbnail" : ""}`}
                     onClick={() => {
                       handleStartIndex(image._id);
                     }}
