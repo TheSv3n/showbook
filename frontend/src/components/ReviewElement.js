@@ -6,8 +6,8 @@ const ReviewElement = ({ review }) => {
   const [userName, setUserName] = useState("");
 
   const getUserName = async (userId) => {
-    const { data: name } = await axios.get(`/api/users/${userId}/username`);
-    setUserName(name);
+    const { data: userName } = await axios.get(`/api/users/${userId}/username`);
+    setUserName(userName);
   };
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const ReviewElement = ({ review }) => {
   return (
     <li className="list-group-item review-card my-2">
       <div className="ml-auto">{review.comment} </div>
-      <div className="user">{userName}</div>
+      <div className="mr-auto">{userName}</div>
     </li>
   );
 };
