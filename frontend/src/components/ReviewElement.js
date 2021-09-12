@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Container, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import axios from "axios";
+import "../css/review.css";
+import RatingWidget from "../components/RatingWidget";
 
 const ReviewElement = ({ review }) => {
   const [userName, setUserName] = useState("");
@@ -15,9 +17,18 @@ const ReviewElement = ({ review }) => {
   }, [review]);
 
   return (
-    <li className="list-group-item review-card my-2">
-      <div className="ml-auto">{review.comment} </div>
-      <div className="mr-auto">{userName}</div>
+    <li className="list-group-item review-card bg-secondary my-2">
+      <div className="d-flex">
+        <Col md={6}>
+          <div className="user">{userName}</div>
+        </Col>
+        <Col md={6}>
+          <div className="rating">
+            <RatingWidget value={review.rating} text={""} color={"orange"} />
+          </div>
+        </Col>
+      </div>
+      <div className="text-light">{review.comment} </div>
     </li>
   );
 };

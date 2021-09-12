@@ -1,0 +1,24 @@
+:root {
+  --mainBlue: #2a2a72;
+  --lightBlue: #009ffd;
+  --mainWhite: #fefefe;
+  --mainDark: #232528;
+  --mainYellow: #ffa400;
+  --mainRed: #ff2222;
+  --shadowRed: #aa2222;
+  --mainGreen: #11cc11;
+  --mainGrey: #ededed;
+  --iconGrey: #cbcbcb;
+  --shadowGrey: #babababa;
+  --bgDark: #212529;
+  --bgClear: rgba(0, 0, 0, 0.6);
+}
+
+body {
+  background: var(--bgDark);
+}
+
+.list-group-item {
+  text-align: center;
+  transition: all 0.2s linear;
+}

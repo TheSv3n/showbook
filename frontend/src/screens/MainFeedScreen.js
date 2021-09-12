@@ -20,7 +20,7 @@ const MainFeedScreen = ({ match }) => {
   }, [dispatch, searchKeyword, showTopRated, searchString]);
   return (
     <>
-      <section className="bg-dark p-5 text-center">
+      <section className="p-5 text-center">
         {loading ? (
           <Loader />
         ) : (

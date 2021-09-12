@@ -41,7 +41,7 @@ const ShowScreen = ({ match }) => {
     }
   }, [dispatch, showId, show]);
   return (
-    <section className="bg-dark p-5 ">
+    <section className="p-5 ">
       {loading ? (
         <Loader />
       ) : (

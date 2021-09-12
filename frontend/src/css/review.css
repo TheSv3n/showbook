@@ -1,0 +1,14 @@
+.review-card {
+  white-space: pre-wrap;
+  text-align: left;
+}
+
+.user {
+  font-size: 1.3rem;
+  color: orange;
+  text-align: left;
+}
+
+.rating {
+  text-align: right;
+}

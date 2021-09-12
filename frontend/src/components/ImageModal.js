@@ -13,7 +13,7 @@ const ImageModal = ({
     <div
       className={`${showModal ? "modal-overlay show-modal" : "modal-overlay"}`}
     >
-      <div className="modal-container">
+      <div className="modal-container bg-secondary">
         <ImageCarousel
           images={images}
           show={1}
