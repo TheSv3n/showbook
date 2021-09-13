@@ -36,7 +36,7 @@ const FeedShowCard = ({ show }) => {
             {show.reviews.length}
           </span>
           <span className="mx-2">
-            <RatingWidget value={show.rating} text={""} />
+            <RatingWidget value={show.rating} text={""} color={"orange"} />
           </span>
         </Card.Footer>
       </Card>

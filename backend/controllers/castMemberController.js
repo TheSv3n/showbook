@@ -53,4 +53,23 @@ const linkCastMemberAccount = asyncHandler(async (req, res) => {
   }
 });
 
-export { createCastMember, getCastMember, linkCastMemberAccount };
+//@desc Get Cast Member name
+//@route GET /api/castmembers/:id/name
+//@access Public
+const getCastMemberName = asyncHandler(async (req, res) => {
+  const castMember = await CastMember.findById(req.params.id);
+
+  if (castMember) {
+    res.json(castMember.name);
+  } else {
+    res.status(404);
+    throw new Error("Cast Member not Found");
+  }
+});
+
+export {
+  createCastMember,
+  getCastMember,
+  linkCastMemberAccount,
+  getCastMemberName,
+};

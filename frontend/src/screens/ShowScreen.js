@@ -14,12 +14,20 @@ const ShowScreen = ({ match }) => {
   const showId = match.params.id;
 
   const [companyName, setCompanyName] = useState("");
+  const [directorName, setDirectorName] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
 
   const getCompanyName = async (companyId) => {
     const { data: name } = await axios.get(`/api/companies/${companyId}/name`);
     setCompanyName(name);
+  };
+
+  const getDirectorName = async (directorId) => {
+    const { data: name } = await axios.get(
+      `/api/castmembers/${directorId}/name`
+    );
+    setDirectorName(name);
   };
 
   const showInfo = useSelector((state) => state.showInfo);
@@ -38,6 +46,7 @@ const ShowScreen = ({ match }) => {
       dispatch(getShowInfo(showId, false));
     } else {
       getCompanyName(show.company);
+      getDirectorName(show.director);
     }
   }, [dispatch, showId, show]);
   return (
@@ -66,7 +75,7 @@ const ShowScreen = ({ match }) => {
                 <Col md={3} className="text-white">
                   <Row>
                     <h5 className="text-secondary">Directed by </h5>
-                    <div>{show.director}</div>
+                    <div>{directorName}</div>
                   </Row>
                   <Row>
                     <h5 className="text-secondary mt-1">About </h5>
@@ -80,7 +89,7 @@ const ShowScreen = ({ match }) => {
                           <RatingWidget
                             value={show.rating}
                             text={""}
-                            color={"white"}
+                            color={"orange"}
                           />
                         </span>
                         <div>from {show.reviews.length} reviews</div>
