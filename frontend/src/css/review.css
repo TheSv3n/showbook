@@ -9,6 +9,12 @@
   text-align: left;
 }
 
+.performance {
+  font-size: 0.8rem;
+  color: orange;
+  text-align: left;
+}
+
 .rating {
   text-align: right;
 }

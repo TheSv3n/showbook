@@ -4,16 +4,35 @@ import axios from "axios";
 import "../css/review.css";
 import RatingWidget from "../components/RatingWidget";
 
-const ReviewElement = ({ review }) => {
+const Review = ({ review, performances }) => {
   const [userName, setUserName] = useState("");
+  const [performanceDate, setPerformanceDate] = useState("");
+  const [performanceVenue, setPerformanceVenue] = useState("");
 
   const getUserName = async (userId) => {
     const { data: userName } = await axios.get(`/api/users/${userId}/username`);
     setUserName(userName);
   };
 
+  const getPerformanceInfo = async () => {
+    let venueId;
+    let performanceDate;
+
+    for (let i = 0; i < performances.length; i++) {
+      if (performances[i]._id === review.performanceId) {
+        venueId = performances[i].venueId;
+        performanceDate = performances[i].date.toString();
+      }
+    }
+
+    const { data: name } = await axios.get(`/api/venues/${venueId}/name`);
+    setPerformanceVenue(name);
+    setPerformanceDate(performanceDate.substr(0, 10));
+  };
+
   useEffect(() => {
     getUserName(review.user);
+    getPerformanceInfo();
   }, [review]);
 
   return (
@@ -28,9 +47,12 @@ const ReviewElement = ({ review }) => {
           </div>
         </Col>
       </div>
+      <div className="performance">
+        Seen at: {performanceVenue} on {performanceDate}
+      </div>
       <div className="text-light">{review.comment} </div>
     </li>
   );
 };
 
-export default ReviewElement;
+export default Review;

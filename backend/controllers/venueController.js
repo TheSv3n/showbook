@@ -35,4 +35,18 @@ const getVenue = asyncHandler(async (req, res) => {
   }
 });
 
-export { createVenue, getVenue };
+//@desc Get Venue name
+//@route GET /api/venues/:id/name
+//@access Public
+const getVenueName = asyncHandler(async (req, res) => {
+  const venue = await Venue.findById(req.params.id);
+
+  if (venue) {
+    res.json(venue.name);
+  } else {
+    res.status(404);
+    throw new Error("Venue not Found");
+  }
+});
+
+export { createVenue, getVenue, getVenueName };

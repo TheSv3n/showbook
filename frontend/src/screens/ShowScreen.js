@@ -7,7 +7,7 @@ import Loader from "../components/Loader";
 import RatingWidget from "../components/RatingWidget";
 import ImageCarousel from "../components/ImageCarousel";
 import ImageModal from "../components/ImageModal";
-import ReviewElement from "../components/ReviewElement";
+import Review from "../components/Review";
 
 const ShowScreen = ({ match }) => {
   const dispatch = useDispatch();
@@ -114,7 +114,13 @@ const ShowScreen = ({ match }) => {
                 <h5 className="text-secondary">Reviews</h5>
                 <ul className="list-group">
                   {show.reviews.map((review) => {
-                    return <ReviewElement review={review} key={review._id} />;
+                    return (
+                      <Review
+                        review={review}
+                        key={review._id}
+                        performances={show.performances}
+                      />
+                    );
                   })}
                 </ul>
               </Row>
