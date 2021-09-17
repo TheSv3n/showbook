@@ -7,16 +7,21 @@ import Loader from "../components/Loader";
 import RatingWidget from "../components/RatingWidget";
 import ImageCarousel from "../components/ImageCarousel";
 import ImageModal from "../components/ImageModal";
+import NewReviewModal from "../components/NewReviewModal";
 import Review from "../components/Review";
 
-const ShowScreen = ({ match }) => {
+const ShowScreen = ({ match, history }) => {
   const dispatch = useDispatch();
   const showId = match.params.id;
 
   const [companyName, setCompanyName] = useState("");
   const [directorName, setDirectorName] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const getCompanyName = async (companyId) => {
     const { data: name } = await axios.get(`/api/companies/${companyId}/name`);
@@ -33,12 +38,24 @@ const ShowScreen = ({ match }) => {
   const showInfo = useSelector((state) => state.showInfo);
   const { show, loading } = showInfo;
 
-  const updateShowModal = () => {
-    setShowModal(!showModal);
+  const updateShowImageModal = () => {
+    setShowImageModal(!showImageModal);
+  };
+
+  const updateShowReviewModal = () => {
+    setShowReviewModal(!showReviewModal);
   };
 
   const updateStartIndex = (newIndex) => {
     setStartIndex(newIndex);
+  };
+
+  const handleNewReviewLink = () => {
+    if (userInfo) {
+      updateShowReviewModal();
+    } else {
+      history.push(`/login?redirect=show/${showId}`);
+    }
   };
 
   useEffect(() => {
@@ -58,10 +75,14 @@ const ShowScreen = ({ match }) => {
           <>
             <ImageModal
               images={show.images}
-              showModal={showModal}
-              updateShowModal={updateShowModal}
+              showModal={showImageModal}
+              updateShowModal={updateShowImageModal}
               updateStartIndex={updateStartIndex}
               startIndex={startIndex}
+            />
+            <NewReviewModal
+              showModal={showReviewModal}
+              updateShowModal={updateShowReviewModal}
             />
             <Container>
               <Row>
@@ -106,12 +127,20 @@ const ShowScreen = ({ match }) => {
                   images={show.images}
                   show={4}
                   updateStartIndex={updateStartIndex}
-                  updateShowModal={updateShowModal}
+                  updateShowModal={updateShowImageModal}
                   startIndex={0}
                 />
               </Row>
               <Row>
-                <h5 className="text-secondary">Reviews</h5>
+                <h5 className="text-secondary">
+                  Reviews{" "}
+                  <span
+                    className="text-light new-review-link"
+                    onClick={handleNewReviewLink}
+                  >
+                    {userInfo ? "- Add review" : "- login to add review"}
+                  </span>
+                </h5>
                 <ul className="list-group">
                   {show.reviews.map((review) => {
                     return (

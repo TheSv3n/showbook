@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import "../css/review.css";
 import RatingWidget from "../components/RatingWidget";
@@ -8,6 +9,9 @@ const Review = ({ review, performances }) => {
   const [userName, setUserName] = useState("");
   const [performanceDate, setPerformanceDate] = useState("");
   const [performanceVenue, setPerformanceVenue] = useState("");
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const getUserName = async (userId) => {
     const { data: userName } = await axios.get(`/api/users/${userId}/username`);
@@ -42,7 +46,7 @@ const Review = ({ review, performances }) => {
           <div className="user">{userName}</div>
         </Col>
         <Col md={6}>
-          <div className="rating">
+          <div className="align-right">
             <RatingWidget value={review.rating} text={""} color={"orange"} />
           </div>
         </Col>
@@ -51,6 +55,14 @@ const Review = ({ review, performances }) => {
         Seen at: {performanceVenue} on {performanceDate}
       </div>
       <div className="text-light">{review.comment} </div>
+      {userInfo ? (
+        <div className="align-right">
+          <i className="bi bi-pencil-square text-light review-icon mx-1"></i>
+          <i class="bi bi-trash text-light review-icon mx-1"></i>
+        </div>
+      ) : (
+        ""
+      )}
     </li>
   );
 };

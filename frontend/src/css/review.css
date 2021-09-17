@@ -15,6 +15,10 @@
   text-align: left;
 }
 
-.rating {
+.align-right {
   text-align: right;
+}
+
+.review-icon:hover {
+  cursor: pointer;
 }
