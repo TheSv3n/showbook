@@ -17,7 +17,6 @@
   z-index: 10;
 }
 .modal-container {
-  background: #fff;
   border-radius: 0.2rem;
   width: 90vw;
   text-align: center;
@@ -25,10 +24,22 @@
   place-items: center;
   position: relative;
 }
+
+.new-review-container {
+  height: 30vh;
+  text-align: unset;
+  place-items: unset;
+}
+
+.form-container {
+  top: 1rem;
+  left: 1rem;
+}
+
 .close-modal-btn {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0.1rem;
+  right: 0.1rem;
   font-size: 2rem;
   background: transparent;
   border-color: transparent;

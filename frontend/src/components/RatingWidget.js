@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const RatingWidget = ({ value, text, color }) => {
+const RatingWidget = ({ value, text, color, newReview, setRating }) => {
   return (
     <>
       <span>
@@ -14,6 +14,7 @@ const RatingWidget = ({ value, text, color }) => {
               ? "bi bi-star-half"
               : "bi bi-star"
           }
+          onClick={() => (newReview ? setRating(1) : "")}
         >
           {" "}
         </i>
@@ -28,6 +29,7 @@ const RatingWidget = ({ value, text, color }) => {
               ? "bi bi-star-half"
               : "bi bi-star"
           }
+          onClick={() => (newReview ? setRating(2) : "")}
         >
           {" "}
         </i>
@@ -42,6 +44,7 @@ const RatingWidget = ({ value, text, color }) => {
               ? "bi bi-star-half"
               : "bi bi-star"
           }
+          onClick={() => (newReview ? setRating(3) : "")}
         >
           {" "}
         </i>
@@ -56,6 +59,7 @@ const RatingWidget = ({ value, text, color }) => {
               ? "bi bi-star-half"
               : "bi bi-star"
           }
+          onClick={() => (newReview ? setRating(4) : "")}
         >
           {" "}
         </i>
@@ -70,6 +74,7 @@ const RatingWidget = ({ value, text, color }) => {
               ? "bi bi-star-half"
               : "bi bi-star"
           }
+          onClick={() => (newReview ? setRating(5) : "")}
         >
           {" "}
         </i>

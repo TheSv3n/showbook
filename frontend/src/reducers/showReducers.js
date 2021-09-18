@@ -10,6 +10,9 @@ import {
   SHOW_DETAILS_REQUEST,
   SHOW_DETAILS_SUCCESS,
   SHOW_DETAILS_FAIL,
+  SHOW_ADD_REVIEW_REQUEST,
+  SHOW_ADD_REVIEW_SUCCESS,
+  SHOW_ADD_REVIEW_FAIL,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -76,6 +79,28 @@ export const showCreateReducer = (state = { show: [] }, action) => {
     case SHOW_CREATE_RESET:
       return {
         state: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const addReviewReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SHOW_ADD_REVIEW_REQUEST:
+      return {
+        loading: true,
+      };
+    case SHOW_ADD_REVIEW_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        show: action.payload,
+      };
+    case SHOW_ADD_REVIEW_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
       };
     default:
       return state;

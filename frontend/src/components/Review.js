@@ -58,7 +58,7 @@ const Review = ({ review, performances }) => {
       {userInfo ? (
         <div className="align-right">
           <i className="bi bi-pencil-square text-light review-icon mx-1"></i>
-          <i class="bi bi-trash text-light review-icon mx-1"></i>
+          <i className="bi bi-trash text-light review-icon mx-1"></i>
         </div>
       ) : (
         ""

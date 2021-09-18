@@ -23,6 +23,9 @@ const ShowScreen = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const addReview = useSelector((state) => state.addReview);
+  const { loading: loadingAddReview } = addReview;
+
   const getCompanyName = async (companyId) => {
     const { data: name } = await axios.get(`/api/companies/${companyId}/name`);
     setCompanyName(name);
@@ -83,6 +86,7 @@ const ShowScreen = ({ match, history }) => {
             <NewReviewModal
               showModal={showReviewModal}
               updateShowModal={updateShowReviewModal}
+              showId={show._id}
             />
             <Container>
               <Row>
@@ -138,7 +142,13 @@ const ShowScreen = ({ match, history }) => {
                     className="text-light new-review-link"
                     onClick={handleNewReviewLink}
                   >
-                    {userInfo ? "- Add review" : "- login to add review"}
+                    {loadingAddReview ? (
+                      <Loader />
+                    ) : userInfo ? (
+                      "- Add review"
+                    ) : (
+                      "- login to add review"
+                    )}
                   </span>
                 </h5>
                 <ul className="list-group">
