@@ -123,6 +123,14 @@ const ShowScreen = ({ match, history }) => {
                       <div>No Reviews</div>
                     )}
                   </Row>
+                  <Row>
+                    <h5 className="text-secondary mt-1">Performances </h5>
+                    <div>
+                      {show.performances && show.performances.length > 0
+                        ? `${show.performances.length} performances`
+                        : "No performances Scheduled"}
+                    </div>
+                  </Row>
                 </Col>
               </Row>
               <Row>

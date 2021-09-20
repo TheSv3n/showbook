@@ -12,6 +12,12 @@ const NewReviewModal = ({ showModal, updateShowModal, showId }) => {
     "6123bebf2230d64d5c94d34c" //TODO - update to generate dynamically
   );
 
+  const handleClose = () => {
+    setRating(0);
+    setComment("");
+    updateShowModal();
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
@@ -21,7 +27,7 @@ const NewReviewModal = ({ showModal, updateShowModal, showId }) => {
         comment: comment,
       })
     );
-    updateShowModal();
+    handleClose();
   };
   return (
     <div
@@ -33,7 +39,7 @@ const NewReviewModal = ({ showModal, updateShowModal, showId }) => {
             <Col xs={12} md={8}>
               <Form onSubmit={submitHandler}>
                 <Form.Group controlId="rating">
-                  <Form.Label>Rating</Form.Label>
+                  <Form.Label>Rating </Form.Label>
                   <RatingWidget
                     value={rating}
                     color={"orange"}
@@ -46,7 +52,8 @@ const NewReviewModal = ({ showModal, updateShowModal, showId }) => {
                 <Form.Group controlId="comment">
                   <Form.Label>Comment</Form.Label>
                   <Form.Control
-                    type="textarea"
+                    as="textarea"
+                    rows={5}
                     placeholder="Enter comment"
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
@@ -60,9 +67,9 @@ const NewReviewModal = ({ showModal, updateShowModal, showId }) => {
             </Col>
           </Row>
         </Container>
-        <Button className="close-modal-btn" onClick={updateShowModal}>
+        <button className="close-modal-btn" onClick={handleClose}>
           <i className="bi bi-x-circle-fill"></i>
-        </Button>
+        </button>
       </div>
     </div>
   );
