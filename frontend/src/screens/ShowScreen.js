@@ -86,6 +86,7 @@ const ShowScreen = ({ match, history }) => {
             <NewReviewModal
               showModal={showReviewModal}
               updateShowModal={updateShowReviewModal}
+              performances={show.performances}
               showId={show._id}
             />
             <Container>

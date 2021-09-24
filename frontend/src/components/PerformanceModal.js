@@ -1,9 +1,18 @@
 import React from "react";
 
-const PerformanceModal = ({ showModal, updateShowModal }) => {
+const PerformanceModal = ({
+  showModal,
+  updateShowModal,
+  updatePerformanceId,
+  performances,
+}) => {
   return (
     <div
-      className={`${showModal ? "modal-overlay show-modal" : "modal-overlay"}`}
+      className={`${
+        showModal
+          ? "modal-overlay show-modal performance-modal"
+          : "modal-overlay"
+      }`}
     >
       <div className="modal-container new-review-container bg-secondary">
         <button className="close-modal-btn" onClick={updateShowModal}>

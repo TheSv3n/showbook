@@ -46,3 +46,7 @@
   color: hsl(360, 71%, 66%);
   cursor: pointer;
 }
+
+.performance-modal {
+  z-index: 11;
+}
