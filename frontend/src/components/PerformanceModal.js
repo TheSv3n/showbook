@@ -1,4 +1,5 @@
 import React from "react";
+import PerformanceListItem from "./PerformanceListItem";
 
 const PerformanceModal = ({
   showModal,
@@ -18,6 +19,17 @@ const PerformanceModal = ({
         <button className="close-modal-btn" onClick={updateShowModal}>
           <i className="bi bi-x-circle-fill"></i>
         </button>
+        <>
+          {performances &&
+            performances.map((performance) => {
+              return (
+                <PerformanceListItem
+                  key={performance.id}
+                  performance={performance}
+                />
+              );
+            })}
+        </>
       </div>
     </div>
   );

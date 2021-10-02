@@ -18,6 +18,7 @@ const NewReviewModal = ({
     "6123bebf2230d64d5c94d34c" //TODO - update to generate dynamically
   );
   const [showPerformanceModal, setShowPerformanceModal] = useState(false);
+  const [performanceText, setPerformanceText] = useState("Not selected");
 
   const handleClose = () => {
     setRating(0);
@@ -47,19 +48,32 @@ const NewReviewModal = ({
         showModal={showPerformanceModal}
         updateShowModal={handlePerformanceModal}
         setPerformanceId={setPerformanceId}
+        performances={performances}
       />
       <div
         className={`${
           showModal ? "modal-overlay show-modal" : "modal-overlay"
         }`}
       >
-        <div className="modal-container new-review-container bg-secondary">
+        <div className="modal-container new-review-container bg-secondary text-light">
           <Container className="form-container">
             <Row className="justify-content-md-center mt-2">
               <Col xs={12} md={8}>
                 <Form onSubmit={submitHandler}>
+                  <Form.Group controlId="performance">
+                    <Form.Label>
+                      Performance - <span>{performanceText}</span> -{" "}
+                      <span
+                        className="text-dark link"
+                        onClick={handlePerformanceModal}
+                      >
+                        select
+                      </span>{" "}
+                    </Form.Label>
+                  </Form.Group>
+
                   <Form.Group controlId="rating">
-                    <Form.Label>Rating </Form.Label>
+                    <Form.Label>Rating - </Form.Label>
                     <RatingWidget
                       value={rating}
                       color={"orange"}

@@ -148,7 +148,7 @@ const ShowScreen = ({ match, history }) => {
                 <h5 className="text-secondary">
                   Reviews{" "}
                   <span
-                    className="text-light new-review-link"
+                    className="text-light link"
                     onClick={handleNewReviewLink}
                   >
                     {loadingAddReview ? (

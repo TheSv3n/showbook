@@ -23,6 +23,6 @@ body {
   transition: all 0.2s linear;
 }
 
-.new-review-link:hover {
+.link:hover {
   cursor: pointer;
 }
