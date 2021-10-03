@@ -12,17 +12,17 @@ const NewReviewModal = ({
   performances,
 }) => {
   const dispatch = useDispatch();
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState();
   const [comment, setComment] = useState("");
-  const [performanceId, setPerformanceId] = useState(
-    "6123bebf2230d64d5c94d34c" //TODO - update to generate dynamically
-  );
+  const [performanceId, setPerformanceId] = useState("");
   const [showPerformanceModal, setShowPerformanceModal] = useState(false);
   const [performanceText, setPerformanceText] = useState("Not selected");
 
   const handleClose = () => {
     setRating(0);
     setComment("");
+    setPerformanceId("");
+    setPerformanceText("Not selected");
     updateShowModal();
   };
 
@@ -42,12 +42,18 @@ const NewReviewModal = ({
     setShowPerformanceModal(!showPerformanceModal);
   };
 
+  const handleUpdatePerformance = (id, text) => {
+    setPerformanceId(id);
+    setPerformanceText(text);
+    handlePerformanceModal();
+  };
+
   return (
     <>
       <PerformanceModal
         showModal={showPerformanceModal}
         updateShowModal={handlePerformanceModal}
-        setPerformanceId={setPerformanceId}
+        handleUpdatePerformance={handleUpdatePerformance}
         performances={performances}
       />
       <div
@@ -93,10 +99,13 @@ const NewReviewModal = ({
                       onChange={(e) => setComment(e.target.value)}
                     ></Form.Control>
                   </Form.Group>
-
-                  <Button type="submit" variant="primary" className=" my-2">
-                    Submit
-                  </Button>
+                  {performanceId !== "" ? (
+                    <Button type="submit" variant="primary" className=" my-2">
+                      Submit
+                    </Button>
+                  ) : (
+                    ""
+                  )}
                 </Form>
               </Col>
             </Row>
