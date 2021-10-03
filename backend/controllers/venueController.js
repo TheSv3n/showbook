@@ -49,4 +49,33 @@ const getVenueName = asyncHandler(async (req, res) => {
   }
 });
 
-export { createVenue, getVenue, getVenueName };
+//@desc Fetch All Venues
+//@route GET /api/venues
+//@access Public
+const getAllVenues = asyncHandler(async (req, res) => {
+  const pageSize = 8;
+  const page = Number(req.query.pageNumber) || 1;
+  const ranked = req.query.ranked;
+
+  const keyword = req.query.keyword
+    ? {
+        $or: [
+          {
+            title: {
+              $regex: req.query.keyword,
+              $options: "i",
+            },
+          },
+        ],
+      }
+    : {};
+
+  const count = await Venue.countDocuments({ ...keyword });
+  const venues = await Venue.find({ ...keyword })
+    .sort(ranked === "true" ? { rating: -1 } : { createdAt: -1 })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+  res.json({ venues, page, pages: Math.ceil(count / pageSize), count });
+});
+
+export { createVenue, getVenue, getVenueName, getAllVenues };

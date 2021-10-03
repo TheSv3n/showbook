@@ -18,7 +18,7 @@ import {
 export const showListReducer = (state = { shows: [] }, action) => {
   switch (action.type) {
     case SHOW_LIST_REQUEST:
-      return { loading: true, recipes: [] };
+      return { loading: true, shows: [] };
     case SHOW_LIST_SUCCESS:
       return {
         loading: false,
