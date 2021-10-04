@@ -50,6 +50,11 @@ const venueSchema = mongoose.Schema(
       required: true,
     },
     images: [imageSchema],
+    coverImage: {
+      type: String,
+      required: true,
+      default: "/uploads/defaultVenue.jpg",
+    },
     reviews: [reviewSchema],
     rating: {
       type: Number,

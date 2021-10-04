@@ -5,6 +5,7 @@ import { listVenues } from "../actions/venueActions";
 import { Container, Row } from "react-bootstrap";
 import Loader from "../components/Loader";
 import FeedShowCard from "../components/FeedShowCard";
+import FeedVenueCard from "../components/FeedVenueCard";
 
 const MainFeedScreen = ({ match }) => {
   const searchString = match.params.search;
@@ -55,7 +56,7 @@ const MainFeedScreen = ({ match }) => {
             <Row className="g-4">
               {venues &&
                 venues.map((venue) => {
-                  return <div>{venue.name}</div>;
+                  return <FeedVenueCard key={venue._id} venue={venue} />;
                 })}
             </Row>
           </Container>

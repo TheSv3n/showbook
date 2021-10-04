@@ -6,6 +6,7 @@ import Sidebar from "./components/Sidebar";
 import MainFeedScreen from "./screens/MainFeedScreen";
 import ShowScreen from "./screens/ShowScreen";
 import LoginScreen from "./screens/LoginScreen";
+import VenueScreen from "./screens/VenueScreen";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" component={MainFeedScreen} exact />
         <Route path="/login" component={LoginScreen} />
         <Route path="/show/:id" component={ShowScreen} />
+        <Route path="/venue/:id" component={VenueScreen} />
       </Router>
     </>
   );
