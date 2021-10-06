@@ -60,3 +60,28 @@ export const listVenues =
       });
     }
   };
+
+export const getVenueInfo = (venueId, update) => async (dispatch, getState) => {
+  try {
+    if (!update) {
+      dispatch({
+        type: VENUE_DETAILS_REQUEST,
+      });
+    }
+
+    const { data } = await axios.get(`/api/venues/${venueId}`);
+
+    dispatch({
+      type: VENUE_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: VENUE_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

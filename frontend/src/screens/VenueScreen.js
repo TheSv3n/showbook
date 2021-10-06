@@ -5,7 +5,7 @@ import RatingWidget from "../components/RatingWidget";
 import ImageCarousel from "../components/ImageCarousel";
 import Loader from "../components/Loader";
 import Review from "../components/Review";
-import getVenueInfo from "../actions/venueActions";
+import { getVenueInfo } from "../actions/venueActions";
 
 const VenueScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -82,7 +82,7 @@ const VenueScreen = ({ match, history }) => {
                     <div>
                       {performanceCount > 0
                         ? `${performanceCount} performances`
-                        : "No performances Scheduled"}
+                        : "No performances scheduled"}
                     </div>
                   </Row>
                 </Col>
