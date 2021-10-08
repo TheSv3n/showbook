@@ -78,4 +78,34 @@ const getAllVenues = asyncHandler(async (req, res) => {
   res.json({ venues, page, pages: Math.ceil(count / pageSize), count });
 });
 
-export { createVenue, getVenue, getVenueName, getAllVenues };
+//@desc Add Show Review
+//route PUT /api/shows/:id/reviews
+//@access Private
+const addVenueReview = asyncHandler(async (req, res) => {
+  const { comment, rating } = req.body;
+  const venue = await Venue.findById(req.params.id);
+
+  if (venue) {
+    const newReview = {
+      comment: comment,
+      rating: rating,
+      user: req.user._id,
+    };
+
+    venue.reviews.push(newReview);
+
+    venue.numReviews = venue.reviews.length;
+
+    venue.rating =
+      venue.reviews.reduce((acc, review) => review.rating + acc, 0) /
+      venue.reviews.length;
+
+    await venue.save();
+    res.status(201).json({ message: "Review Added" });
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
+});
+
+export { createVenue, getVenue, getVenueName, getAllVenues, addVenueReview };
