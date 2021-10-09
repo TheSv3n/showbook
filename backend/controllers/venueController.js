@@ -78,8 +78,8 @@ const getAllVenues = asyncHandler(async (req, res) => {
   res.json({ venues, page, pages: Math.ceil(count / pageSize), count });
 });
 
-//@desc Add Show Review
-//route PUT /api/shows/:id/reviews
+//@desc Add Venue Review
+//route PUT /api/venues/:id/reviews
 //@access Private
 const addVenueReview = asyncHandler(async (req, res) => {
   const { comment, rating } = req.body;

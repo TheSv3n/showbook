@@ -85,7 +85,7 @@ export const showCreateReducer = (state = { show: [] }, action) => {
   }
 };
 
-export const addReviewReducer = (state = {}, action) => {
+export const addShowReviewReducer = (state = {}, action) => {
   switch (action.type) {
     case SHOW_ADD_REVIEW_REQUEST:
       return {

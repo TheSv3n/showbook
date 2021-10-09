@@ -22,6 +22,9 @@ const VenueScreen = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const addVenueReview = useSelector((state) => state.addVenueReview);
+  const { loading: loadingAddReview } = addVenueReview;
+
   const updateShowImageModal = () => {
     setShowImageModal(!showImageModal);
   };
@@ -38,7 +41,7 @@ const VenueScreen = ({ match, history }) => {
     if (!venue || venue._id !== venueId) {
       dispatch(getVenueInfo(venueId, false));
     }
-  }, [dispatch]);
+  }, [dispatch, venue, venueId]);
 
   return (
     <section className="p-5 ">
@@ -97,7 +100,6 @@ const VenueScreen = ({ match, history }) => {
                   startIndex={0}
                 />
               </Row>
-              {/*
               <Row>
                 <h5 className="text-secondary">
                   Reviews{" "}
@@ -114,12 +116,24 @@ const VenueScreen = ({ match, history }) => {
                     )}
                   </span>
                 </h5>
-                <ul className="list-group">
-                  {venue.reviews.map((review) => {
-                    return <Review review={review} key={review._id} />;
-                  })}
-                </ul>
-                </Row>*/}
+                <Container>
+                  <ul className="list-group">
+                    {venue.reviews.length === 0 ? (
+                      <div className="text-light">No Reviews</div>
+                    ) : (
+                      venue.reviews.map((review) => {
+                        return (
+                          <Review
+                            review={review}
+                            key={review._id}
+                            performances={venue.performances}
+                          />
+                        );
+                      })
+                    )}
+                  </ul>
+                </Container>
+              </Row>
             </Container>
           </>
         )

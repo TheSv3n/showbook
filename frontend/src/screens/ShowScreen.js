@@ -23,8 +23,8 @@ const ShowScreen = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const addReview = useSelector((state) => state.addReview);
-  const { loading: loadingAddReview } = addReview;
+  const addShowReview = useSelector((state) => state.addShowReview);
+  const { loading: loadingAddReview } = addShowReview;
 
   const getCompanyName = async (companyId) => {
     const { data: name } = await axios.get(`/api/companies/${companyId}/name`);
@@ -160,17 +160,23 @@ const ShowScreen = ({ match, history }) => {
                     )}
                   </span>
                 </h5>
-                <ul className="list-group">
-                  {show.reviews.map((review) => {
-                    return (
-                      <Review
-                        review={review}
-                        key={review._id}
-                        performances={show.performances}
-                      />
-                    );
-                  })}
-                </ul>
+                <Container>
+                  <ul className="list-group">
+                    {show.reviews.length === 0 ? (
+                      <div className="text-light">No Reviews</div>
+                    ) : (
+                      show.reviews.map((review) => {
+                        return (
+                          <Review
+                            review={review}
+                            key={review._id}
+                            performances={show.performances}
+                          />
+                        );
+                      })
+                    )}
+                  </ul>
+                </Container>
               </Row>
             </Container>
           </>

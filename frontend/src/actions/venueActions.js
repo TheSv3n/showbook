@@ -7,6 +7,9 @@ import {
   VENUE_DETAILS_REQUEST,
   VENUE_DETAILS_SUCCESS,
   VENUE_DETAILS_FAIL,
+  VENUE_ADD_REVIEW_REQUEST,
+  VENUE_ADD_REVIEW_SUCCESS,
+  VENUE_ADD_REVIEW_FAIL,
 } from "../constants/venueConstants";
 
 export const listVenues =
@@ -85,3 +88,38 @@ export const getVenueInfo = (venueId, update) => async (dispatch, getState) => {
     });
   }
 };
+
+export const addVenueReview =
+  (venueId, review) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: VENUE_ADD_REVIEW_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.put(`/api/venues/${venueId}/reviews`, review, config);
+
+      dispatch({
+        type: VENUE_ADD_REVIEW_SUCCESS,
+      });
+      dispatch(getVenueInfo(venueId, true));
+    } catch (error) {
+      dispatch({
+        type: VENUE_ADD_REVIEW_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

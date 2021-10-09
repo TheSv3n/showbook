@@ -5,10 +5,14 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import {
   showListReducer,
   showInfoReducer,
-  addReviewReducer,
+  addShowReviewReducer,
 } from "./reducers/showReducers";
 
-import { venueListReducer, venueInfoReducer } from "./reducers/venueReducers";
+import {
+  venueListReducer,
+  venueInfoReducer,
+  addVenueReviewReducer,
+} from "./reducers/venueReducers";
 
 import { userLoginReducer } from "./reducers/userReducers";
 
@@ -16,9 +20,10 @@ const reducer = combineReducers({
   userLogin: userLoginReducer,
   showList: showListReducer,
   showInfo: showInfoReducer,
-  addReview: addReviewReducer,
+  addShowReview: addShowReviewReducer,
   venueList: venueListReducer,
   venueInfo: venueInfoReducer,
+  addVenueReview: addVenueReviewReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
