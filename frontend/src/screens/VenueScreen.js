@@ -6,6 +6,7 @@ import ImageCarousel from "../components/ImageCarousel";
 import Loader from "../components/Loader";
 import Review from "../components/Review";
 import { getVenueInfo } from "../actions/venueActions";
+import NewReviewModal from "../components/NewReviewModal";
 
 const VenueScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -33,8 +34,16 @@ const VenueScreen = ({ match, history }) => {
     setStartIndex(newIndex);
   };
 
+  const updateShowReviewModal = () => {
+    setShowReviewModal(!showReviewModal);
+  };
+
   const handleNewReviewLink = () => {
-    //TODO
+    if (userInfo) {
+      updateShowReviewModal();
+    } else {
+      history.push(`/login?redirect=venue/${venueId}`);
+    }
   };
 
   useEffect(() => {
@@ -50,6 +59,11 @@ const VenueScreen = ({ match, history }) => {
       ) : (
         venue && (
           <>
+            <NewReviewModal
+              showModal={showReviewModal}
+              updateShowModal={updateShowReviewModal}
+              showId={venue._id}
+            />
             <Container>
               <Row>
                 <h2 className="text-white">{venue.name}</h2>
