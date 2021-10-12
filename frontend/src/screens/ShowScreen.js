@@ -87,7 +87,8 @@ const ShowScreen = ({ match, history }) => {
               showModal={showReviewModal}
               updateShowModal={updateShowReviewModal}
               performances={show.performances}
-              showId={show._id}
+              id={show._id}
+              type={"show"}
             />
             <Container>
               <Row>
@@ -171,6 +172,7 @@ const ShowScreen = ({ match, history }) => {
                             review={review}
                             key={review._id}
                             performances={show.performances}
+                            type="show"
                           />
                         );
                       })

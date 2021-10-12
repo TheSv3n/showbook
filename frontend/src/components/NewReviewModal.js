@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { addShowReview } from "../actions/showActions";
+import { addVenueReview } from "../actions/venueActions";
 import { useDispatch } from "react-redux";
 import RatingWidget from "./RatingWidget";
 import PerformanceModal from "./PerformanceModal";
@@ -8,8 +9,9 @@ import PerformanceModal from "./PerformanceModal";
 const NewReviewModal = ({
   showModal,
   updateShowModal,
-  showId,
+  id,
   performances,
+  type,
 }) => {
   const dispatch = useDispatch();
   const [rating, setRating] = useState();
@@ -28,13 +30,29 @@ const NewReviewModal = ({
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(
-      addShowReview(showId, {
-        performanceId: performanceId,
-        rating: rating,
-        comment: comment,
-      })
-    );
+
+    switch (type) {
+      case "show":
+        dispatch(
+          addShowReview(id, {
+            performanceId: performanceId,
+            rating: rating,
+            comment: comment,
+          })
+        );
+        break;
+      case "venue":
+        dispatch(
+          addVenueReview(id, {
+            rating: rating,
+            comment: comment,
+          })
+        );
+        break;
+
+      default:
+    }
+
     handleClose();
   };
 
@@ -66,17 +84,21 @@ const NewReviewModal = ({
             <Row className="justify-content-md-center mt-2">
               <Col xs={12} md={8}>
                 <Form onSubmit={submitHandler}>
-                  <Form.Group controlId="performance">
-                    <Form.Label>
-                      Performance - <span>{performanceText}</span> -{" "}
-                      <span
-                        className="text-dark link"
-                        onClick={handlePerformanceModal}
-                      >
-                        select
-                      </span>{" "}
-                    </Form.Label>
-                  </Form.Group>
+                  {type === "show" ? (
+                    <Form.Group controlId="performance">
+                      <Form.Label>
+                        Performance - <span>{performanceText}</span> -{" "}
+                        <span
+                          className="text-dark link"
+                          onClick={handlePerformanceModal}
+                        >
+                          select
+                        </span>{" "}
+                      </Form.Label>
+                    </Form.Group>
+                  ) : (
+                    ""
+                  )}
 
                   <Form.Group controlId="rating">
                     <Form.Label>Rating - </Form.Label>
@@ -99,12 +121,12 @@ const NewReviewModal = ({
                       onChange={(e) => setComment(e.target.value)}
                     ></Form.Control>
                   </Form.Group>
-                  {performanceId !== "" ? (
+                  {performanceId === "" && type === "show" ? (
+                    ""
+                  ) : (
                     <Button type="submit" variant="primary" className=" my-2">
                       Submit
                     </Button>
-                  ) : (
-                    ""
                   )}
                 </Form>
               </Col>

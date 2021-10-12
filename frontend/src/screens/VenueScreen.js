@@ -62,7 +62,8 @@ const VenueScreen = ({ match, history }) => {
             <NewReviewModal
               showModal={showReviewModal}
               updateShowModal={updateShowReviewModal}
-              showId={venue._id}
+              id={venue._id}
+              type="venue"
             />
             <Container>
               <Row>
@@ -101,6 +102,10 @@ const VenueScreen = ({ match, history }) => {
                         ? `${performanceCount} performances`
                         : "No performances scheduled"}
                     </div>
+                  </Row>
+                  <Row>
+                    <h5 className="text-secondary mt-1">Address </h5>
+                    <div>{venue.address}</div>
                   </Row>
                 </Col>
               </Row>
@@ -141,6 +146,7 @@ const VenueScreen = ({ match, history }) => {
                             review={review}
                             key={review._id}
                             performances={venue.performances}
+                            type="venue"
                           />
                         );
                       })

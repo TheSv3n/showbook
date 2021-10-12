@@ -5,7 +5,7 @@ import axios from "axios";
 import "../css/review.css";
 import RatingWidget from "../components/RatingWidget";
 
-const Review = ({ review, performances }) => {
+const Review = ({ review, performances, type }) => {
   const [userName, setUserName] = useState("");
   const [performanceDate, setPerformanceDate] = useState("");
   const [performanceVenue, setPerformanceVenue] = useState("");
@@ -36,7 +36,9 @@ const Review = ({ review, performances }) => {
 
   useEffect(() => {
     getUserName(review.user);
-    getPerformanceInfo();
+    if (type === "show") {
+      getPerformanceInfo();
+    }
   }, [review]);
 
   return (
@@ -51,9 +53,14 @@ const Review = ({ review, performances }) => {
           </div>
         </Col>
       </div>
-      <div className="performance">
-        Seen at: {performanceVenue} on {performanceDate}
-      </div>
+      {type === "show" ? (
+        <div className="performance">
+          Seen at: {performanceVenue} on {performanceDate}
+        </div>
+      ) : (
+        <></>
+      )}
+
       <div className="text-light">{review.comment} </div>
       {userInfo ? (
         <div className="align-right">
