@@ -14,6 +14,12 @@
   --bgClear: rgba(0, 0, 0, 0.6);
 }
 
+body::before {
+  display: block;
+  content: "";
+  height: 70px;
+}
+
 body {
   background: var(--bgDark);
 }
@@ -25,4 +31,22 @@ body {
 
 .link:hover {
   cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+textarea {
+  height: 12rem;
+}
+
+.reset-span {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 0.9rem;
+  }
 }
