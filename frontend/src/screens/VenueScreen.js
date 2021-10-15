@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Image, Container, Row, Col } from "react-bootstrap";
 import RatingWidget from "../components/RatingWidget";
 import ImageCarousel from "../components/ImageCarousel";
+import ImageModal from "../components/ImageModal";
 import Loader from "../components/Loader";
 import Review from "../components/Review";
 import { getVenueInfo } from "../actions/venueActions";
@@ -59,12 +60,20 @@ const VenueScreen = ({ match, history }) => {
       ) : (
         venue && (
           <>
+            <ImageModal
+              images={venue.images}
+              showModal={showImageModal}
+              updateShowModal={updateShowImageModal}
+              updateStartIndex={updateStartIndex}
+              startIndex={startIndex}
+            />
             <NewReviewModal
               showModal={showReviewModal}
               updateShowModal={updateShowReviewModal}
               id={venue._id}
               type="venue"
             />
+
             <Container>
               <Row>
                 <h2 className="text-white">{venue.name}</h2>

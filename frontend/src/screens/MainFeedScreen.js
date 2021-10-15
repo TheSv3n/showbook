@@ -62,6 +62,16 @@ const MainFeedScreen = ({ match }) => {
           </Container>
         )}
       </section>
+      <section className="p-5 text-center">
+        {loading ? (
+          <Loader />
+        ) : (
+          <Container>
+            <h2 className="text-center text-white">Cast Members</h2>
+            <Row className="g-4">{/*TODO*/}</Row>
+          </Container>
+        )}
+      </section>
     </>
   );
 };

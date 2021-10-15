@@ -108,4 +108,32 @@ const addVenueReview = asyncHandler(async (req, res) => {
   }
 });
 
-export { createVenue, getVenue, getVenueName, getAllVenues, addVenueReview };
+//@desc Add Image
+//route PUT /api/shows/:id/images
+//@access Private
+const addVenueImage = asyncHandler(async (req, res) => {
+  const { image } = req.body;
+  const venue = await Venue.findById(req.params.id);
+
+  if (venue) {
+    const newImage = {
+      image: image,
+    };
+
+    venue.images.push(newImage);
+    await venue.save();
+    res.status(201).json({ message: "Image Added" });
+  } else {
+    res.status(404);
+    throw new Error("Venue not Found");
+  }
+});
+
+export {
+  createVenue,
+  getVenue,
+  getVenueName,
+  getAllVenues,
+  addVenueReview,
+  addVenueImage,
+};

@@ -101,7 +101,7 @@ const addPerformance = asyncHandler(async (req, res) => {
 //@desc Add Image
 //route PUT /api/shows/:id/images
 //@access Private
-const addImage = asyncHandler(async (req, res) => {
+const addShowImage = asyncHandler(async (req, res) => {
   const { image } = req.body;
   const show = await Show.findById(req.params.id);
 
@@ -155,6 +155,6 @@ export {
   getAllShows,
   getShow,
   addPerformance,
-  addImage,
+  addShowImage,
   addShowReview,
 };
