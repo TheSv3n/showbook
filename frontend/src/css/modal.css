@@ -19,6 +19,7 @@
 .modal-container {
   border-radius: 0.2rem;
   width: 90vw;
+  height: 80vh;
   text-align: center;
   display: grid;
   place-items: center;

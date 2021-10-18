@@ -67,9 +67,39 @@ const getCastMemberName = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Fetch Top Cast Members
+//@route GET /api/castmembers/
+//@access Public
+const getCastMemberList = asyncHandler(async (req, res) => {
+  const pageSize = 8;
+  const page = Number(req.query.pageNumber) || 1;
+  const ranked = req.query.ranked;
+
+  const keyword = req.query.keyword
+    ? {
+        $or: [
+          {
+            title: {
+              $regex: req.query.keyword,
+              $options: "i",
+            },
+          },
+        ],
+      }
+    : {};
+
+  const count = await CastMember.countDocuments({ ...keyword });
+  const castMembers = await CastMember.find({ ...keyword })
+    .sort(ranked === "true" ? { rating: -1 } : { createdAt: -1 })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+  res.json({ castMembers, page, pages: Math.ceil(count / pageSize), count });
+});
+
 export {
   createCastMember,
   getCastMember,
   linkCastMemberAccount,
   getCastMemberName,
+  getCastMemberList,
 };

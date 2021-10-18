@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listShows } from "../actions/showActions";
 import { listVenues } from "../actions/venueActions";
+import { listCastMembers } from "../actions/castMemberActions";
 import { Container, Row } from "react-bootstrap";
 import Loader from "../components/Loader";
 import FeedShowCard from "../components/FeedShowCard";
@@ -26,9 +27,19 @@ const MainFeedScreen = ({ match }) => {
     count: venueCount,
   } = venueList;
 
+  const castMemberList = useSelector((state) => state.castMemberList);
+  const {
+    loading: castMemberLoading,
+    castMembers,
+    page: castMemberPage,
+    feedFinished: castMemberFeedFinished,
+    count: castMemberCount,
+  } = castMemberList;
+
   useEffect(() => {
     dispatch(listShows(1, searchKeyword, showTopRated));
     dispatch(listVenues(1, searchKeyword, showTopRated));
+    dispatch(listCastMembers(1, searchKeyword, showTopRated));
   }, [dispatch, searchKeyword, showTopRated, searchString]);
   return (
     <>
@@ -68,7 +79,12 @@ const MainFeedScreen = ({ match }) => {
         ) : (
           <Container>
             <h2 className="text-center text-white">Cast Members</h2>
-            <Row className="g-4">{/*TODO*/}</Row>
+            <Row className="g-4">
+              {castMembers &&
+                castMembers.map((castMember) => {
+                  return <div>{castMember.name}</div>;
+                })}
+            </Row>
           </Container>
         )}
       </section>
