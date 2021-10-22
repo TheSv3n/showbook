@@ -7,6 +7,7 @@ import { Container, Row } from "react-bootstrap";
 import Loader from "../components/Loader";
 import FeedShowCard from "../components/FeedShowCard";
 import FeedVenueCard from "../components/FeedVenueCard";
+import FeedCastMemberCard from "../components/FeedCastMemberCard";
 
 const MainFeedScreen = ({ match }) => {
   const searchString = match.params.search;
@@ -82,7 +83,12 @@ const MainFeedScreen = ({ match }) => {
             <Row className="g-4">
               {castMembers &&
                 castMembers.map((castMember) => {
-                  return <div>{castMember.name}</div>;
+                  return (
+                    <FeedCastMemberCard
+                      key={castMember._id}
+                      castMember={castMember}
+                    />
+                  );
                 })}
             </Row>
           </Container>
