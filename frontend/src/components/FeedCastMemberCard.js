@@ -9,7 +9,7 @@ const FeedCastMemberCard = ({ castMember }) => {
       <Card className="bg-light h-100">
         <Card.Body className="text-center">
           <Link
-            to={`/venue/${castMember._id}`}
+            to={`/castmember/${castMember._id}`}
             style={{ textDecoration: "none" }}
           >
             <Image

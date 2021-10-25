@@ -3,6 +3,9 @@ import {
   CAST_MEMBER_LIST_SUCCESS,
   CAST_MEMBER_LIST_FAIL,
   CAST_MEMBER_LIST_UPDATE_REQUEST,
+  CAST_MEMBER_DETAILS_REQUEST,
+  CAST_MEMBER_DETAILS_SUCCESS,
+  CAST_MEMBER_DETAILS_FAIL,
 } from "../constants/castMemberConstants";
 
 import axios from "axios";
@@ -51,6 +54,32 @@ export const listCastMembers =
     } catch (error) {
       dispatch({
         type: CAST_MEMBER_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const getCastMemberInfo =
+  (castMemberId, update) => async (dispatch, getState) => {
+    try {
+      if (!update) {
+        dispatch({
+          type: CAST_MEMBER_DETAILS_REQUEST,
+        });
+      }
+
+      const { data } = await axios.get(`/api/castmembers/${castMemberId}`);
+
+      dispatch({
+        type: CAST_MEMBER_DETAILS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CAST_MEMBER_DETAILS_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

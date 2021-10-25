@@ -1,5 +1,25 @@
 import mongoose from "mongoose";
 
+const reviewSchema = mongoose.Schema(
+  {
+    rating: {
+      type: Number,
+      required: true,
+    },
+    comment: {
+      type: String,
+      required: true,
+    },
+    user: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const castMemberSchema = mongoose.Schema(
   {
     creator: {
@@ -33,6 +53,7 @@ const castMemberSchema = mongoose.Schema(
       required: true,
       default: "actor",
     },
+    reviews: [reviewSchema],
   },
   {
     timestamps: true,

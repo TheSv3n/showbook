@@ -8,6 +8,7 @@ import MainFeedScreen from "./screens/MainFeedScreen";
 import ShowScreen from "./screens/ShowScreen";
 import LoginScreen from "./screens/LoginScreen";
 import VenueScreen from "./screens/VenueScreen";
+import CastMemberScreen from "./screens/CastMemberScreen";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" component={LoginScreen} />
         <Route path="/show/:id" component={ShowScreen} />
         <Route path="/venue/:id" component={VenueScreen} />
+        <Route path="/castmember/:id" component={CastMemberScreen} />
       </Router>
     </>
   );

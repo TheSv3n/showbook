@@ -14,7 +14,10 @@ import {
   addVenueReviewReducer,
 } from "./reducers/venueReducers";
 
-import { castMemberListReducer } from "./reducers/castMemberReducers";
+import {
+  castMemberListReducer,
+  castMemberInfoReducer,
+} from "./reducers/castMemberReducers";
 
 import { userLoginReducer } from "./reducers/userReducers";
 
@@ -27,6 +30,7 @@ const reducer = combineReducers({
   venueInfo: venueInfoReducer,
   addVenueReview: addVenueReviewReducer,
   castMemberList: castMemberListReducer,
+  castMemberInfo: castMemberInfoReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

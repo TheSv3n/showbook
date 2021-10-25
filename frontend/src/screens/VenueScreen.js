@@ -73,7 +73,6 @@ const VenueScreen = ({ match, history }) => {
               id={venue._id}
               type="venue"
             />
-
             <Container>
               <Row>
                 <h2 className="text-white">{venue.name}</h2>
