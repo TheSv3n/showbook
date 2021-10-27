@@ -13,6 +13,9 @@ import {
   SHOW_ADD_REVIEW_REQUEST,
   SHOW_ADD_REVIEW_SUCCESS,
   SHOW_ADD_REVIEW_FAIL,
+  SHOW_VENUE_PERFORMANCES_REQUEST,
+  SHOW_VENUE_PERFORMANCES_SUCCESS,
+  SHOW_VENUE_PERFORMANCES_FAIL,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -102,6 +105,25 @@ export const addShowReviewReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+export const showVenuePerformancesReducer = (
+  state = { performances: [] },
+  action
+) => {
+  switch (action.type) {
+    case SHOW_VENUE_PERFORMANCES_REQUEST:
+      return { loading: true, performances: [] };
+    case SHOW_VENUE_PERFORMANCES_SUCCESS:
+      return {
+        loading: false,
+        performances: action.payload.performances,
+      };
+    case SHOW_VENUE_PERFORMANCES_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

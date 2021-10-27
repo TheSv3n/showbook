@@ -7,13 +7,13 @@ import ImageModal from "../components/ImageModal";
 import Loader from "../components/Loader";
 import Review from "../components/Review";
 import { getVenueInfo } from "../actions/venueActions";
+import { listVenuePerformances } from "../actions/showActions";
 import NewReviewModal from "../components/NewReviewModal";
 
 const VenueScreen = ({ match, history }) => {
   const dispatch = useDispatch();
   const venueId = match.params.id;
 
-  const [performanceCount, setPerformanceCount] = useState(0);
   const [showImageModal, setShowImageModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
@@ -26,6 +26,11 @@ const VenueScreen = ({ match, history }) => {
 
   const addVenueReview = useSelector((state) => state.addVenueReview);
   const { loading: loadingAddReview } = addVenueReview;
+
+  const showVenuePerformances = useSelector(
+    (state) => state.showVenuePerformances
+  );
+  const { performances } = showVenuePerformances;
 
   const updateShowImageModal = () => {
     setShowImageModal(!showImageModal);
@@ -50,6 +55,7 @@ const VenueScreen = ({ match, history }) => {
   useEffect(() => {
     if (!venue || venue._id !== venueId) {
       dispatch(getVenueInfo(venueId, false));
+      dispatch(listVenuePerformances(venueId));
     }
   }, [dispatch, venue, venueId]);
 
@@ -106,8 +112,8 @@ const VenueScreen = ({ match, history }) => {
                   <Row>
                     <h5 className="text-secondary mt-1">Performances </h5>
                     <div>
-                      {performanceCount > 0
-                        ? `${performanceCount} performances`
+                      {performances.length > 0
+                        ? `${performances.length} performances`
                         : "No performances scheduled"}
                     </div>
                   </Row>

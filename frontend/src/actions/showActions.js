@@ -13,6 +13,9 @@ import {
   SHOW_ADD_REVIEW_REQUEST,
   SHOW_ADD_REVIEW_SUCCESS,
   SHOW_ADD_REVIEW_FAIL,
+  SHOW_VENUE_PERFORMANCES_REQUEST,
+  SHOW_VENUE_PERFORMANCES_SUCCESS,
+  SHOW_VENUE_PERFORMANCES_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -158,3 +161,27 @@ export const addShowReview = (showId, review) => async (dispatch, getState) => {
     });
   }
 };
+
+export const listVenuePerformances =
+  (venueId) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: SHOW_VENUE_PERFORMANCES_REQUEST });
+
+      const { data } = await axios.get(
+        `/api/shows/venue/${venueId}/performances`
+      );
+
+      dispatch({
+        type: SHOW_VENUE_PERFORMANCES_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: SHOW_VENUE_PERFORMANCES_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

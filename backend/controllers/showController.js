@@ -150,6 +150,37 @@ const addShowReview = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Fetch Show Venue Performances
+//@route GET /api/shows/venue/:id/performances
+//@access Public
+const getVenuePerformances = asyncHandler(async (req, res) => {
+  const page = Number(req.query.pageNumber) || 1;
+
+  const keyword = {
+    $or: [
+      {
+        "performances.venueId": req.params.id,
+      },
+    ],
+  };
+
+  const shows = await Show.find({ ...keyword });
+
+  let performances = [];
+
+  for (let i = 0; i < shows.length; i++) {
+    for (let j = 0; j < shows[i].performances.length; j++) {
+      let tempPerformance = {
+        showId: shows[i]._id,
+        performance: shows[i].performances[j],
+      };
+      performances = [...performances, tempPerformance];
+    }
+  }
+
+  res.json({ performances });
+});
+
 export {
   createShow,
   getAllShows,
@@ -157,4 +188,5 @@ export {
   addPerformance,
   addShowImage,
   addShowReview,
+  getVenuePerformances,
 };
