@@ -8,6 +8,7 @@ import {
   addShowImage,
   addShowReview,
   getVenuePerformances,
+  getShowName,
 } from "../controllers/showController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -17,6 +18,7 @@ router.route("/:id").get(getShow);
 router.route("/:id/performances").put(protect, addPerformance);
 router.route("/:id/images").put(protect, addShowImage);
 router.route("/:id/reviews").put(protect, addShowReview);
+router.route("/:id/name").get(getShowName);
 router.route("/venue/:id/performances").get(getVenuePerformances);
 
 export default router;

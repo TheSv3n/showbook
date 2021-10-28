@@ -181,6 +181,20 @@ const getVenuePerformances = asyncHandler(async (req, res) => {
   res.json({ performances });
 });
 
+//@desc Get Show name
+//@route GET /api/shows/:id/name
+//@access Public
+const getShowName = asyncHandler(async (req, res) => {
+  const show = await Show.findById(req.params.id);
+
+  if (show) {
+    res.json(venue.show);
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
+});
+
 export {
   createShow,
   getAllShows,
@@ -189,4 +203,5 @@ export {
   addShowImage,
   addShowReview,
   getVenuePerformances,
+  getShowName,
 };
