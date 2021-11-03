@@ -1,11 +1,13 @@
 import React from "react";
 import PerformanceListItem from "./PerformanceListItem";
+import VenuePerformanceListItem from "./VenuePerformanceListItem";
 
 const PerformanceModal = ({
   showModal,
   updateShowModal,
   handleUpdatePerformance,
   performances,
+  venuePerformance,
 }) => {
   return (
     <div
@@ -23,11 +25,21 @@ const PerformanceModal = ({
           {performances &&
             performances.map((performance) => {
               return (
-                <PerformanceListItem
-                  key={performance.id}
-                  performance={performance}
-                  handleUpdatePerformance={handleUpdatePerformance}
-                />
+                <>
+                  {venuePerformance ? (
+                    <VenuePerformanceListItem
+                      key={performance.id}
+                      performance={performance}
+                      handleUpdatePerformance={handleUpdatePerformance}
+                    />
+                  ) : (
+                    <PerformanceListItem
+                      key={performance.id}
+                      performance={performance}
+                      handleUpdatePerformance={handleUpdatePerformance}
+                    />
+                  )}
+                </>
               );
             })}
         </ul>

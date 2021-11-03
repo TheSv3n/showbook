@@ -9,6 +9,7 @@ import Review from "../components/Review";
 import { getVenueInfo } from "../actions/venueActions";
 import { listVenuePerformances } from "../actions/showActions";
 import NewReviewModal from "../components/NewReviewModal";
+import PerformanceModal from "../components/PerformanceModal";
 
 const VenueScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const VenueScreen = ({ match, history }) => {
 
   const [showImageModal, setShowImageModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [showPerformanceModal, setShowPerformanceModal] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
 
   const venueInfo = useSelector((state) => state.venueInfo);
@@ -42,6 +44,10 @@ const VenueScreen = ({ match, history }) => {
 
   const updateShowReviewModal = () => {
     setShowReviewModal(!showReviewModal);
+  };
+
+  const updateShowPerformanceModal = () => {
+    setShowPerformanceModal(!showPerformanceModal);
   };
 
   const handleNewReviewLink = () => {
@@ -79,6 +85,12 @@ const VenueScreen = ({ match, history }) => {
               id={venue._id}
               type="venue"
             />
+            <PerformanceModal
+              showModal={showPerformanceModal}
+              updateShowModal={updateShowPerformanceModal}
+              performances={performances}
+              venuePerformance={true}
+            />
             <Container>
               <Row>
                 <h2 className="text-white">{venue.name}</h2>
@@ -112,9 +124,18 @@ const VenueScreen = ({ match, history }) => {
                   <Row>
                     <h5 className="text-secondary mt-1">Performances </h5>
                     <div>
-                      {performances.length > 0
-                        ? `${performances.length} performances`
-                        : "No performances scheduled"}
+                      <>
+                        {performances.length > 0
+                          ? `${performances.length} performances`
+                          : "No performances scheduled"}
+                      </>
+                      <span
+                        className="link text-secondary"
+                        onClick={updateShowPerformanceModal}
+                      >
+                        {" "}
+                        - view
+                      </span>
                     </div>
                   </Row>
                   <Row>

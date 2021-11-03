@@ -188,7 +188,7 @@ const getShowName = asyncHandler(async (req, res) => {
   const show = await Show.findById(req.params.id);
 
   if (show) {
-    res.json(venue.show);
+    res.json(show.title);
   } else {
     res.status(404);
     throw new Error("Show not Found");
