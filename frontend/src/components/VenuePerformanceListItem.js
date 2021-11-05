@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const VenuePerformanceListItem = ({ performance }) => {
@@ -24,9 +25,11 @@ const VenuePerformanceListItem = ({ performance }) => {
     getPerformanceInfo(performance);
   }, [performance]);
   return (
-    <li className="list-group-item col-6 mx-auto my-2 link">
-      {showTitle} - {performanceDate} - {performanceTime}
-    </li>
+    <Link to={`/show/${performance.showId}`}>
+      <li className="list-group-item col-6 mx-auto my-2 link">
+        {showTitle} - {performanceDate} - {performanceTime}
+      </li>
+    </Link>
   );
 };
 
