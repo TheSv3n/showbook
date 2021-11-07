@@ -9,6 +9,7 @@ import ImageCarousel from "../components/ImageCarousel";
 import ImageModal from "../components/ImageModal";
 import NewReviewModal from "../components/NewReviewModal";
 import Review from "../components/Review";
+import PerformanceModal from "../components/PerformanceModal";
 
 const ShowScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -18,6 +19,8 @@ const ShowScreen = ({ match, history }) => {
   const [directorName, setDirectorName] = useState("");
   const [showImageModal, setShowImageModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [showPerformanceModal, setShowPerformanceModal] = useState(false);
+  const [performanceModalReview, setPerformanceMocalReview] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -61,6 +64,10 @@ const ShowScreen = ({ match, history }) => {
     }
   };
 
+  const updateShowPerformanceModal = () => {
+    setShowPerformanceModal(!showPerformanceModal);
+  };
+
   useEffect(() => {
     if (!show || show._id !== showId) {
       dispatch(getShowInfo(showId, false));
@@ -89,6 +96,13 @@ const ShowScreen = ({ match, history }) => {
               performances={show.performances}
               id={show._id}
               type={"show"}
+            />
+            <PerformanceModal
+              showModal={showPerformanceModal}
+              updateShowModal={updateShowPerformanceModal}
+              performances={show.performances}
+              venuePerformance={false}
+              fromReview={performanceModalReview}
             />
             <Container>
               <Row>
@@ -128,9 +142,24 @@ const ShowScreen = ({ match, history }) => {
                   <Row>
                     <h5 className="text-secondary mt-1">Performances </h5>
                     <div>
-                      {show.performances && show.performances.length > 0
-                        ? `${show.performances.length} performances`
-                        : "No performances Scheduled"}
+                      <>
+                        {show.performances.length > 0 ? (
+                          <>
+                            <span>
+                              {`${show.performances.length} performances`}
+                            </span>
+                            <span
+                              className="link text-secondary"
+                              onClick={updateShowPerformanceModal}
+                            >
+                              {" "}
+                              - view
+                            </span>
+                          </>
+                        ) : (
+                          "No performances scheduled"
+                        )}
+                      </>
                     </div>
                   </Row>
                 </Col>

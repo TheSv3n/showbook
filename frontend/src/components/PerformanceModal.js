@@ -8,6 +8,7 @@ const PerformanceModal = ({
   handleUpdatePerformance,
   performances,
   venuePerformance,
+  fromReview,
 }) => {
   return (
     <div
@@ -37,6 +38,7 @@ const PerformanceModal = ({
                       key={performance.id}
                       performance={performance}
                       handleUpdatePerformance={handleUpdatePerformance}
+                      fromReview={fromReview}
                     />
                   )}
                 </>

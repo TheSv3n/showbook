@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
-const PerformanceListItem = ({ performance, handleUpdatePerformance }) => {
+const PerformanceListItem = ({
+  performance,
+  handleUpdatePerformance,
+  fromReview,
+}) => {
+  const history = useHistory();
   const [performanceDate, setPerformanceDate] = useState("");
   const [performanceTime, setPerformanceTime] = useState("");
   const [performanceVenue, setPerformanceVenue] = useState("");
@@ -26,10 +32,14 @@ const PerformanceListItem = ({ performance, handleUpdatePerformance }) => {
     <li
       className="list-group-item col-6 mx-auto my-2 link"
       onClick={() => {
-        handleUpdatePerformance(
-          performance._id,
-          `${performanceDate} at ${performanceVenue}`
-        );
+        if (fromReview) {
+          handleUpdatePerformance(
+            performance._id,
+            `${performanceDate} at ${performanceVenue}`
+          );
+        } else {
+          history.push(`/venue/${performance.venueId}`);
+        }
       }}
     >
       {performanceDate} - {performanceTime} at {performanceVenue}

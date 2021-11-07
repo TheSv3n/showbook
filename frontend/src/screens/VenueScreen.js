@@ -125,17 +125,21 @@ const VenueScreen = ({ match, history }) => {
                     <h5 className="text-secondary mt-1">Performances </h5>
                     <div>
                       <>
-                        {performances.length > 0
-                          ? `${performances.length} performances`
-                          : "No performances scheduled"}
+                        {performances.length > 0 ? (
+                          <>
+                            <span>{`${performances.length} performances`}</span>
+                            <span
+                              className="link text-secondary"
+                              onClick={updateShowPerformanceModal}
+                            >
+                              {" "}
+                              - view
+                            </span>
+                          </>
+                        ) : (
+                          "No performances scheduled"
+                        )}
                       </>
-                      <span
-                        className="link text-secondary"
-                        onClick={updateShowPerformanceModal}
-                      >
-                        {" "}
-                        - view
-                      </span>
                     </div>
                   </Row>
                   <Row>
