@@ -20,7 +20,7 @@ const ShowScreen = ({ match, history }) => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showPerformanceModal, setShowPerformanceModal] = useState(false);
-  const [performanceModalReview, setPerformanceMocalReview] = useState(false);
+  const [performanceModalReview, setPerformanceModalReview] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
 
   const userLogin = useSelector((state) => state.userLogin);

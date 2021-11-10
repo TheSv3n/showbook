@@ -41,6 +41,10 @@ textarea {
   height: 12rem;
 }
 
+.textarea-show {
+  height: 12rem;
+}
+
 .reset-span {
   cursor: pointer;
 }

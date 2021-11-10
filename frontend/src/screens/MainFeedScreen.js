@@ -4,6 +4,7 @@ import { listShows } from "../actions/showActions";
 import { listVenues } from "../actions/venueActions";
 import { listCastMembers } from "../actions/castMemberActions";
 import { Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import FeedShowCard from "../components/FeedShowCard";
 import FeedVenueCard from "../components/FeedVenueCard";
@@ -15,6 +16,9 @@ const MainFeedScreen = ({ match }) => {
 
   const [showTopRated, setShowTopRated] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const showList = useSelector((state) => state.showList);
   const { loading, shows, page, feedFinished, count } = showList;
@@ -49,7 +53,14 @@ const MainFeedScreen = ({ match }) => {
           <Loader />
         ) : (
           <Container>
-            <h2 className="text-center text-white">Shows</h2>
+            <h2 className="text-center text-white">
+              Shows{" "}
+              <Link to="/addshow">
+                <span className="link text-secondary">
+                  {userInfo ? <i className="bi bi-plus-circle-fill"></i> : ""}
+                </span>
+              </Link>
+            </h2>
             <Row className="g-4">
               {shows &&
                 shows.map((show) => {
@@ -64,7 +75,14 @@ const MainFeedScreen = ({ match }) => {
           <Loader />
         ) : (
           <Container>
-            <h2 className="text-center text-white">Venues</h2>
+            <h2 className="text-center text-white ">
+              Venues{" "}
+              <Link to="/addvenue">
+                <span className="link text-secondary ">
+                  {userInfo ? <i className="bi bi-plus-circle-fill"></i> : ""}
+                </span>
+              </Link>
+            </h2>
             <Row className="g-4">
               {venues &&
                 venues.map((venue) => {
@@ -79,7 +97,14 @@ const MainFeedScreen = ({ match }) => {
           <Loader />
         ) : (
           <Container>
-            <h2 className="text-center text-white">Cast Members</h2>
+            <h2 className="text-center text-white">
+              Cast Members{" "}
+              <Link to="/addcastmember">
+                <span className="link text-secondary">
+                  {userInfo ? <i className="bi bi-plus-circle-fill"></i> : ""}
+                </span>
+              </Link>
+            </h2>
             <Row className="g-4">
               {castMembers &&
                 castMembers.map((castMember) => {
