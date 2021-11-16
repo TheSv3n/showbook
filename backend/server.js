@@ -14,6 +14,7 @@ import venueRoutes from "./routes/venueRoutes.js";
 import showRoutes from "./routes/showRoutes.js";
 import castMemberRoutes from "./routes/castMemberRoutes.js";
 import companyRoutes from "./routes/companyRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 let credentials = {};
 
@@ -65,6 +66,7 @@ app.use("/api/venues", venueRoutes);
 app.use("/api/shows", showRoutes);
 app.use("/api/castmembers/", castMemberRoutes);
 app.use("/api/companies/", companyRoutes);
+app.use("/api/upload", uploadRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
