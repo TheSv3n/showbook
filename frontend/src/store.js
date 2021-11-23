@@ -20,6 +20,8 @@ import {
   castMemberInfoReducer,
 } from "./reducers/castMemberReducers";
 
+import { companyListReducer } from "./reducers/companyReducers";
+
 import { userLoginReducer } from "./reducers/userReducers";
 
 const reducer = combineReducers({
@@ -33,6 +35,7 @@ const reducer = combineReducers({
   addVenueReview: addVenueReviewReducer,
   castMemberList: castMemberListReducer,
   castMemberInfo: castMemberInfoReducer,
+  companyList: companyListReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

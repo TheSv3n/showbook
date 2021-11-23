@@ -21,7 +21,7 @@ const NewShowScreen = () => {
   return (
     <>
       <FindCompanyModal
-        showModal={false}
+        showModal={showCompanyModal}
         updateShowModal={updateShowCompanyModal}
       />
       <section className="text-light">
