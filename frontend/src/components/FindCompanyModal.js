@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listCompanies } from "../actions/companyActions";
+import CompanyListItem from "./CompanyListItem";
 
-const FindCompanyModal = ({ showModal, updateShowModal }) => {
+const FindCompanyModal = ({
+  showModal,
+  updateShowModal,
+  setCompanyName,
+  setCompanyId,
+}) => {
   const dispatch = useDispatch();
   const [searchKeyword, setSearchKeyword] = useState("");
   const companyList = useSelector((state) => state.companyList);
@@ -51,11 +57,23 @@ const FindCompanyModal = ({ showModal, updateShowModal }) => {
               </Form>
             </Col>
           </Row>
+          <Row>
+            <ul>
+              {companies &&
+                companies.map((company) => {
+                  return (
+                    <CompanyListItem
+                      key={company._id}
+                      company={company}
+                      setCompanyId={setCompanyId}
+                      setCompanyName={setCompanyName}
+                      updateShowModal={updateShowModal}
+                    />
+                  );
+                })}
+            </ul>
+          </Row>
         </Container>
-
-        <ul>
-          <li>test</li>
-        </ul>
       </div>
     </div>
   );

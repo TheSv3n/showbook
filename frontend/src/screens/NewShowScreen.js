@@ -4,8 +4,10 @@ import { Form, Button, Row, Col, Container, NavItem } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import FindCompanyModal from "../components/FindCompanyModal";
+import { COMPANY_LIST_RESET } from "../constants/companyConstants";
 
 const NewShowScreen = () => {
+  const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
   const [companyId, setCompanyId] = useState("");
@@ -15,6 +17,7 @@ const NewShowScreen = () => {
   const submitHandler = () => {};
 
   const updateShowCompanyModal = () => {
+    dispatch({ type: COMPANY_LIST_RESET });
     setShowCompanyModal(!showCompanyModal);
   };
 
@@ -23,6 +26,8 @@ const NewShowScreen = () => {
       <FindCompanyModal
         showModal={showCompanyModal}
         updateShowModal={updateShowCompanyModal}
+        setCompanyName={setCompanyName}
+        setCompanyId={setCompanyId}
       />
       <section className="text-light">
         <Container>
@@ -44,14 +49,14 @@ const NewShowScreen = () => {
                 <Form.Group controlId="company">
                   <Form.Label>Company</Form.Label>
                   <Row className="align-items-center">
-                    <Col sm={2}>{companyName}</Col>
+                    <Col sm={4}>{companyName}</Col>
                     <Col sm={2}>
                       <Button
                         variant="primary"
                         className="my-2"
                         onClick={updateShowCompanyModal}
                       >
-                        Select
+                        Change
                       </Button>
                     </Col>
                   </Row>

@@ -3,6 +3,7 @@ import {
   COMPANY_LIST_SUCCESS,
   COMPANY_LIST_FAIL,
   COMPANY_LIST_UPDATE_REQUEST,
+  COMPANY_LIST_RESET,
 } from "../constants/companyConstants";
 
 export const companyListReducer = (state = { companies: [] }, action) => {
@@ -22,6 +23,8 @@ export const companyListReducer = (state = { companies: [] }, action) => {
       return { loading: false, error: action.payload };
     case COMPANY_LIST_UPDATE_REQUEST:
       return { ...state, loading: true };
+    case COMPANY_LIST_RESET:
+      return {};
     default:
       return state;
   }
