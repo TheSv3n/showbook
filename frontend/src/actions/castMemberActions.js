@@ -11,7 +11,8 @@ import {
 import axios from "axios";
 
 export const listCastMembers =
-  (newPage, searchKeyword, showRanked) => async (dispatch, getState) => {
+  (newPage, searchKeyword, showRanked, position) =>
+  async (dispatch, getState) => {
     try {
       if (newPage === 1) {
         dispatch({ type: CAST_MEMBER_LIST_REQUEST });
@@ -23,7 +24,7 @@ export const listCastMembers =
       } = getState();
 
       const { data } = await axios.get(
-        `/api/castmembers?pageNumber=${newPage}&keyword=${searchKeyword}&ranked=${showRanked}`
+        `/api/castmembers?pageNumber=${newPage}&keyword=${searchKeyword}&ranked=${showRanked}&position=${position}`
       );
 
       let tempCastMembers;

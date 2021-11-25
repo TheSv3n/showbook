@@ -77,10 +77,16 @@ const getCastMemberList = asyncHandler(async (req, res) => {
 
   const keyword = req.query.keyword
     ? {
-        $or: [
+        $and: [
           {
-            title: {
+            name: {
               $regex: req.query.keyword,
+              $options: "i",
+            },
+          },
+          {
+            position: {
+              $regex: req.query.position,
               $options: "i",
             },
           },
