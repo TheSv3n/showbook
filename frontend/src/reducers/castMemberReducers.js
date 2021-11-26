@@ -3,6 +3,7 @@ import {
   CAST_MEMBER_LIST_SUCCESS,
   CAST_MEMBER_LIST_FAIL,
   CAST_MEMBER_LIST_UPDATE_REQUEST,
+  CAST_MEMBER_LIST_RESET,
   CAST_MEMBER_DETAILS_REQUEST,
   CAST_MEMBER_DETAILS_SUCCESS,
   CAST_MEMBER_DETAILS_FAIL,
@@ -25,6 +26,8 @@ export const castMemberListReducer = (state = { castMembers: [] }, action) => {
       return { loading: false, error: action.payload };
     case CAST_MEMBER_LIST_UPDATE_REQUEST:
       return { ...state, loading: true };
+    case CAST_MEMBER_LIST_RESET:
+      return {};
     default:
       return state;
   }

@@ -3,6 +3,7 @@ import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listCompanies } from "../actions/companyActions";
 import CompanyListItem from "./CompanyListItem";
+import Loader from "./Loader";
 
 const FindCompanyModal = ({
   showModal,
@@ -17,7 +18,9 @@ const FindCompanyModal = ({
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(listCompanies(1, searchKeyword, false));
+    if (searchKeyword !== "") {
+      dispatch(listCompanies(1, searchKeyword, false));
+    }
   };
 
   return (
@@ -58,20 +61,24 @@ const FindCompanyModal = ({
             </Col>
           </Row>
           <Row>
-            <ul>
-              {companies &&
-                companies.map((company) => {
-                  return (
-                    <CompanyListItem
-                      key={company._id}
-                      company={company}
-                      setCompanyId={setCompanyId}
-                      setCompanyName={setCompanyName}
-                      updateShowModal={updateShowModal}
-                    />
-                  );
-                })}
-            </ul>
+            {loading ? (
+              <Loader />
+            ) : (
+              <ul>
+                {companies &&
+                  companies.map((company) => {
+                    return (
+                      <CompanyListItem
+                        key={company._id}
+                        company={company}
+                        setCompanyId={setCompanyId}
+                        setCompanyName={setCompanyName}
+                        updateShowModal={updateShowModal}
+                      />
+                    );
+                  })}
+              </ul>
+            )}
           </Row>
         </Container>
       </div>

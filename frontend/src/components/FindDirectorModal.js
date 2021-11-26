@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listCastMembers } from "../actions/castMemberActions";
+import Loader from "./Loader";
 import DirectorListItem from "./DirectorListItem";
 
 const FindDirectorModal = ({
   showModal,
   updateShowModal,
   setDirectorName,
-  setDirectoryId,
+  setDirectorId,
 }) => {
   const dispatch = useDispatch();
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -17,7 +18,9 @@ const FindDirectorModal = ({
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(listCastMembers(1, searchKeyword, false, "director"));
+    if (searchKeyword !== "") {
+      dispatch(listCastMembers(1, searchKeyword, false, "director"));
+    }
   };
   return (
     <div
@@ -57,20 +60,24 @@ const FindDirectorModal = ({
             </Col>
           </Row>
           <Row>
-            <ul>
-              {castMembers &&
-                castMembers.map((castMember) => {
-                  return (
-                    <DirectorListItem
-                      key={castMember._id}
-                      castMember={castMember}
-                      setDirectorId={setDirectorId}
-                      setDirectorName={setDirectorName}
-                      updateShowModal={updateShowModal}
-                    />
-                  );
-                })}
-            </ul>
+            {loading ? (
+              <Loader />
+            ) : (
+              <ul>
+                {castMembers &&
+                  castMembers.map((castMember) => {
+                    return (
+                      <DirectorListItem
+                        key={castMember._id}
+                        director={castMember}
+                        setDirectorId={setDirectorId}
+                        setDirectorName={setDirectorName}
+                        updateShowModal={updateShowModal}
+                      />
+                    );
+                  })}
+              </ul>
+            )}
           </Row>
         </Container>
       </div>

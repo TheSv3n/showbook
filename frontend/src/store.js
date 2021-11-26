@@ -7,6 +7,7 @@ import {
   showInfoReducer,
   addShowReviewReducer,
   showVenuePerformancesReducer,
+  showCreateReducer,
 } from "./reducers/showReducers";
 
 import {
@@ -28,6 +29,7 @@ const reducer = combineReducers({
   userLogin: userLoginReducer,
   showList: showListReducer,
   showInfo: showInfoReducer,
+  showCreate: showCreateReducer,
   addShowReview: addShowReviewReducer,
   showVenuePerformances: showVenuePerformancesReducer,
   venueList: venueListReducer,
