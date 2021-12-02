@@ -10,6 +10,7 @@ import ImageModal from "../components/ImageModal";
 import NewReviewModal from "../components/NewReviewModal";
 import Review from "../components/Review";
 import PerformanceModal from "../components/PerformanceModal";
+import NewPerformanceModal from "../components/NewPerformanceModal";
 
 const ShowScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const ShowScreen = ({ match, history }) => {
   const [showPerformanceModal, setShowPerformanceModal] = useState(false);
   const [performanceModalReview, setPerformanceModalReview] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
+  const [showNewPerformanceModal, setShowNewPerformanceModal] = useState(false);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -140,7 +142,16 @@ const ShowScreen = ({ match, history }) => {
                     )}
                   </Row>
                   <Row>
-                    <h5 className="text-secondary mt-1">Performances </h5>
+                    <h5 className="text-secondary mt-1">
+                      Performances{" "}
+                      <span className="link text-secondary ">
+                        {userInfo ? (
+                          <i className="bi bi-plus-circle-fill"></i>
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </h5>
                     <div>
                       <>
                         {show.performances.length > 0 ? (

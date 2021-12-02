@@ -8,8 +8,9 @@ import FindDirectorModal from "../components/FindDirectorModal";
 import { COMPANY_LIST_RESET } from "../constants/companyConstants";
 import { CAST_MEMBER_LIST_RESET } from "../constants/castMemberConstants";
 import { createShow } from "../actions/showActions";
+import { SHOW_CREATE_RESET } from "../constants/showConstants";
 
-const NewShowScreen = () => {
+const NewShowScreen = ({ history }) => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [synopsis, setSynopsis] = useState("");
@@ -39,8 +40,11 @@ const NewShowScreen = () => {
     }
   };
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const showCreate = useSelector((state) => state.showCreate);
-  const { loading } = showCreate;
+  const { loading, success, show } = showCreate;
 
   const updateShowCompanyModal = () => {
     dispatch({ type: COMPANY_LIST_RESET });
@@ -51,6 +55,16 @@ const NewShowScreen = () => {
     dispatch({ type: CAST_MEMBER_LIST_RESET });
     setShowDirectorModal(!showDirectorModal);
   };
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push("/login");
+    }
+    if (success) {
+      dispatch({ type: SHOW_CREATE_RESET });
+      history.push(`/show/${show._id}`);
+    }
+  }, [dispatch, history, userInfo, success, show]);
 
   return (
     <>
