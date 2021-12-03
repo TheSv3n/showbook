@@ -70,6 +70,10 @@ const ShowScreen = ({ match, history }) => {
     setShowPerformanceModal(!showPerformanceModal);
   };
 
+  const updateShowNewPerformanceModal = () => {
+    setShowNewPerformanceModal(!showNewPerformanceModal);
+  };
+
   useEffect(() => {
     if (!show || show._id !== showId) {
       dispatch(getShowInfo(showId, false));
@@ -105,6 +109,10 @@ const ShowScreen = ({ match, history }) => {
               performances={show.performances}
               venuePerformance={false}
               fromReview={performanceModalReview}
+            />
+            <NewPerformanceModal
+              showModal={showNewPerformanceModal}
+              updateShowModal={updateShowNewPerformanceModal}
             />
             <Container>
               <Row>
@@ -146,7 +154,10 @@ const ShowScreen = ({ match, history }) => {
                       Performances{" "}
                       <span className="link text-secondary ">
                         {userInfo ? (
-                          <i className="bi bi-plus-circle-fill"></i>
+                          <i
+                            className="bi bi-plus-circle-fill"
+                            onClick={updateShowNewPerformanceModal}
+                          ></i>
                         ) : (
                           ""
                         )}
