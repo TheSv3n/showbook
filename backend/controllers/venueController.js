@@ -61,7 +61,7 @@ const getAllVenues = asyncHandler(async (req, res) => {
     ? {
         $or: [
           {
-            title: {
+            name: {
               $regex: req.query.keyword,
               $options: "i",
             },

@@ -13,9 +13,7 @@ const PerformanceModal = ({
   return (
     <div
       className={`${
-        showModal
-          ? "modal-overlay show-modal performance-modal"
-          : "modal-overlay"
+        showModal ? "modal-overlay show-modal top-modal" : "modal-overlay"
       }`}
     >
       <div className="modal-container new-review-container bg-secondary">

@@ -16,6 +16,9 @@ import {
   SHOW_VENUE_PERFORMANCES_REQUEST,
   SHOW_VENUE_PERFORMANCES_SUCCESS,
   SHOW_VENUE_PERFORMANCES_FAIL,
+  SHOW_ADD_PERFORMANCE_REQUEST,
+  SHOW_ADD_PERFORMANCE_SUCCESS,
+  SHOW_ADD_PERFORMANCE_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -178,6 +181,41 @@ export const listVenuePerformances =
     } catch (error) {
       dispatch({
         type: SHOW_VENUE_PERFORMANCES_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const addShowPerformance =
+  (showId, performance) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: SHOW_ADD_PERFORMANCE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.put(`/api/shows/${showId}/performances`, performance, config);
+
+      dispatch({
+        type: SHOW_ADD_PERFORMANCE_SUCCESS,
+      });
+      dispatch(getShowInfo(showId, true));
+    } catch (error) {
+      dispatch({
+        type: SHOW_ADD_PERFORMANCE_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

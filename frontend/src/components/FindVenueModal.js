@@ -1,31 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { listCompanies } from "../actions/companyActions";
-import CompanyListItem from "./CompanyListItem";
+import { listVenues } from "../actions/venueActions";
+import VenueListItem from "./VenueListItem";
 import Loader from "./Loader";
 
-const FindCompanyModal = ({
+const FindVenueModal = ({
   showModal,
   updateShowModal,
-  setCompanyName,
-  setCompanyId,
+  setVenueName,
+  setVenueId,
 }) => {
   const dispatch = useDispatch();
   const [searchKeyword, setSearchKeyword] = useState("");
-  const companyList = useSelector((state) => state.companyList);
-  const { loading, companies, page, feedFinished, count } = companyList;
+  const venueList = useSelector((state) => state.venueList);
+  const { loading, venues, page, feedFinished, count } = venueList;
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (searchKeyword !== "") {
-      dispatch(listCompanies(1, searchKeyword, false));
+      dispatch(listVenues(1, searchKeyword, false));
     }
   };
 
   return (
     <div
-      className={`${showModal ? "modal-overlay show-modal" : "modal-overlay"}`}
+      className={`${
+        showModal ? "modal-overlay show-modal top-modal" : "modal-overlay"
+      }`}
     >
       <div className="modal-container new-review-container bg-secondary text-light">
         <button className="close-modal-btn" onClick={updateShowModal}>
@@ -61,14 +63,14 @@ const FindCompanyModal = ({
               <Loader />
             ) : (
               <ul>
-                {companies &&
-                  companies.map((company) => {
+                {venues &&
+                  venues.map((venue) => {
                     return (
-                      <CompanyListItem
-                        key={company._id}
-                        company={company}
-                        setCompanyId={setCompanyId}
-                        setCompanyName={setCompanyName}
+                      <VenueListItem
+                        key={venue._id}
+                        venue={venue}
+                        setVenueId={setVenueId}
+                        setVenueName={setVenueName}
                         updateShowModal={updateShowModal}
                       />
                     );
@@ -82,4 +84,4 @@ const FindCompanyModal = ({
   );
 };
 
-export default FindCompanyModal;
+export default FindVenueModal;

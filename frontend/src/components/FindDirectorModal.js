@@ -24,11 +24,7 @@ const FindDirectorModal = ({
   };
   return (
     <div
-      className={`${
-        showModal
-          ? "modal-overlay show-modal performance-modal"
-          : "modal-overlay"
-      }`}
+      className={`${showModal ? "modal-overlay show-modal" : "modal-overlay"}`}
     >
       <div className="modal-container new-review-container bg-secondary text-light">
         <button className="close-modal-btn" onClick={updateShowModal}>
