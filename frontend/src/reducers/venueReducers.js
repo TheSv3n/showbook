@@ -9,6 +9,7 @@ import {
   VENUE_ADD_REVIEW_REQUEST,
   VENUE_ADD_REVIEW_SUCCESS,
   VENUE_ADD_REVIEW_FAIL,
+  VENUE_LIST_RESET,
 } from "../constants/venueConstants";
 
 export const venueListReducer = (state = { venues: [] }, action) => {
@@ -28,6 +29,8 @@ export const venueListReducer = (state = { venues: [] }, action) => {
       return { loading: false, error: action.payload };
     case VENUE_LIST_UPDATE_REQUEST:
       return { ...state, loading: true };
+    case VENUE_LIST_RESET:
+      return {};
     default:
       return state;
   }

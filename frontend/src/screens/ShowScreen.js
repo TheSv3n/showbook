@@ -11,6 +11,7 @@ import NewReviewModal from "../components/NewReviewModal";
 import Review from "../components/Review";
 import PerformanceModal from "../components/PerformanceModal";
 import NewPerformanceModal from "../components/NewPerformanceModal";
+import { VENUE_LIST_RESET } from "../constants/venueConstants"
 
 const ShowScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -71,6 +72,7 @@ const ShowScreen = ({ match, history }) => {
   };
 
   const updateShowNewPerformanceModal = () => {
+    dispatch({ type: VENUE_LIST_RESET });
     setShowNewPerformanceModal(!showNewPerformanceModal);
   };
 
