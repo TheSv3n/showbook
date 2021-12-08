@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import FindVenueModal from "./FindVenueModal";
-import { addShowPerformance } from "../actions/showActions";
+import Loader from "./Loader";
+import { addPerformance } from "../actions/showActions";
 
-const NewPerformanceModal = ({ showModal, updateShowModal }) => {
+const NewPerformanceModal = ({ showId, showModal, updateShowModal }) => {
+  const dispatch = useDispatch();
   const [showVenueModal, setShowVenueModal] = useState(false);
   const [venueId, setVenueId] = useState("");
   const [venueText, setVenueText] = useState("Not selected");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+
+  const addShowPerformance = useSelector((state) => state.addShowPerformance);
+  const { loading, success } = addShowPerformance;
 
   const updateVenueModal = () => {
     setShowVenueModal(!showVenueModal);
@@ -17,8 +23,17 @@ const NewPerformanceModal = ({ showModal, updateShowModal }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (venueId !== "" && date !== "" && time !== "") {
+      const dateString = `${date} ${time}`;
+      dispatch(addPerformance(showId, { venueId: venueId, date: dateString }));
     }
   };
+
+  useEffect(() => {
+    if (!success) {
+      updateShowModal();
+    }
+  }, [success]);
+
   return (
     <>
       <FindVenueModal
@@ -73,6 +88,8 @@ const NewPerformanceModal = ({ showModal, updateShowModal }) => {
 
                   {venueId === "" ? (
                     ""
+                  ) : loading ? (
+                    <Loader />
                   ) : (
                     <Button type="submit" variant="primary" className=" my-2">
                       Submit

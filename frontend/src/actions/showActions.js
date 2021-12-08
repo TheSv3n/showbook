@@ -189,7 +189,7 @@ export const listVenuePerformances =
     }
   };
 
-export const addShowPerformance =
+export const addPerformance =
   (showId, performance) => async (dispatch, getState) => {
     try {
       dispatch({
