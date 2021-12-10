@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FindVenueModal from "./FindVenueModal";
 import Loader from "./Loader";
 import { addPerformance } from "../actions/showActions";
+import { SHOW_ADD_PERFORMANCE_RESET } from "../constants/showConstants";
 
 const NewPerformanceModal = ({ showId, showModal, updateShowModal }) => {
   const dispatch = useDispatch();
@@ -29,8 +30,9 @@ const NewPerformanceModal = ({ showId, showModal, updateShowModal }) => {
   };
 
   useEffect(() => {
-    if (!success) {
+    if (success) {
       updateShowModal();
+      dispatch({ type: SHOW_ADD_PERFORMANCE_RESET });
     }
   }, [success]);
 

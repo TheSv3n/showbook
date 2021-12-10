@@ -9,6 +9,7 @@ import { COMPANY_LIST_RESET } from "../constants/companyConstants";
 import { CAST_MEMBER_LIST_RESET } from "../constants/castMemberConstants";
 import { createShow } from "../actions/showActions";
 import { SHOW_CREATE_RESET } from "../constants/showConstants";
+import axios from "axios";
 
 const NewShowScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -20,6 +21,9 @@ const NewShowScreen = ({ history }) => {
   const [directorId, setDirectorId] = useState("");
   const [directorName, setDirectorName] = useState("None Selected");
   const [showDirectorModal, setShowDirectorModal] = useState(false);
+  const [image, setImage] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [imageName, setImageName] = useState("No Image");
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -54,6 +58,35 @@ const NewShowScreen = ({ history }) => {
   const updateShowDirectorModal = () => {
     dispatch({ type: CAST_MEMBER_LIST_RESET });
     setShowDirectorModal(!showDirectorModal);
+  };
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "mutipart/form-data",
+        },
+      };
+
+      const { data } = await axios.post("/api/upload", formData, config);
+      setImage(data);
+      setUploading(false);
+      setImageName(e.target.value);
+    } catch (error) {
+      console.error(error);
+      setUploading(false);
+    }
+  };
+
+  const clearImageHandler = () => {
+    document.getElementById("image-form").value = "";
+    setImageName("No Image");
+    setImage("");
   };
 
   useEffect(() => {
@@ -143,6 +176,39 @@ const NewShowScreen = ({ history }) => {
                     className="textarea-show"
                   ></Form.Control>
                 </Form.Group>
+
+                <Row className="my-2">
+                  <Form.Group className="input-group col-12 ">
+                    <Form.Label>
+                      <i className="fas fa-image" /> Add Image
+                    </Form.Label>
+                    <input
+                      id="image-form"
+                      type="file"
+                      className="form-file"
+                      onChange={uploadFileHandler}
+                    />
+                    {uploading ? (
+                      <Loader />
+                    ) : (
+                      <div className="d-flex col-6 col-md-3 my-auto">
+                        <div className="d-none d-md-flex d-lg-flex">
+                          {imageName}
+                        </div>
+                        {image === "" ? (
+                          ""
+                        ) : (
+                          <button
+                            className="btn btn-block submit-button ml-2"
+                            onClick={clearImageHandler}
+                          >
+                            Clear
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </Form.Group>
+                </Row>
                 {loading ? (
                   <Loader />
                 ) : (
