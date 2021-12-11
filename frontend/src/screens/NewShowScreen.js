@@ -10,6 +10,7 @@ import { CAST_MEMBER_LIST_RESET } from "../constants/castMemberConstants";
 import { createShow } from "../actions/showActions";
 import { SHOW_CREATE_RESET } from "../constants/showConstants";
 import axios from "axios";
+import "../css/NewShowScreen.css";
 
 const NewShowScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const NewShowScreen = ({ history }) => {
           synopsis: synopsis,
           company: companyId,
           director: directorId,
+          coverImage: image,
         })
       );
     }
@@ -178,35 +180,40 @@ const NewShowScreen = ({ history }) => {
                 </Form.Group>
 
                 <Row className="my-2">
-                  <Form.Group className="input-group col-12 ">
-                    <Form.Label>
-                      <i className="fas fa-image" /> Add Image
-                    </Form.Label>
-                    <input
-                      id="image-form"
-                      type="file"
-                      className="form-file"
-                      onChange={uploadFileHandler}
-                    />
-                    {uploading ? (
-                      <Loader />
-                    ) : (
-                      <div className="d-flex col-6 col-md-3 my-auto">
-                        <div className="d-none d-md-flex d-lg-flex">
-                          {imageName}
+                  <Form.Group className="input-group">
+                    <Col sm={2}>
+                      <Form.Label id="image-label" for="image-form">
+                        Add Image
+                      </Form.Label>
+                      <input
+                        id="image-form"
+                        type="file"
+                        className="form-file"
+                        onChange={uploadFileHandler}
+                      />
+                    </Col>
+                    <Col sm={10}>
+                      {uploading ? (
+                        <Loader />
+                      ) : (
+                        <div className="d-flex my-auto">
+                          <div className="d-none d-md-flex d-lg-flex">
+                            {imageName}
+                          </div>
+                          {image === "" ? (
+                            ""
+                          ) : (
+                            <Button
+                              variant="primary"
+                              className="my-2"
+                              onClick={clearImageHandler}
+                            >
+                              Clear
+                            </Button>
+                          )}
                         </div>
-                        {image === "" ? (
-                          ""
-                        ) : (
-                          <button
-                            className="btn btn-block submit-button ml-2"
-                            onClick={clearImageHandler}
-                          >
-                            Clear
-                          </button>
-                        )}
-                      </div>
-                    )}
+                      )}
+                    </Col>
                   </Form.Group>
                 </Row>
                 {loading ? (
