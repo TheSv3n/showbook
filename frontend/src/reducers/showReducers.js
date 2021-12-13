@@ -20,6 +20,9 @@ import {
   SHOW_ADD_PERFORMANCE_SUCCESS,
   SHOW_ADD_PERFORMANCE_FAIL,
   SHOW_ADD_PERFORMANCE_RESET,
+  SHOW_ADD_IMAGE_REQUEST,
+  SHOW_ADD_IMAGE_SUCCESS,
+  SHOW_ADD_IMAGE_FAIL,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -153,6 +156,28 @@ export const addShowPerformanceReducer = (state = {}, action) => {
     case SHOW_ADD_PERFORMANCE_RESET:
       return {
         state: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const addShowImageReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SHOW_ADD_IMAGE_REQUEST:
+      return {
+        loading: true,
+      };
+    case SHOW_ADD_IMAGE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        show: action.payload,
+      };
+    case SHOW_ADD_IMAGE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
       };
     default:
       return state;

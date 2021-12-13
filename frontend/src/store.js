@@ -9,6 +9,7 @@ import {
   showVenuePerformancesReducer,
   showCreateReducer,
   addShowPerformanceReducer,
+  addShowImageReducer,
 } from "./reducers/showReducers";
 
 import {
@@ -34,6 +35,7 @@ const reducer = combineReducers({
   addShowReview: addShowReviewReducer,
   showVenuePerformances: showVenuePerformancesReducer,
   addShowPerformance: addShowPerformanceReducer,
+  addShowImage: addShowImageReducer,
   venueList: venueListReducer,
   venueInfo: venueInfoReducer,
   addVenueReview: addVenueReviewReducer,

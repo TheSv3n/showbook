@@ -25,12 +25,16 @@ const ShowScreen = ({ match, history }) => {
   const [performanceModalReview, setPerformanceModalReview] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
   const [showNewPerformanceModal, setShowNewPerformanceModal] = useState(false);
+  const [showNewImageModal, setShowNewImageModal] = useState(false);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   const addShowReview = useSelector((state) => state.addShowReview);
   const { loading: loadingAddReview } = addShowReview;
+
+  const addShowImage = useSelector((state) => state.addShowImage);
+  const { loading: loadingAddImage } = addShowImage;
 
   const getCompanyName = async (companyId) => {
     const { data: name } = await axios.get(`/api/companies/${companyId}/name`);
@@ -51,6 +55,10 @@ const ShowScreen = ({ match, history }) => {
     setShowImageModal(!showImageModal);
   };
 
+  const updateShowNewImageModal = () => {
+    setShowNewImageModal(!showNewImageModal);
+  };
+
   const updateShowReviewModal = () => {
     setShowReviewModal(!showReviewModal);
   };
@@ -62,6 +70,14 @@ const ShowScreen = ({ match, history }) => {
   const handleNewReviewLink = () => {
     if (userInfo) {
       updateShowReviewModal();
+    } else {
+      history.push(`/login?redirect=show/${showId}`);
+    }
+  };
+
+  const handleNewImageLink = () => {
+    if (userInfo) {
+      updateShowNewImageModal();
     } else {
       history.push(`/login?redirect=show/${showId}`);
     }
@@ -190,7 +206,21 @@ const ShowScreen = ({ match, history }) => {
                 </Col>
               </Row>
               <Row>
-                <h5 className="text-secondary">Images</h5>
+                <h5 className="text-secondary">
+                  Images{" "}
+                  <span
+                    className="text-light link"
+                    onClick={handleNewImageLink}
+                  >
+                    {loadingAddImage ? (
+                      <Loader />
+                    ) : userInfo ? (
+                      "- Add image"
+                    ) : (
+                      "- login to add image"
+                    )}
+                  </span>
+                </h5>
                 <ImageCarousel
                   images={show.images}
                   show={4}
