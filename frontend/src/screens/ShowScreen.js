@@ -100,6 +100,7 @@ const ShowScreen = ({ match, history }) => {
       getDirectorName(show.director);
     }
   }, [dispatch, showId, show]);
+
   return (
     <section className="p-5 ">
       {loading ? (

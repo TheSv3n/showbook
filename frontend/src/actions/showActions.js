@@ -19,6 +19,9 @@ import {
   SHOW_ADD_PERFORMANCE_REQUEST,
   SHOW_ADD_PERFORMANCE_SUCCESS,
   SHOW_ADD_PERFORMANCE_FAIL,
+  SHOW_ADD_IMAGE_REQUEST,
+  SHOW_ADD_IMAGE_SUCCESS,
+  SHOW_ADD_IMAGE_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -223,3 +226,37 @@ export const addPerformance =
       });
     }
   };
+
+export const addShowImage = (showId, image) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: SHOW_ADD_IMAGE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.put(`/api/shows/${showId}/images`, image, config);
+
+    dispatch({
+      type: SHOW_ADD_IMAGE_SUCCESS,
+    });
+    dispatch(getShowInfo(showId, true));
+  } catch (error) {
+    dispatch({
+      type: SHOW_ADD_IMAGE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
