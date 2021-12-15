@@ -23,6 +23,7 @@ import {
   SHOW_ADD_IMAGE_REQUEST,
   SHOW_ADD_IMAGE_SUCCESS,
   SHOW_ADD_IMAGE_FAIL,
+  SHOW_ADD_IMAGE_RESET,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -178,6 +179,10 @@ export const addShowImageReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    case SHOW_ADD_IMAGE_RESET:
+      return {
+        state: {},
       };
     default:
       return state;

@@ -11,6 +11,7 @@ import NewReviewModal from "../components/NewReviewModal";
 import Review from "../components/Review";
 import PerformanceModal from "../components/PerformanceModal";
 import NewPerformanceModal from "../components/NewPerformanceModal";
+import NewImageModal from "../components/NewImageModal";
 import { VENUE_LIST_RESET } from "../constants/venueConstants";
 
 const ShowScreen = ({ match, history }) => {
@@ -133,6 +134,11 @@ const ShowScreen = ({ match, history }) => {
               showId={showId}
               showModal={showNewPerformanceModal}
               updateShowModal={updateShowNewPerformanceModal}
+            />
+            <NewImageModal
+              showId={showId}
+              showModal={showNewImageModal}
+              updateShowModal={updateShowNewImageModal}
             />
             <Container>
               <Row>

@@ -227,7 +227,7 @@ export const addPerformance =
     }
   };
 
-export const addShowImage = (showId, image) => async (dispatch, getState) => {
+export const addImage = (showId, image) => async (dispatch, getState) => {
   try {
     dispatch({
       type: SHOW_ADD_IMAGE_REQUEST,
