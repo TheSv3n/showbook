@@ -73,6 +73,7 @@ const NewReviewModal = ({
         updateShowModal={handlePerformanceModal}
         handleUpdatePerformance={handleUpdatePerformance}
         performances={performances}
+        fromReview={true}
       />
       <div
         className={`${

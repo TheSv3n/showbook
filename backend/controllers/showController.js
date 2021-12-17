@@ -102,12 +102,15 @@ const addPerformance = asyncHandler(async (req, res) => {
 //route PUT /api/shows/:id/images
 //@access Private
 const addShowImage = asyncHandler(async (req, res) => {
-  const { image } = req.body;
+  const { image, performance, comment } = req.body;
   const show = await Show.findById(req.params.id);
 
   if (show) {
     const newImage = {
       image: image,
+      user: req.user._id,
+      performanceId: performance,
+      comment: comment,
     };
 
     show.images.push(newImage);

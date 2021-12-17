@@ -5,12 +5,22 @@ import Loader from "./Loader";
 import axios from "axios";
 import { addImage } from "../actions/showActions";
 import { SHOW_ADD_IMAGE_RESET } from "../constants/showConstants";
+import PerformanceModal from "./PerformanceModal";
 
-const NewImageModal = ({ showId, showModal, updateShowModal }) => {
+const NewImageModal = ({
+  showId,
+  showModal,
+  updateShowModal,
+  performances,
+}) => {
   const dispatch = useDispatch();
   const [image, setImage] = useState("");
+  const [comment, setComment] = useState("");
   const [uploading, setUploading] = useState(false);
   const [imageName, setImageName] = useState("No Image");
+  const [performanceId, setPerformanceId] = useState();
+  const [showPerformanceModal, setShowPerformanceModal] = useState(false);
+  const [performanceText, setPerformanceText] = useState("Not selected");
 
   const addShowImage = useSelector((state) => state.addShowImage);
   const { loading, success } = addShowImage;
@@ -50,9 +60,21 @@ const NewImageModal = ({ showId, showModal, updateShowModal }) => {
       dispatch(
         addImage(showId, {
           image: image,
+          comment: comment,
+          performance: performanceId,
         })
       );
     }
+  };
+
+  const handlePerformanceModal = () => {
+    setShowPerformanceModal(!showPerformanceModal);
+  };
+
+  const handleUpdatePerformance = (id, text) => {
+    setPerformanceId(id);
+    setPerformanceText(text);
+    handlePerformanceModal();
   };
 
   useEffect(() => {
@@ -65,6 +87,13 @@ const NewImageModal = ({ showId, showModal, updateShowModal }) => {
 
   return (
     <>
+      <PerformanceModal
+        showModal={showPerformanceModal}
+        updateShowModal={handlePerformanceModal}
+        handleUpdatePerformance={handleUpdatePerformance}
+        performances={performances}
+        fromReview={true}
+      />
       <div
         className={`${
           showModal ? "modal-overlay show-modal" : "modal-overlay"
@@ -108,16 +137,45 @@ const NewImageModal = ({ showId, showModal, updateShowModal }) => {
                       </div>
                     )}
                   </Col>
-                  <Row>
-                    {loading ? (
-                      <Loader />
-                    ) : (
-                      <Button type="submit" variant="primary" className="my-2">
-                        Submit
-                      </Button>
-                    )}
-                  </Row>
                 </Form.Group>
+                <Form.Group controlId="performance">
+                  <Form.Label>
+                    Performance - <span>{performanceText}</span> -{" "}
+                    <span
+                      className="text-dark link"
+                      onClick={handlePerformanceModal}
+                    >
+                      select
+                    </span>{" "}
+                  </Form.Label>
+                </Form.Group>
+                <Row>
+                  <Form.Group controlId="comment">
+                    <Form.Label>Comment</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={5}
+                      placeholder="Enter comment"
+                      value={comment}
+                      className="image-comment-area"
+                      onChange={(e) => setComment(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                </Row>
+
+                <Row>
+                  {loading ? (
+                    <Loader />
+                  ) : (
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      className="my-2 col-4 mx-auto"
+                    >
+                      Submit
+                    </Button>
+                  )}
+                </Row>
               </Form>
             </Row>
           </Container>

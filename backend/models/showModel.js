@@ -51,6 +51,18 @@ const roleSchema = mongoose.Schema({
 });
 
 const imageSchema = mongoose.Schema({
+  user: {
+    type: String,
+    required: true,
+  },
+  performanceId: {
+    type: String,
+    required: false,
+  },
+  comment: {
+    type: String,
+    required: false,
+  },
   image: {
     type: String,
     required: true,
