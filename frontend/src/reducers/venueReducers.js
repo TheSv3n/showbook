@@ -10,6 +10,10 @@ import {
   VENUE_ADD_REVIEW_SUCCESS,
   VENUE_ADD_REVIEW_FAIL,
   VENUE_LIST_RESET,
+  VENUE_CREATE_REQUEST,
+  VENUE_CREATE_SUCCESS,
+  VENUE_CREATE_FAIL,
+  VENUE_CREATE_RESET,
 } from "../constants/venueConstants";
 
 export const venueListReducer = (state = { venues: [] }, action) => {
@@ -74,6 +78,32 @@ export const addVenueReviewReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const venueCreateReducer = (state = { venue: [] }, action) => {
+  switch (action.type) {
+    case VENUE_CREATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case VENUE_CREATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        venue: action.payload,
+      };
+    case VENUE_CREATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case VENUE_CREATE_RESET:
+      return {
+        state: {},
       };
     default:
       return state;
