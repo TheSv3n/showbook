@@ -8,10 +8,11 @@ import { SHOW_ADD_IMAGE_RESET } from "../constants/showConstants";
 import PerformanceModal from "./PerformanceModal";
 
 const NewImageModal = ({
-  showId,
+  id,
   showModal,
   updateShowModal,
   performances,
+  type,
 }) => {
   const dispatch = useDispatch();
   const [image, setImage] = useState("");
@@ -56,15 +57,23 @@ const NewImageModal = ({
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (image !== "" && imageName !== "No Image") {
-      dispatch(
-        addImage(showId, {
-          image: image,
-          comment: comment,
-          performance: performanceId,
-        })
-      );
+    if (type === "show") {
+      if (image !== "" && imageName !== "No Image") {
+        dispatch(
+          addImage(id, {
+            image: image,
+            comment: comment,
+            performance: performanceId,
+          })
+        );
+      }
     }
+  };
+
+  const clearForm = () => {
+    setComment("");
+    setPerformanceId();
+    setPerformanceText("Not selected");
   };
 
   const handlePerformanceModal = () => {
@@ -82,8 +91,9 @@ const NewImageModal = ({
       dispatch({ type: SHOW_ADD_IMAGE_RESET });
       updateShowModal();
       clearImageHandler();
+      clearForm();
     }
-  }, [dispatch, success]);
+  }, [dispatch, success, updateShowModal]);
 
   return (
     <>
@@ -138,17 +148,22 @@ const NewImageModal = ({
                     )}
                   </Col>
                 </Form.Group>
-                <Form.Group controlId="performance">
-                  <Form.Label>
-                    Performance - <span>{performanceText}</span> -{" "}
-                    <span
-                      className="text-dark link"
-                      onClick={handlePerformanceModal}
-                    >
-                      select
-                    </span>{" "}
-                  </Form.Label>
-                </Form.Group>
+                {type === "show" ? (
+                  <Form.Group controlId="performance">
+                    <Form.Label>
+                      Performance - <span>{performanceText}</span> -{" "}
+                      <span
+                        className="text-dark link"
+                        onClick={handlePerformanceModal}
+                      >
+                        select
+                      </span>{" "}
+                    </Form.Label>
+                  </Form.Group>
+                ) : (
+                  ""
+                )}
+
                 <Row>
                   <Form.Group controlId="comment">
                     <Form.Label>Comment</Form.Label>

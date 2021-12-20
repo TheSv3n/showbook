@@ -14,6 +14,10 @@ import {
   VENUE_CREATE_SUCCESS,
   VENUE_CREATE_FAIL,
   VENUE_CREATE_RESET,
+  VENUE_ADD_IMAGE_REQUEST,
+  VENUE_ADD_IMAGE_SUCCESS,
+  VENUE_ADD_IMAGE_FAIL,
+  VENUE_ADD_IMAGE_RESET,
 } from "../constants/venueConstants";
 
 export const venueListReducer = (state = { venues: [] }, action) => {
@@ -102,6 +106,32 @@ export const venueCreateReducer = (state = { venue: [] }, action) => {
         error: action.payload,
       };
     case VENUE_CREATE_RESET:
+      return {
+        state: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const addVenueImageReducer = (state = {}, action) => {
+  switch (action.type) {
+    case VENUE_ADD_IMAGE_REQUEST:
+      return {
+        loading: true,
+      };
+    case VENUE_ADD_IMAGE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        show: action.payload,
+      };
+    case VENUE_ADD_IMAGE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case VENUE_ADD_IMAGE_RESET:
       return {
         state: {},
       };

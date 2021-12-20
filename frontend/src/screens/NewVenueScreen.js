@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import axios from "axios";
 import { createVenue } from "../actions/venueActions";
+import { VENUE_CREATE_RESET } from "../constants/venueConstants";
 
-const NewVenueScreen = () => {
+const NewVenueScreen = ({ history }) => {
   const dispatch = useDispatch();
   const [venueName, setVenueName] = useState("");
   const [about, setAbout] = useState("");
@@ -22,6 +23,16 @@ const NewVenueScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (venueName !== "" && about !== "" && address !== "") {
+      dispatch(
+        createVenue({
+          name: venueName,
+          description: about,
+          address: address,
+          coverImage: image,
+        })
+      );
+    }
   };
 
   const uploadFileHandler = async (e) => {
@@ -52,6 +63,16 @@ const NewVenueScreen = () => {
     setImageName("No Image");
     setImage("");
   };
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push("/login");
+    }
+    if (success) {
+      dispatch({ type: VENUE_CREATE_RESET });
+      history.push(`/venue/${venue._id}`);
+    }
+  }, [dispatch, history, userInfo, success, venue]);
 
   return (
     <>

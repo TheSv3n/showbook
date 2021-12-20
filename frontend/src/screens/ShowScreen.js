@@ -136,10 +136,11 @@ const ShowScreen = ({ match, history }) => {
               updateShowModal={updateShowNewPerformanceModal}
             />
             <NewImageModal
-              showId={showId}
+              id={showId}
               showModal={showNewImageModal}
               updateShowModal={updateShowNewImageModal}
               performances={show.performances}
+              type={"show"}
             />
             <Container>
               <Row>

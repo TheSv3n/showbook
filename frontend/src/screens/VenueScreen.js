@@ -10,6 +10,7 @@ import { getVenueInfo } from "../actions/venueActions";
 import { listVenuePerformances } from "../actions/showActions";
 import NewReviewModal from "../components/NewReviewModal";
 import PerformanceModal from "../components/PerformanceModal";
+import NewImageModal from "../components/NewImageModal";
 
 const VenueScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const VenueScreen = ({ match, history }) => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showPerformanceModal, setShowPerformanceModal] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
+  const [showNewImageModal, setShowNewImageModal] = useState(false);
 
   const venueInfo = useSelector((state) => state.venueInfo);
   const { venue, loading } = venueInfo;
@@ -28,6 +30,9 @@ const VenueScreen = ({ match, history }) => {
 
   const addVenueReview = useSelector((state) => state.addVenueReview);
   const { loading: loadingAddReview } = addVenueReview;
+
+  const addVenueImage = useSelector((state) => state.addVenueImage);
+  const { loading: loadingAddImage } = addVenueImage;
 
   const showVenuePerformances = useSelector(
     (state) => state.showVenuePerformances
@@ -53,6 +58,18 @@ const VenueScreen = ({ match, history }) => {
   const handleNewReviewLink = () => {
     if (userInfo) {
       updateShowReviewModal();
+    } else {
+      history.push(`/login?redirect=venue/${venueId}`);
+    }
+  };
+
+  const updateShowNewImageModal = () => {
+    setShowNewImageModal(!showNewImageModal);
+  };
+
+  const handleNewImageLink = () => {
+    if (userInfo) {
+      updateShowNewImageModal();
     } else {
       history.push(`/login?redirect=venue/${venueId}`);
     }
@@ -90,6 +107,11 @@ const VenueScreen = ({ match, history }) => {
               updateShowModal={updateShowPerformanceModal}
               performances={performances}
               venuePerformance={true}
+            />
+            <NewImageModal
+              id={venueId}
+              showModal={showNewImageModal}
+              updateShowModal={updateShowNewImageModal}
             />
             <Container>
               <Row>
@@ -149,7 +171,21 @@ const VenueScreen = ({ match, history }) => {
                 </Col>
               </Row>
               <Row>
-                <h5 className="text-secondary">Images</h5>
+                <h5 className="text-secondary">
+                  Images{" "}
+                  <span
+                    className="text-light link"
+                    onClick={handleNewImageLink}
+                  >
+                    {loadingAddImage ? (
+                      <Loader />
+                    ) : userInfo ? (
+                      "- Add image"
+                    ) : (
+                      "- login to add image"
+                    )}
+                  </span>
+                </h5>
                 <ImageCarousel
                   images={venue.images}
                   show={4}
