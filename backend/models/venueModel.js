@@ -1,9 +1,17 @@
 import mongoose from "mongoose";
 
 const imageSchema = mongoose.Schema({
+  user: {
+    type: String,
+    required: true,
+  },
   image: {
     type: String,
     required: true,
+  },
+  comment: {
+    type: String,
+    required: false,
   },
 });
 

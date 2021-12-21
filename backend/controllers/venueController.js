@@ -113,12 +113,14 @@ const addVenueReview = asyncHandler(async (req, res) => {
 //route PUT /api/shows/:id/images
 //@access Private
 const addVenueImage = asyncHandler(async (req, res) => {
-  const { image } = req.body;
+  const { image, comment } = req.body;
   const venue = await Venue.findById(req.params.id);
 
   if (venue) {
     const newImage = {
       image: image,
+      comment: comment,
+      user: req.user._id,
     };
 
     venue.images.push(newImage);

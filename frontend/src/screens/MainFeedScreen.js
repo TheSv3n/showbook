@@ -9,6 +9,8 @@ import Loader from "../components/Loader";
 import FeedShowCard from "../components/FeedShowCard";
 import FeedVenueCard from "../components/FeedVenueCard";
 import FeedCastMemberCard from "../components/FeedCastMemberCard";
+import FeedCompanyCard from "../components/FeedCompanyCard";
+import { listCompanies } from "../actions/companyActions";
 
 const MainFeedScreen = ({ match }) => {
   const searchString = match.params.search;
@@ -41,10 +43,20 @@ const MainFeedScreen = ({ match }) => {
     count: castMemberCount,
   } = castMemberList;
 
+  const companyList = useSelector((state) => state.companyList);
+  const {
+    loading: companyLoading,
+    companies,
+    page: companyPage,
+    feedFinished: companyFeedFinished,
+    count: companyCount,
+  } = companyList;
+
   useEffect(() => {
     dispatch(listShows(1, searchKeyword, showTopRated));
     dispatch(listVenues(1, searchKeyword, showTopRated));
     dispatch(listCastMembers(1, searchKeyword, showTopRated));
+    dispatch(listCompanies(1, searchKeyword, showTopRated));
   }, [dispatch, searchKeyword, showTopRated, searchString]);
   return (
     <>
@@ -113,6 +125,30 @@ const MainFeedScreen = ({ match }) => {
                       key={castMember._id}
                       castMember={castMember}
                     />
+                  );
+                })}
+            </Row>
+          </Container>
+        )}
+      </section>
+      <section className="p-5 text-center">
+        {loading ? (
+          <Loader />
+        ) : (
+          <Container>
+            <h2 className="text-center text-white">
+              Production Companies{" "}
+              <Link to="/addcompany">
+                <span className="link text-secondary">
+                  {userInfo ? <i className="bi bi-plus-circle-fill"></i> : ""}
+                </span>
+              </Link>
+            </h2>
+            <Row className="g-4">
+              {companies &&
+                companies.map((company) => {
+                  return (
+                    <FeedCompanyCard key={company._id} company={company} />
                   );
                 })}
             </Row>

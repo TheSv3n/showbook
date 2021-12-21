@@ -112,6 +112,7 @@ const VenueScreen = ({ match, history }) => {
               id={venueId}
               showModal={showNewImageModal}
               updateShowModal={updateShowNewImageModal}
+              type={"venue"}
             />
             <Container>
               <Row>

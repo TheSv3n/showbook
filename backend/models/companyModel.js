@@ -23,6 +23,11 @@ const companySchema = mongoose.Schema(
       required: true,
       default: 0,
     },
+    coverImage: {
+      type: String,
+      required: true,
+      default: "/uploads/defaultCompany.jpg",
+    },
   },
   {
     timestamps: true,

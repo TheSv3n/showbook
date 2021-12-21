@@ -227,36 +227,37 @@ export const addPerformance =
     }
   };
 
-export const addImage = (showId, image) => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: SHOW_ADD_IMAGE_REQUEST,
-    });
+export const createShowImage =
+  (showId, image) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: SHOW_ADD_IMAGE_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    await axios.put(`/api/shows/${showId}/images`, image, config);
+      await axios.put(`/api/shows/${showId}/images`, image, config);
 
-    dispatch({
-      type: SHOW_ADD_IMAGE_SUCCESS,
-    });
-    dispatch(getShowInfo(showId, true));
-  } catch (error) {
-    dispatch({
-      type: SHOW_ADD_IMAGE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({
+        type: SHOW_ADD_IMAGE_SUCCESS,
+      });
+      dispatch(getShowInfo(showId, true));
+    } catch (error) {
+      dispatch({
+        type: SHOW_ADD_IMAGE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

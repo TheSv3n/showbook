@@ -11,6 +11,7 @@ import CastMemberScreen from "./screens/CastMemberScreen";
 import NewShowScreen from "./screens/NewShowScreen";
 import NewVenueScreen from "./screens/NewVenueScreen";
 import NewCastMemberScreen from "./screens/NewCastMemberScreen";
+import NewCompanyScreen from "./screens/NewCompanyScreen";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/addshow" component={NewShowScreen} />
         <Route path="/addvenue" component={NewVenueScreen} />
         <Route path="/addcastmember" component={NewCastMemberScreen} />
+        <Route path="/addcompany" component={NewCompanyScreen} />
       </Router>
     </>
   );

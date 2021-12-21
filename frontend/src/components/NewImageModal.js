@@ -3,8 +3,10 @@ import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "./Loader";
 import axios from "axios";
-import { addImage } from "../actions/showActions";
+import { createShowImage } from "../actions/showActions";
+import { createVenueImage } from "../actions/venueActions";
 import { SHOW_ADD_IMAGE_RESET } from "../constants/showConstants";
+import { VENUE_ADD_IMAGE_RESET } from "../constants/venueConstants";
 import PerformanceModal from "./PerformanceModal";
 
 const NewImageModal = ({
@@ -25,6 +27,9 @@ const NewImageModal = ({
 
   const addShowImage = useSelector((state) => state.addShowImage);
   const { loading, success } = addShowImage;
+
+  const addVenueImage = useSelector((state) => state.addVenueImage);
+  const { loading: loadingVenue, success: successVenue } = addVenueImage;
 
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
@@ -60,10 +65,20 @@ const NewImageModal = ({
     if (type === "show") {
       if (image !== "" && imageName !== "No Image") {
         dispatch(
-          addImage(id, {
+          createShowImage(id, {
             image: image,
             comment: comment,
             performance: performanceId,
+          })
+        );
+      }
+    }
+    if (type === "venue") {
+      if (image !== "" && imageName !== "No Image") {
+        dispatch(
+          createVenueImage(id, {
+            image: image,
+            comment: comment,
           })
         );
       }
@@ -87,8 +102,9 @@ const NewImageModal = ({
   };
 
   useEffect(() => {
-    if (success) {
+    if (success || successVenue) {
       dispatch({ type: SHOW_ADD_IMAGE_RESET });
+      dispatch({ type: VENUE_ADD_IMAGE_RESET });
       updateShowModal();
       clearImageHandler();
       clearForm();
@@ -179,7 +195,7 @@ const NewImageModal = ({
                 </Row>
 
                 <Row>
-                  {loading ? (
+                  {loading || loadingVenue ? (
                     <Loader />
                   ) : (
                     <Button
