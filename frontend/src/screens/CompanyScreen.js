@@ -87,13 +87,13 @@ const CompanyScreen = ({ match, history }) => {
               showModal={showReviewModal}
               updateShowModal={updateShowReviewModal}
               id={company._id}
-              type="venue"
+              type="company"
             />
             <NewImageModal
               id={companyId}
               showModal={showNewImageModal}
               updateShowModal={updateShowNewImageModal}
-              type={"venue"}
+              type={"company"}
             />
             <Container>
               <Row>
@@ -186,7 +186,7 @@ const CompanyScreen = ({ match, history }) => {
                             review={review}
                             key={review._id}
                             performances={company.performances}
-                            type="venue"
+                            type="company"
                           />
                         );
                       })
