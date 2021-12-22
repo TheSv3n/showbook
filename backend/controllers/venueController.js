@@ -5,7 +5,9 @@ import Venue from "../models/venueModel.js";
 //@route POST /api/venues
 //@access Private
 const createVenue = asyncHandler(async (req, res) => {
-  const { name, description, address, images, coverImage } = req.body;
+  const { name, description, address, images } = req.body;
+
+  const coverImage = req.coverImage || "/uploads/defaultVenue.jpg";
 
   const venue = new Venue({
     name,

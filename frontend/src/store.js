@@ -25,7 +25,12 @@ import {
   castMemberInfoReducer,
 } from "./reducers/castMemberReducers";
 
-import { companyListReducer } from "./reducers/companyReducers";
+import {
+  companyListReducer,
+  companyInfoReducer,
+  addCompanyReviewReducer,
+  addCompanyImageReducer,
+} from "./reducers/companyReducers";
 
 import { userLoginReducer } from "./reducers/userReducers";
 
@@ -46,6 +51,9 @@ const reducer = combineReducers({
   castMemberList: castMemberListReducer,
   castMemberInfo: castMemberInfoReducer,
   companyList: companyListReducer,
+  companyInfo: companyInfoReducer,
+  addCompanyReview: addCompanyReviewReducer,
+  addCompanyImage: addCompanyImageReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

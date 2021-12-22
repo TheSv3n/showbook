@@ -5,16 +5,10 @@ import Show from "../models/showModel.js";
 //@route POST /api/shows
 //@access Private
 const createShow = asyncHandler(async (req, res) => {
-  const {
-    title,
-    synopsis,
-    company,
-    director,
-    coverImage,
-    images,
-    roles,
-    performances,
-  } = req.body;
+  const { title, synopsis, company, director, images, roles, performances } =
+    req.body;
+
+  const coverImage = req.body.coverImage || "/uploads/defaultShow.jpg";
 
   const show = new Show({
     title,

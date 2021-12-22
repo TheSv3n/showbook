@@ -6,12 +6,14 @@ import Company from "../models/companyModel.js";
 //@access Private
 const createCompany = asyncHandler(async (req, res) => {
   const { name, description, headquarters } = req.body;
+  const coverImage = req.body.coverImage || "/uploads/defaultCompany.jpg";
 
   const company = new Company({
     name,
     creator: req.user._id,
     description,
     headquarters,
+    coverImage,
   });
 
   const createdCompany = await company.save();

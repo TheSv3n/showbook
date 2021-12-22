@@ -3,6 +3,9 @@ import {
   COMPANY_LIST_SUCCESS,
   COMPANY_LIST_FAIL,
   COMPANY_LIST_UPDATE_REQUEST,
+  COMPANY_DETAILS_REQUEST,
+  COMPANY_DETAILS_SUCCESS,
+  COMPANY_DETAILS_FAIL,
 } from "../constants/companyConstants";
 import axios from "axios";
 
@@ -50,6 +53,32 @@ export const listCompanies =
     } catch (error) {
       dispatch({
         type: COMPANY_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const getCompanyInfo =
+  (companyId, update) => async (dispatch, getState) => {
+    try {
+      if (!update) {
+        dispatch({
+          type: COMPANY_DETAILS_REQUEST,
+        });
+      }
+
+      const { data } = await axios.get(`/api/companies/${companyId}`);
+
+      dispatch({
+        type: COMPANY_DETAILS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: COMPANY_DETAILS_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
