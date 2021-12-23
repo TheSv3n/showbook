@@ -128,6 +128,10 @@ const VenueScreen = ({ match, history }) => {
                     <div>{venue.description}</div>
                   </Row>
                   <Row>
+                    <h5 className="text-secondary mt-1">Address </h5>
+                    <div>{venue.address}</div>
+                  </Row>
+                  <Row>
                     <h5 className="text-secondary mt-1">Rating </h5>
                     {venue.reviews && venue.reviews.length > 0 ? (
                       <>
@@ -164,10 +168,6 @@ const VenueScreen = ({ match, history }) => {
                         )}
                       </>
                     </div>
-                  </Row>
-                  <Row>
-                    <h5 className="text-secondary mt-1">Address </h5>
-                    <div>{venue.address}</div>
                   </Row>
                 </Col>
               </Row>

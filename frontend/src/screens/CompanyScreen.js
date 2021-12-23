@@ -113,6 +113,10 @@ const CompanyScreen = ({ match, history }) => {
                     <div>{company.description}</div>
                   </Row>
                   <Row>
+                    <h5 className="text-secondary mt-1">Headquarters </h5>
+                    <div>{company.headquarters}</div>
+                  </Row>
+                  <Row>
                     <h5 className="text-secondary mt-1">Rating </h5>
                     {company.reviews && company.reviews.length > 0 ? (
                       <>
@@ -128,10 +132,6 @@ const CompanyScreen = ({ match, history }) => {
                     ) : (
                       <div>No Reviews</div>
                     )}
-                  </Row>
-                  <Row>
-                    <h5 className="text-secondary mt-1">Headquarters </h5>
-                    <div>{company.headquarters}</div>
                   </Row>
                 </Col>
               </Row>

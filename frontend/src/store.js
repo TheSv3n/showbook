@@ -10,6 +10,7 @@ import {
   showCreateReducer,
   addShowPerformanceReducer,
   addShowImageReducer,
+  companyShowListReducer,
 } from "./reducers/showReducers";
 
 import {
@@ -54,6 +55,7 @@ const reducer = combineReducers({
   companyInfo: companyInfoReducer,
   addCompanyReview: addCompanyReviewReducer,
   addCompanyImage: addCompanyImageReducer,
+  companyShowList: companyShowListReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

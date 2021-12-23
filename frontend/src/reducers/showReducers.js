@@ -24,6 +24,9 @@ import {
   SHOW_ADD_IMAGE_SUCCESS,
   SHOW_ADD_IMAGE_FAIL,
   SHOW_ADD_IMAGE_RESET,
+  SHOW_COMPANY_LIST_REQUEST,
+  SHOW_COMPANY_LIST_SUCCESS,
+  SHOW_COMPANY_LIST_FAIL,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -184,6 +187,22 @@ export const addShowImageReducer = (state = {}, action) => {
       return {
         state: {},
       };
+    default:
+      return state;
+  }
+};
+
+export const companyShowListReducer = (state = { shows: [] }, action) => {
+  switch (action.type) {
+    case SHOW_COMPANY_LIST_REQUEST:
+      return { loading: true, shows: [] };
+    case SHOW_COMPANY_LIST_SUCCESS:
+      return {
+        loading: false,
+        shows: action.payload.shows,
+      };
+    case SHOW_COMPANY_LIST_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }
