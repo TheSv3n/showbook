@@ -22,6 +22,9 @@ import {
   SHOW_ADD_IMAGE_REQUEST,
   SHOW_ADD_IMAGE_SUCCESS,
   SHOW_ADD_IMAGE_FAIL,
+  SHOW_COMPANY_LIST_REQUEST,
+  SHOW_COMPANY_LIST_SUCCESS,
+  SHOW_COMPANY_LIST_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -261,3 +264,24 @@ export const createShowImage =
       });
     }
   };
+
+export const listCompanyShows = (companyId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: SHOW_COMPANY_LIST_REQUEST });
+
+    const { data } = await axios.get(`/api/shows/company/${companyId}`);
+
+    dispatch({
+      type: SHOW_COMPANY_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SHOW_COMPANY_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

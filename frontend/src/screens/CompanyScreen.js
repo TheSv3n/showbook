@@ -8,7 +8,9 @@ import Loader from "../components/Loader";
 import Review from "../components/Review";
 import NewReviewModal from "../components/NewReviewModal";
 import NewImageModal from "../components/NewImageModal";
+import ShowModal from "../components/ShowModal";
 import { getCompanyInfo } from "../actions/companyActions";
+import { listCompanyShows } from "../actions/showActions";
 
 const CompanyScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -18,6 +20,7 @@ const CompanyScreen = ({ match, history }) => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
   const [showNewImageModal, setShowNewImageModal] = useState(false);
+  const [showShowsModal, setShowShowsModal] = useState(false);
 
   const companyInfo = useSelector((state) => state.companyInfo);
   const { company, loading } = companyInfo;
@@ -30,6 +33,9 @@ const CompanyScreen = ({ match, history }) => {
 
   const addCompanyImage = useSelector((state) => state.addCompanyImage);
   const { loading: loadingAddImage } = addCompanyImage;
+
+  const companyShowList = useSelector((state) => state.companyShowList);
+  const { shows } = companyShowList;
 
   const updateShowImageModal = () => {
     setShowImageModal(!showImageModal);
@@ -51,6 +57,10 @@ const CompanyScreen = ({ match, history }) => {
     }
   };
 
+  const updateShowShowsModal = () => {
+    setShowShowsModal(!showShowsModal);
+  };
+
   const handleNewReviewLink = () => {
     if (userInfo) {
       updateShowReviewModal();
@@ -66,6 +76,7 @@ const CompanyScreen = ({ match, history }) => {
   useEffect(() => {
     if (!company || company._id !== companyId) {
       dispatch(getCompanyInfo(companyId, false));
+      dispatch(listCompanyShows(companyId));
     }
   }, [dispatch, company, companyId]);
 
@@ -95,6 +106,11 @@ const CompanyScreen = ({ match, history }) => {
               updateShowModal={updateShowNewImageModal}
               type={"company"}
             />
+            <ShowModal
+              showModal={showShowsModal}
+              updateShowModal={updateShowShowsModal}
+              shows={shows}
+            />
             <Container>
               <Row>
                 <h2 className="text-white">{company.name}</h2>
@@ -115,6 +131,27 @@ const CompanyScreen = ({ match, history }) => {
                   <Row>
                     <h5 className="text-secondary mt-1">Headquarters </h5>
                     <div>{company.headquarters}</div>
+                  </Row>
+                  <Row>
+                    <h5 className="text-secondary mt-1">Shows </h5>
+                    <div>
+                      <>
+                        {shows.length > 0 ? (
+                          <>
+                            <span>{`${shows.length} shows`}</span>
+                            <span
+                              className="link text-secondary"
+                              onClick={updateShowShowsModal}
+                            >
+                              {" "}
+                              - view
+                            </span>
+                          </>
+                        ) : (
+                          "No shows yet"
+                        )}
+                      </>
+                    </div>
                   </Row>
                   <Row>
                     <h5 className="text-secondary mt-1">Rating </h5>

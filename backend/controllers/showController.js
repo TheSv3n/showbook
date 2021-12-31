@@ -192,6 +192,25 @@ const getShowName = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Fetch Company Shows
+//@route GET /api/shows/company/:id
+//@access Public
+const getCompanyShows = asyncHandler(async (req, res) => {
+  const page = Number(req.query.pageNumber) || 1;
+
+  const keyword = {
+    $or: [
+      {
+        company: req.params.id,
+      },
+    ],
+  };
+
+  const shows = await Show.find({ ...keyword });
+
+  res.json({ shows });
+});
+
 export {
   createShow,
   getAllShows,
@@ -201,4 +220,5 @@ export {
   addShowReview,
   getVenuePerformances,
   getShowName,
+  getCompanyShows,
 };
