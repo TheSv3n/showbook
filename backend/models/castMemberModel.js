@@ -30,7 +30,7 @@ const castMemberSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    image: {
+    coverImage: {
       type: String,
       required: true,
       default: "/uploads/defaultCastMember.jpg",

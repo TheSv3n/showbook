@@ -5,13 +5,13 @@ import CastMember from "../models/castMemberModel.js";
 //@route POST /api/castmembers
 //@access Private
 const createCastMember = asyncHandler(async (req, res) => {
-  const { name, company, image, position } = req.body;
+  const { name, company, coverImage, position } = req.body;
 
   const castMember = new CastMember({
     creator: req.user._id,
     name,
     company,
-    image,
+    coverImage,
     position,
   });
 

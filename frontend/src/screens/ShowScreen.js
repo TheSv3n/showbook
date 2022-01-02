@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getShowInfo } from "../actions/showActions";
 import { Image, Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Loader from "../components/Loader";
 import RatingWidget from "../components/RatingWidget";
@@ -145,7 +146,15 @@ const ShowScreen = ({ match, history }) => {
             <Container>
               <Row>
                 <h2 className="text-white">{show.title}</h2>
-                <h5 className="text-secondary">By {companyName}</h5>
+                <h5 className="text-secondary">
+                  By{" "}
+                  <Link
+                    className="link text-secondary"
+                    to={`/company/${show.company}`}
+                  >
+                    {companyName}
+                  </Link>
+                </h5>
               </Row>
               <Row className="mb-4">
                 <Col md={9}>
@@ -154,7 +163,12 @@ const ShowScreen = ({ match, history }) => {
                 <Col md={3} className="text-white">
                   <Row>
                     <h5 className="text-secondary">Directed by </h5>
-                    <div>{directorName}</div>
+                    <Link
+                      className="text-white"
+                      to={`/castmember/${show.director}`}
+                    >
+                      <div>{directorName}</div>
+                    </Link>
                   </Row>
                   <Row>
                     <h5 className="text-secondary mt-1">About </h5>
@@ -229,6 +243,21 @@ const ShowScreen = ({ match, history }) => {
                       "- login to add image"
                     )}
                   </span>
+                </h5>
+                <ImageCarousel
+                  images={show.images}
+                  show={4}
+                  updateStartIndex={updateStartIndex}
+                  updateShowModal={updateShowImageModal}
+                  startIndex={0}
+                />
+              </Row>
+              <Row>
+                <h5 className="text-secondary">
+                  Cast{" "}
+                  <Link to={`/show/${showId}/cast`}>
+                    <span className="text-light link">- View All</span>
+                  </Link>
                 </h5>
                 <ImageCarousel
                   images={show.images}
