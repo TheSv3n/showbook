@@ -259,13 +259,7 @@ const ShowScreen = ({ match, history }) => {
                     <span className="text-light link">- View All</span>
                   </Link>
                 </h5>
-                <ImageCarousel
-                  images={show.images}
-                  show={4}
-                  updateStartIndex={updateStartIndex}
-                  updateShowModal={updateShowImageModal}
-                  startIndex={0}
-                />
+                {/* todo - add top 4 cast */}
               </Row>
               <Row>
                 <h5 className="text-secondary">
