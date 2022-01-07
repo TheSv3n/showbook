@@ -48,6 +48,10 @@ const roleSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  user: {
+    type: String,
+    required: true,
+  },
 });
 
 const imageSchema = mongoose.Schema({

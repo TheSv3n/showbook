@@ -211,6 +211,29 @@ const getCompanyShows = asyncHandler(async (req, res) => {
   res.json({ shows });
 });
 
+//@desc Add Show role
+//route PUT /api/shows/:id/roles
+//@access Private
+const addShowRole = asyncHandler(async (req, res) => {
+  const { role, castMemberId } = req.body;
+  const show = await Show.findById(req.params.id);
+
+  if (show) {
+    const newRole = {
+      castMemberId: castMemberId,
+      user: req.user._id,
+      role: role,
+    };
+
+    show.roles.push(newRole);
+    await show.save();
+    res.status(201).json({ message: "Role Added" });
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
+});
+
 export {
   createShow,
   getAllShows,
@@ -221,4 +244,5 @@ export {
   getVenuePerformances,
   getShowName,
   getCompanyShows,
+  addShowRole,
 };
