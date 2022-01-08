@@ -14,6 +14,7 @@ import PerformanceModal from "../components/PerformanceModal";
 import NewPerformanceModal from "../components/NewPerformanceModal";
 import NewImageModal from "../components/NewImageModal";
 import { VENUE_LIST_RESET } from "../constants/venueConstants";
+import CastMemberCard from "../components/CastMemberCard";
 
 const ShowScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -259,7 +260,9 @@ const ShowScreen = ({ match, history }) => {
                     <span className="text-light link">- View All</span>
                   </Link>
                 </h5>
-                {/* todo - add top 4 cast */}
+                {show.roles.map((role) => {
+                  return <CastMemberCard role={role} />;
+                })}
               </Row>
               <Row>
                 <h5 className="text-secondary">

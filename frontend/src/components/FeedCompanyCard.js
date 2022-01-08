@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Image, Col, Card } from "react-bootstrap";
-import RatingWidget from "./RatingWidget";
 
 const FeedCompanyCard = ({ company }) => {
   return (
