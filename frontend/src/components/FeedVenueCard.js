@@ -9,7 +9,12 @@ const FeedVenueCard = ({ venue }) => {
       <Card className="bg-light h-100">
         <Card.Body className="text-center">
           <Link to={`/venue/${venue._id}`} style={{ textDecoration: "none" }}>
-            <Image src={venue.coverImage} alt={venue.name} fluid></Image>
+            <Image
+              src={venue.coverImage}
+              alt={venue.name}
+              fluid
+              className="card-image"
+            ></Image>
           </Link>
           <h3 className="card-title mb-3">{venue.name}</h3>
           <p className="card-text">{venue.description}</p>

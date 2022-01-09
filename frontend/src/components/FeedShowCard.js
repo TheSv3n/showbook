@@ -20,7 +20,12 @@ const FeedShowCard = ({ show }) => {
       <Card className="bg-light h-100">
         <Card.Body className="text-center">
           <Link to={`/show/${show._id}`} style={{ textDecoration: "none" }}>
-            <Image src={show.coverImage} alt={show.title} fluid></Image>
+            <Image
+              src={show.coverImage}
+              alt={show.title}
+              fluid
+              className="card-image"
+            ></Image>
           </Link>
           <h3 className="card-title mb-3">{show.title}</h3>
           <h4 className="card-title mb-3">By {companyName}</h4>

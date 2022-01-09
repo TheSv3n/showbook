@@ -23,11 +23,14 @@ const CastMemberCard = ({ role }) => {
             to={`/castmember/${castMember._id}`}
             style={{ textDecoration: "none" }}
           >
-            <Image
-              src={castMember.coverImage}
-              alt={castMember.name}
-              fluid
-            ></Image>
+            <div className="img-container">
+              <Image
+                src={castMember.coverImage}
+                alt={castMember.name}
+                fluid
+                className="card-image"
+              ></Image>
+            </div>
           </Link>
           <h3 className="card-title mb-3">{castMember.name}</h3>
           <p className="card-text">{role.role}</p>

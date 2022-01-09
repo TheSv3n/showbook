@@ -16,6 +16,7 @@ const FeedCastMemberCard = ({ castMember }) => {
               src={castMember.coverImage}
               alt={castMember.name}
               fluid
+              className="card-image"
             ></Image>
           </Link>
           <h3 className="card-title mb-3">{castMember.name}</h3>

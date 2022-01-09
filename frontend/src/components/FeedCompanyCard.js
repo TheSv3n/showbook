@@ -11,7 +11,12 @@ const FeedCompanyCard = ({ company }) => {
             to={`/company/${company._id}`}
             style={{ textDecoration: "none" }}
           >
-            <Image src={company.coverImage} alt={company.name} fluid></Image>
+            <Image
+              src={company.coverImage}
+              alt={company.name}
+              fluid
+              className="card-image"
+            ></Image>
           </Link>
           <h3 className="card-title mb-3">{company.name}</h3>
           <p className="card-text">{company.description}</p>
