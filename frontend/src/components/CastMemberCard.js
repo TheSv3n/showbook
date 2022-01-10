@@ -16,7 +16,7 @@ const CastMemberCard = ({ role }) => {
   }, [role]);
 
   return (
-    <Col md={3}>
+    <Col md={3} className="mb-2">
       <Card className="bg-light h-100">
         <Card.Body className="text-center">
           <Link

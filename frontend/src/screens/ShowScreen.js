@@ -260,8 +260,8 @@ const ShowScreen = ({ match, history }) => {
                     <span className="text-light link">- View All</span>
                   </Link>
                 </h5>
-                {show.roles.map((role) => {
-                  return <CastMemberCard role={role} />;
+                {show.roles.slice(0, 4).map((role) => {
+                  return <CastMemberCard role={role} key={role._id} />;
                 })}
               </Row>
               <Row>

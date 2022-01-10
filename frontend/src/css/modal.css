@@ -19,7 +19,6 @@
 .modal-container {
   border-radius: 0.2rem;
   width: 90vw;
-  height: 80vh;
   text-align: center;
   display: grid;
   place-items: center;
@@ -27,7 +26,6 @@
 }
 
 .new-review-container {
-  height: 20em;
   text-align: unset;
   place-items: unset;
 }
