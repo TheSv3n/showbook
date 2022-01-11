@@ -30,6 +30,10 @@
   place-items: unset;
 }
 
+.med-container {
+  height: 20em;
+}
+
 .form-container {
   top: 1rem;
   left: 1rem;

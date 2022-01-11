@@ -4,6 +4,8 @@ import { Image, Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import { getShowInfo } from "../actions/showActions";
+import CastListItem from "../components/CastListItem";
+import NewRoleModal from "../components/NewRoleModal";
 
 const CastScreen = ({ match }) => {
   const dispatch = useDispatch();
@@ -30,10 +32,32 @@ const CastScreen = ({ match }) => {
         show && (
           <>
             <Container>
-              <Row>
-                <h2 className="text-white">{show.title} - Cast</h2>
+              <Link to={`/show/${showId}`}>
+                <Row className="align-items-center ">
+                  <Col sm={1}>
+                    <Image src={show.coverImage} alt={show.name} fluid></Image>
+                  </Col>
+                  <Col sm={7}>
+                    <h2 className="text-white">{show.title} - Cast</h2>
+                  </Col>
+                </Row>
+              </Link>
+              <Row className="text-white">
+                {userInfo ? (
+                  <Col sm={1}>
+                    <span className="link">Add Role</span>
+                  </Col>
+                ) : (
+                  ""
+                )}
               </Row>
-              <Row className="mb-4"></Row>
+              <Row className="mb-4">
+                <ul>
+                  {show.roles.map((role) => {
+                    return <CastListItem role={role} key={role._id} />;
+                  })}
+                </ul>
+              </Row>
             </Container>
           </>
         )

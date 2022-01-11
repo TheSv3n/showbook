@@ -68,3 +68,9 @@ textarea {
   height: 15rem;
   display: block;
 }
+
+.list-image {
+  width: 100%;
+  height: 4rem;
+  display: block;
+}

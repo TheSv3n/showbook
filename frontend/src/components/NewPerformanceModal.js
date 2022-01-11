@@ -49,7 +49,7 @@ const NewPerformanceModal = ({ showId, showModal, updateShowModal }) => {
           showModal ? "modal-overlay show-modal" : "modal-overlay"
         }`}
       >
-        <div className="modal-container new-review-container bg-secondary text-light">
+        <div className="modal-container new-review-container med-container bg-secondary text-light">
           <Container className="form-container">
             <Row className="justify-content-md-center mt-2">
               <Col xs={12} md={8}>
