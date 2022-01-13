@@ -27,6 +27,10 @@ import {
   SHOW_COMPANY_LIST_REQUEST,
   SHOW_COMPANY_LIST_SUCCESS,
   SHOW_COMPANY_LIST_FAIL,
+  SHOW_ADD_ROLE_REQUEST,
+  SHOW_ADD_ROLE_SUCCESS,
+  SHOW_ADD_ROLE_FAIL,
+  SHOW_ADD_ROLE_RESET,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -203,6 +207,32 @@ export const companyShowListReducer = (state = { shows: [] }, action) => {
       };
     case SHOW_COMPANY_LIST_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const addShowRoleReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SHOW_ADD_ROLE_REQUEST:
+      return {
+        loading: true,
+      };
+    case SHOW_ADD_ROLE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        show: action.payload,
+      };
+    case SHOW_ADD_ROLE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case SHOW_ADD_ROLE_RESET:
+      return {
+        state: {},
+      };
     default:
       return state;
   }

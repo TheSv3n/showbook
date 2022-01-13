@@ -10,6 +10,7 @@ import NewRoleModal from "../components/NewRoleModal";
 const CastScreen = ({ match }) => {
   const dispatch = useDispatch();
   const [companyName, setCompanyName] = useState("");
+  const [showNewRoleModal, setShowNewRoleModal] = useState(false);
   const showId = match.params.id;
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -17,6 +18,10 @@ const CastScreen = ({ match }) => {
 
   const showInfo = useSelector((state) => state.showInfo);
   const { show, loading } = showInfo;
+
+  const updateShowNewRoleModal = () => {
+    setShowNewRoleModal(!showNewRoleModal);
+  };
 
   useEffect(() => {
     if (!show || show._id !== showId) {
@@ -31,6 +36,11 @@ const CastScreen = ({ match }) => {
       ) : (
         show && (
           <>
+            <NewRoleModal
+              showModal={showNewRoleModal}
+              updateShowModal={updateShowNewRoleModal}
+              showId={showId}
+            />
             <Container>
               <Link to={`/show/${showId}`}>
                 <Row className="align-items-center ">
@@ -45,7 +55,9 @@ const CastScreen = ({ match }) => {
               <Row className="text-white">
                 {userInfo ? (
                   <Col sm={1}>
-                    <span className="link">Add Role</span>
+                    <span className="link" onClick={updateShowNewRoleModal}>
+                      Add Role
+                    </span>
                   </Col>
                 ) : (
                   ""

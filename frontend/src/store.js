@@ -11,6 +11,7 @@ import {
   addShowPerformanceReducer,
   addShowImageReducer,
   companyShowListReducer,
+  addShowRoleReducer,
 } from "./reducers/showReducers";
 
 import {
@@ -44,6 +45,7 @@ const reducer = combineReducers({
   showVenuePerformances: showVenuePerformancesReducer,
   addShowPerformance: addShowPerformanceReducer,
   addShowImage: addShowImageReducer,
+  addShowRole: addShowRoleReducer,
   venueList: venueListReducer,
   venueInfo: venueInfoReducer,
   addVenueReview: addVenueReviewReducer,
