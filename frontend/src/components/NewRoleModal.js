@@ -3,20 +3,34 @@ import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import Loader from "./Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { SHOW_ADD_ROLE_RESET } from "../constants/showConstants";
+import FindCastMemberModal from "./FindCastMemberModal";
+import { CAST_MEMBER_LIST_RESET } from "../constants/castMemberConstants";
+import { createShowRole } from "../actions/showActions";
 
 const NewRoleModal = ({ showId, showModal, updateShowModal }) => {
   const dispatch = useDispatch();
   const [castMemberId, setCastMemberId] = useState("");
-  const [castMemberText, setCastMemberText] = useState("Not Selected");
+  const [castMemberName, setCastMemberName] = useState("Not Selected");
   const [role, setRole] = useState("");
   const [showCastMemberModal, setShowCastMemberModal] = useState(false);
 
   const addShowRole = useSelector((state) => state.addShowRole);
   const { loading, success } = addShowRole;
 
-  const updateShowCastMemberModal = () => {};
+  const updateShowCastMemberModal = () => {
+    dispatch({ type: CAST_MEMBER_LIST_RESET });
+    setShowCastMemberModal(!showCastMemberModal);
+  };
 
-  const submitHandler = () => {};
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(
+      createShowRole(showId, {
+        castMemberId: castMemberId,
+        role: role,
+      })
+    );
+  };
 
   useEffect(() => {
     if (success) {
@@ -27,6 +41,13 @@ const NewRoleModal = ({ showId, showModal, updateShowModal }) => {
 
   return (
     <>
+      <FindCastMemberModal
+        showModal={showCastMemberModal}
+        updateShowModal={updateShowCastMemberModal}
+        setCastMemberName={setCastMemberName}
+        setCastMemberId={setCastMemberId}
+        type="actor"
+      />
       <div
         className={`${
           showModal ? "modal-overlay show-modal" : "modal-overlay"
@@ -40,7 +61,7 @@ const NewRoleModal = ({ showId, showModal, updateShowModal }) => {
                   <Row className="align-items-center my-2">
                     <Form.Group controlId="venue">
                       <Form.Label>
-                        CastMember - <span>{castMemberText}</span> -{" "}
+                        CastMember - <span>{castMemberName}</span> -{" "}
                         <span
                           className="text-dark link"
                           onClick={updateShowCastMemberModal}

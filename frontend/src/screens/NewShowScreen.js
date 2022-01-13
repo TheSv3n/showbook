@@ -3,13 +3,13 @@ import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import FindCompanyModal from "../components/FindCompanyModal";
-import FindDirectorModal from "../components/FindDirectorModal";
 import { COMPANY_LIST_RESET } from "../constants/companyConstants";
 import { CAST_MEMBER_LIST_RESET } from "../constants/castMemberConstants";
 import { createShow } from "../actions/showActions";
 import { SHOW_CREATE_RESET } from "../constants/showConstants";
 import axios from "axios";
 import "../css/NewShowScreen.css";
+import FindCastMemberModal from "../components/FindCastMemberModal";
 
 const NewShowScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -108,11 +108,12 @@ const NewShowScreen = ({ history }) => {
         setCompanyName={setCompanyName}
         setCompanyId={setCompanyId}
       />
-      <FindDirectorModal
+      <FindCastMemberModal
         showModal={showDirectorModal}
         updateShowModal={updateShowDirectorModal}
-        setDirectorName={setDirectorName}
-        setDirectorId={setDirectorId}
+        setCastMemberName={setDirectorName}
+        setCastMemberId={setDirectorId}
+        type="director"
       />
       <section className="text-light">
         <Container>

@@ -3,13 +3,14 @@ import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listCastMembers } from "../actions/castMemberActions";
 import Loader from "./Loader";
-import DirectorListItem from "./DirectorListItem";
+import CastMemberListItem from "./CastMemberListItem";
 
-const FindDirectorModal = ({
+const FindCastMemberModal = ({
   showModal,
   updateShowModal,
-  setDirectorName,
-  setDirectorId,
+  setCastMemberName,
+  setCastMemberId,
+  type,
 }) => {
   const dispatch = useDispatch();
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -19,14 +20,16 @@ const FindDirectorModal = ({
   const submitHandler = (e) => {
     e.preventDefault();
     if (searchKeyword !== "") {
-      dispatch(listCastMembers(1, searchKeyword, false, "director"));
+      dispatch(listCastMembers(1, searchKeyword, false, type));
     }
   };
   return (
     <div
-      className={`${showModal ? "modal-overlay show-modal" : "modal-overlay"}`}
+      className={`${
+        showModal ? "modal-overlay show-modal top-modal" : "modal-overlay"
+      }`}
     >
-      <div className="modal-container new-review-container bg-secondary text-light">
+      <div className="modal-container new-review-container med-container bg-secondary text-light">
         <button className="close-modal-btn" onClick={updateShowModal}>
           <i className="bi bi-x-circle-fill"></i>
         </button>
@@ -63,11 +66,11 @@ const FindDirectorModal = ({
                 {castMembers &&
                   castMembers.map((castMember) => {
                     return (
-                      <DirectorListItem
+                      <CastMemberListItem
                         key={castMember._id}
-                        director={castMember}
-                        setDirectorId={setDirectorId}
-                        setDirectorName={setDirectorName}
+                        castMember={castMember}
+                        setCastMemberId={setCastMemberId}
+                        setCastMemberName={setCastMemberName}
                         updateShowModal={updateShowModal}
                       />
                     );
@@ -81,4 +84,4 @@ const FindDirectorModal = ({
   );
 };
 
-export default FindDirectorModal;
+export default FindCastMemberModal;

@@ -73,7 +73,7 @@ const CastMemberScreen = ({ match, history }) => {
                 <Col md={3} className="text-white">
                   <Row>
                     <h5 className="text-secondary mt-1">About </h5>
-                    <div>{castMember.description}</div>
+                    <div>{castMember.about}</div>
                   </Row>
                   <Row>
                     <h5 className="text-secondary mt-1">Rating </h5>

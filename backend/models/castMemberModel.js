@@ -53,6 +53,10 @@ const castMemberSchema = mongoose.Schema(
       required: true,
       default: "actor",
     },
+    about: {
+      type: String,
+      required: false,
+    },
     reviews: [reviewSchema],
   },
   {

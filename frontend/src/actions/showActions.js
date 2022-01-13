@@ -25,6 +25,9 @@ import {
   SHOW_COMPANY_LIST_REQUEST,
   SHOW_COMPANY_LIST_SUCCESS,
   SHOW_COMPANY_LIST_FAIL,
+  SHOW_ADD_ROLE_REQUEST,
+  SHOW_ADD_ROLE_SUCCESS,
+  SHOW_ADD_ROLE_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -278,6 +281,40 @@ export const listCompanyShows = (companyId) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: SHOW_COMPANY_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const createShowRole = (showId, role) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: SHOW_ADD_ROLE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.put(`/api/shows/${showId}/roles`, role, config);
+
+    dispatch({
+      type: SHOW_ADD_ROLE_SUCCESS,
+    });
+    dispatch(getShowInfo(showId, true));
+  } catch (error) {
+    dispatch({
+      type: SHOW_ADD_ROLE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
