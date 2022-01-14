@@ -32,6 +32,7 @@ import {
   companyInfoReducer,
   addCompanyReviewReducer,
   addCompanyImageReducer,
+  companyCreateReducer,
 } from "./reducers/companyReducers";
 
 import { userLoginReducer } from "./reducers/userReducers";
@@ -58,6 +59,7 @@ const reducer = combineReducers({
   addCompanyReview: addCompanyReviewReducer,
   addCompanyImage: addCompanyImageReducer,
   companyShowList: companyShowListReducer,
+  companyCreate: companyCreateReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

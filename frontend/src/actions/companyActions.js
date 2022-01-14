@@ -6,6 +6,9 @@ import {
   COMPANY_DETAILS_REQUEST,
   COMPANY_DETAILS_SUCCESS,
   COMPANY_DETAILS_FAIL,
+  COMPANY_CREATE_REQUEST,
+  COMPANY_CREATE_SUCCESS,
+  COMPANY_CREATE_FAIL,
 } from "../constants/companyConstants";
 import axios from "axios";
 
@@ -86,3 +89,36 @@ export const getCompanyInfo =
       });
     }
   };
+
+export const createCompany = (company) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: COMPANY_CREATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.post(`/api/companies/`, company, config);
+
+    dispatch({
+      type: COMPANY_CREATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: COMPANY_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

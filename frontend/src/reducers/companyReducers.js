@@ -14,6 +14,10 @@ import {
   COMPANY_ADD_IMAGE_SUCCESS,
   COMPANY_ADD_IMAGE_FAIL,
   COMPANY_ADD_IMAGE_RESET,
+  COMPANY_CREATE_REQUEST,
+  COMPANY_CREATE_SUCCESS,
+  COMPANY_CREATE_FAIL,
+  COMPANY_CREATE_RESET,
 } from "../constants/companyConstants";
 import {
   VENUE_ADD_IMAGE_FAIL,
@@ -107,6 +111,32 @@ export const addCompanyImageReducer = (state = {}, action) => {
         error: action.payload,
       };
     case COMPANY_ADD_IMAGE_RESET:
+      return {
+        state: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const companyCreateReducer = (state = { company: [] }, action) => {
+  switch (action.type) {
+    case COMPANY_CREATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case COMPANY_CREATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        company: action.payload,
+      };
+    case COMPANY_CREATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case COMPANY_CREATE_RESET:
       return {
         state: {},
       };
