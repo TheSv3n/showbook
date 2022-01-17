@@ -25,6 +25,7 @@ import {
 import {
   castMemberListReducer,
   castMemberInfoReducer,
+  castMemberCreateReducer,
 } from "./reducers/castMemberReducers";
 
 import {
@@ -54,6 +55,7 @@ const reducer = combineReducers({
   venueCreate: venueCreateReducer,
   castMemberList: castMemberListReducer,
   castMemberInfo: castMemberInfoReducer,
+  castMemberCreate: castMemberCreateReducer,
   companyList: companyListReducer,
   companyInfo: companyInfoReducer,
   addCompanyReview: addCompanyReviewReducer,

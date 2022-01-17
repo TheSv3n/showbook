@@ -7,6 +7,10 @@ import {
   CAST_MEMBER_DETAILS_REQUEST,
   CAST_MEMBER_DETAILS_SUCCESS,
   CAST_MEMBER_DETAILS_FAIL,
+  CAST_MEMBER_CREATE_REQUEST,
+  CAST_MEMBER_CREATE_SUCCESS,
+  CAST_MEMBER_CREATE_FAIL,
+  CAST_MEMBER_CREATE_RESET,
 } from "../constants/castMemberConstants";
 
 export const castMemberListReducer = (state = { castMembers: [] }, action) => {
@@ -49,6 +53,32 @@ export const castMemberInfoReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const castMemberCreateReducer = (state = { castMember: [] }, action) => {
+  switch (action.type) {
+    case CAST_MEMBER_CREATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case CAST_MEMBER_CREATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        castMember: action.payload,
+      };
+    case CAST_MEMBER_CREATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case CAST_MEMBER_CREATE_RESET:
+      return {
+        state: {},
       };
     default:
       return state;
