@@ -19,11 +19,6 @@ import {
   COMPANY_CREATE_FAIL,
   COMPANY_CREATE_RESET,
 } from "../constants/companyConstants";
-import {
-  VENUE_ADD_IMAGE_FAIL,
-  VENUE_ADD_IMAGE_REQUEST,
-  VENUE_ADD_IMAGE_SUCCESS,
-} from "../constants/venueConstants";
 
 export const companyListReducer = (state = { companies: [] }, action) => {
   switch (action.type) {

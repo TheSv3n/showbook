@@ -5,6 +5,8 @@ import Loader from "../components/Loader";
 import axios from "axios";
 import FindCompanyModal from "../components/FindCompanyModal";
 import { COMPANY_LIST_RESET } from "../constants/companyConstants";
+import { CAST_MEMBER_CREATE_RESET } from "../constants/castMemberConstants";
+import { createCastMember } from "../actions/castMemberActions";
 
 const NewCastMemberScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -26,6 +28,17 @@ const NewCastMemberScreen = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (name !== "" && about !== "" && position !== "") {
+      dispatch(
+        createCastMember({
+          name: name,
+          about: about,
+          position: position,
+          coverImage: image,
+          company: companyId,
+        })
+      );
+    }
   };
 
   const uploadFileHandler = async (e) => {
@@ -65,6 +78,16 @@ const NewCastMemberScreen = ({ history }) => {
   const updatePosition = (option) => {
     setPosition(option);
   };
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push("/login");
+    }
+    if (success) {
+      dispatch({ type: CAST_MEMBER_CREATE_RESET });
+      history.push(`/castmember/${castMember._id}`);
+    }
+  }, [dispatch, history, userInfo, success, castMember]);
 
   return (
     <>
