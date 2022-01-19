@@ -7,10 +7,6 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    userNameLower: {
-      type: String,
-      required: true,
-    },
     name: {
       type: String,
       required: true,
@@ -29,12 +25,15 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    dateOfBirth: {
+      type: Date,
+      required: true,
+    },
     isAdmin: {
       type: Boolean,
       required: true,
       default: false,
     },
-    
   },
   {
     timestamps: true,

@@ -8,7 +8,7 @@ import { registerUser } from "../actions/userActions";
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
@@ -37,7 +37,7 @@ const RegisterScreen = ({ location, history }) => {
         registerUser({
           name: name,
           email: email,
-          username: username,
+          userName: userName,
           password: password,
           dateOfBirth: dateOfBirth,
         })
@@ -75,13 +75,13 @@ const RegisterScreen = ({ location, history }) => {
                 ></Form.Control>
               </Form.Group>
 
-              <Form.Group controlId="name">
+              <Form.Group controlId="userName">
                 <Form.Label>Username</Form.Label>
                 <Form.Control
                   type="name"
                   placeholder="Enter username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
                 ></Form.Control>
               </Form.Group>
 

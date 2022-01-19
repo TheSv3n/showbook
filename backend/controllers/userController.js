@@ -6,7 +6,7 @@ import User from "../models/userModel.js";
 //@route POST /api/users
 //@access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { userName, firstName, lastName, email, password, image } = req.body;
+  const { userName, name, email, password, image, dateOfBirth } = req.body;
 
   const userExists =
     (await User.findOne({
@@ -27,15 +27,12 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("User already exists");
   }
 
-  const name = `${firstName} ${lastName}`;
-
   const user = await User.create({
     userName,
-    name,
+    name: name,
     email: email.toLowerCase(),
     password,
-    userNameLower: userName.toLowerCase(),
-    followedBy: [],
+    dateOfBirth,
     image,
   });
 
@@ -111,4 +108,24 @@ const getUserName = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser, authUser, getUserName };
+//@desc Get user profile
+//@route GET /api/users/profile
+//@access Private
+const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      userName: user.userName,
+      email: user.email,
+      dateOfBirth: user.dateOfBirth,
+      isAdmin: user.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+export { registerUser, authUser, getUserName, getUserProfile };

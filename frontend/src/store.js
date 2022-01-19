@@ -36,11 +36,16 @@ import {
   companyCreateReducer,
 } from "./reducers/companyReducers";
 
-import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
+import {
+  userLoginReducer,
+  userRegisterReducer,
+  userProfileReducer,
+} from "./reducers/userReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  userProfile: userProfileReducer,
   showList: showListReducer,
   showInfo: showInfoReducer,
   showCreate: showCreateReducer,

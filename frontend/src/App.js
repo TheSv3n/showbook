@@ -15,6 +15,7 @@ import NewCastMemberScreen from "./screens/NewCastMemberScreen";
 import NewCompanyScreen from "./screens/NewCompanyScreen";
 import CastScreen from "./screens/CastScreen";
 import RegisterScreen from "./screens/RegisterScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Router>
         <NavBar />
         <Route path="/" component={MainFeedScreen} exact />
+        <Route path="/profile" component={ProfileScreen} />
         <Route path="/login" component={LoginScreen} />
         <Route path="/register" component={RegisterScreen} />
         <Route path="/show/:id" component={ShowScreen} exact />
