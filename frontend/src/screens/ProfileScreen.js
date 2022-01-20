@@ -9,6 +9,7 @@ import {
   updateUserProfile,
 } from "../actions/userActions";
 import { listUserReviews } from "../actions/showActions";
+import ReviewTableRow from "../components/ReviewTableRow";
 
 const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -146,21 +147,16 @@ const ProfileScreen = ({ history }) => {
               >
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <th>Poster</th>
                     <th>Show</th>
+                    <th>Company</th>
+                    <th>Rating</th>
+                    <th>Date</th>
                   </tr>
                 </thead>
                 <tbody>
                   {reviews.map((review) => (
-                    <tr key={review._id}>
-                      <td>{review._id}</td>
-                      <td>{review.performanceId}</td>
-                      <td>
-                        <Button className="btn-sm" variant="light">
-                          Details
-                        </Button>
-                      </td>
-                    </tr>
+                    <ReviewTableRow key={review._id} review={review} />
                   ))}
                 </tbody>
               </Table>

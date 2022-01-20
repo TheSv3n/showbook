@@ -254,7 +254,12 @@ const getUserReviews = asyncHandler(async (req, res) => {
 
   for (let i = 0; i < shows.length; i++) {
     for (let j = 0; j < shows[i].reviews.length; j++) {
-      let tempReview = shows[i].reviews[j];
+      let tempReview = {
+        poster: shows[i].coverImage,
+        rating: shows[i].reviews[j].rating,
+        title: shows[i].title,
+        company: shows[i].company,
+      };
       reviews = [...reviews, tempReview];
     }
   }
