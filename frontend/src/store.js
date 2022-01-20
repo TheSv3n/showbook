@@ -12,6 +12,7 @@ import {
   addShowImageReducer,
   companyShowListReducer,
   addShowRoleReducer,
+  showUserReviewsReducer,
 } from "./reducers/showReducers";
 
 import {
@@ -40,12 +41,14 @@ import {
   userLoginReducer,
   userRegisterReducer,
   userProfileReducer,
+  userUpdateProfileReducer,
 } from "./reducers/userReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userProfile: userProfileReducer,
+  userUpdateProfile: userUpdateProfileReducer,
   showList: showListReducer,
   showInfo: showInfoReducer,
   showCreate: showCreateReducer,
@@ -54,6 +57,7 @@ const reducer = combineReducers({
   addShowPerformance: addShowPerformanceReducer,
   addShowImage: addShowImageReducer,
   addShowRole: addShowRoleReducer,
+  showUserReviews: showUserReviewsReducer,
   venueList: venueListReducer,
   venueInfo: venueInfoReducer,
   addVenueReview: addVenueReviewReducer,

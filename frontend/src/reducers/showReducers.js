@@ -31,6 +31,9 @@ import {
   SHOW_ADD_ROLE_SUCCESS,
   SHOW_ADD_ROLE_FAIL,
   SHOW_ADD_ROLE_RESET,
+  SHOW_USER_REVIEWS_REQUEST,
+  SHOW_USER_REVIEWS_SUCCESS,
+  SHOW_USER_REVIEWS_FAIL,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -233,6 +236,22 @@ export const addShowRoleReducer = (state = {}, action) => {
       return {
         state: {},
       };
+    default:
+      return state;
+  }
+};
+
+export const showUserReviewsReducer = (state = { reviews: [] }, action) => {
+  switch (action.type) {
+    case SHOW_USER_REVIEWS_REQUEST:
+      return { loading: true, reviews: [] };
+    case SHOW_USER_REVIEWS_SUCCESS:
+      return {
+        loading: false,
+        reviews: action.payload.reviews,
+      };
+    case SHOW_USER_REVIEWS_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

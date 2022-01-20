@@ -28,6 +28,9 @@ import {
   SHOW_ADD_ROLE_REQUEST,
   SHOW_ADD_ROLE_SUCCESS,
   SHOW_ADD_ROLE_FAIL,
+  SHOW_USER_REVIEWS_REQUEST,
+  SHOW_USER_REVIEWS_SUCCESS,
+  SHOW_USER_REVIEWS_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -315,6 +318,38 @@ export const createShowRole = (showId, role) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: SHOW_ADD_ROLE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listUserReviews = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: SHOW_USER_REVIEWS_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/shows/myreviews`, config);
+
+    dispatch({
+      type: SHOW_USER_REVIEWS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SHOW_USER_REVIEWS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

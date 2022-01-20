@@ -234,6 +234,34 @@ const addShowRole = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Fetch Show Venue Performances
+//@route GET /api/shows/venue/:id/performances
+//@access Public
+const getUserReviews = asyncHandler(async (req, res) => {
+  const page = Number(req.query.pageNumber) || 1;
+
+  const keyword = {
+    $or: [
+      {
+        "reviews.user": req.user._id,
+      },
+    ],
+  };
+
+  const shows = await Show.find({ ...keyword });
+
+  let reviews = [];
+
+  for (let i = 0; i < shows.length; i++) {
+    for (let j = 0; j < shows[i].reviews.length; j++) {
+      let tempReview = shows[i].reviews[j];
+      reviews = [...reviews, tempReview];
+    }
+  }
+
+  res.json({ reviews });
+});
+
 export {
   createShow,
   getAllShows,
@@ -245,4 +273,5 @@ export {
   getShowName,
   getCompanyShows,
   addShowRole,
+  getUserReviews,
 };
