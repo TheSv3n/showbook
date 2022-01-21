@@ -167,11 +167,13 @@ const getVenuePerformances = asyncHandler(async (req, res) => {
 
   for (let i = 0; i < shows.length; i++) {
     for (let j = 0; j < shows[i].performances.length; j++) {
-      let tempPerformance = {
-        showId: shows[i]._id,
-        performance: shows[i].performances[j],
-      };
-      performances = [...performances, tempPerformance];
+      if (shows[i].performances[j].venueId === req.params.id) {
+        let tempPerformance = {
+          showId: shows[i]._id,
+          performance: shows[i].performances[j],
+        };
+        performances = [...performances, tempPerformance];
+      }
     }
   }
 
@@ -254,13 +256,16 @@ const getUserReviews = asyncHandler(async (req, res) => {
 
   for (let i = 0; i < shows.length; i++) {
     for (let j = 0; j < shows[i].reviews.length; j++) {
-      let tempReview = {
-        poster: shows[i].coverImage,
-        rating: shows[i].reviews[j].rating,
-        title: shows[i].title,
-        company: shows[i].company,
-      };
-      reviews = [...reviews, tempReview];
+      if (shows[i].reviews[j].user === req.user._id.toString()) {
+        let tempReview = {
+          poster: shows[i].coverImage,
+          rating: shows[i].reviews[j].rating,
+          title: shows[i].title,
+          showId: shows[i]._id,
+          company: shows[i].company,
+        };
+        reviews = [...reviews, tempReview];
+      }
     }
   }
 

@@ -123,12 +123,14 @@ const ProfileScreen = ({ history }) => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 ></Form.Control>
               </Form.Group>
-              <Button onClick={submitHandler} variant="primary">
-                Update
-              </Button>{" "}
-              <Button onClick={logoutHandler} variant="danger">
-                Logout
-              </Button>
+              <div className="my-3">
+                <Button onClick={submitHandler} variant="primary">
+                  Update
+                </Button>{" "}
+                <Button onClick={logoutHandler} variant="danger">
+                  Logout
+                </Button>
+              </div>
             </Form>
           </Col>
           <Col md={9}>
