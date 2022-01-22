@@ -236,9 +236,9 @@ const addShowRole = asyncHandler(async (req, res) => {
   }
 });
 
-//@desc Fetch Show Venue Performances
-//@route GET /api/shows/venue/:id/performances
-//@access Public
+//@desc Fetch User Reviews
+//@route GET /api/myreviews
+//@access Private
 const getUserReviews = asyncHandler(async (req, res) => {
   const page = Number(req.query.pageNumber) || 1;
 
@@ -263,6 +263,7 @@ const getUserReviews = asyncHandler(async (req, res) => {
           title: shows[i].title,
           showId: shows[i]._id,
           company: shows[i].company,
+          performanceId: shows[i].reviews[j].performanceId,
         };
         reviews = [...reviews, tempReview];
       }
@@ -270,6 +271,27 @@ const getUserReviews = asyncHandler(async (req, res) => {
   }
 
   res.json({ reviews });
+});
+
+//@desc Get performance date
+//@route GET /api/shows/:id/performance
+//@access Public
+const getPerformanceDate = asyncHandler(async (req, res) => {
+  const show = await Show.findById(req.params.id);
+  const performanceId = req.query.performanceId;
+  let performanceDate;
+
+  if (show) {
+    for (let i = 0; i < show.performances.length; i++) {
+      if (show.performances[i]._id.toString() === performanceId) {
+        performanceDate = show.performances[i].date;
+      }
+    }
+    res.json(performanceDate);
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
 });
 
 export {
@@ -284,4 +306,5 @@ export {
   getCompanyShows,
   addShowRole,
   getUserReviews,
+  getPerformanceDate,
 };

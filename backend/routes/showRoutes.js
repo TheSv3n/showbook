@@ -12,6 +12,7 @@ import {
   getCompanyShows,
   addShowRole,
   getUserReviews,
+  getPerformanceDate,
 } from "../controllers/showController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -20,6 +21,7 @@ router.route("/").post(protect, createShow).get(getAllShows);
 router.route("/myreviews").get(protect, getUserReviews);
 router.route("/:id").get(getShow);
 router.route("/:id/performances").put(protect, addPerformance);
+router.route("/:id/performance").get(getPerformanceDate);
 router.route("/:id/images").put(protect, addShowImage);
 router.route("/:id/reviews").put(protect, addShowReview);
 router.route("/:id/roles").put(protect, addShowRole);

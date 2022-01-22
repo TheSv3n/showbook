@@ -71,7 +71,7 @@ const ProfileScreen = ({ history }) => {
     <section className="text-light">
       <Container>
         <Row>
-          <Col md={3}>
+          <Col md={2}>
             <h2>My Profile</h2>
             {message && <div>{message}</div>}
             {error && <div>{error}</div>}
@@ -133,27 +133,22 @@ const ProfileScreen = ({ history }) => {
               </div>
             </Form>
           </Col>
-          <Col md={9}>
+          <Col md={10}>
             <h2>My Reviews</h2>
             {loadingReviews ? (
               <Loader />
             ) : errorReviews ? (
               <div>{errorReviews}</div>
             ) : (
-              <Table
-                striped
-                bordered
-                hover
-                responsive
-                className="table-sm text-light"
-              >
+              <Table striped hover responsive className="table-sm text-light">
                 <thead>
                   <tr>
                     <th>Poster</th>
                     <th>Show</th>
                     <th>Company</th>
                     <th>Rating</th>
-                    <th>Date</th>
+                    <th>Date Seen</th>
+                    <th>Date Reviewed</th>
                   </tr>
                 </thead>
                 <tbody>
