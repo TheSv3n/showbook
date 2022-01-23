@@ -147,6 +147,7 @@ const ProfileScreen = ({ history }) => {
                     <th>Show</th>
                     <th>Company</th>
                     <th>Rating</th>
+                    <th>Seen At</th>
                     <th>Date Seen</th>
                     <th>Date Reviewed</th>
                   </tr>

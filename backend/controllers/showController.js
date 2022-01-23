@@ -1,5 +1,7 @@
 import asyncHandler from "express-async-handler";
 import Show from "../models/showModel.js";
+import Company from "../models/companyModel.js";
+import Venue from "../models/venueModel.js";
 
 //@desc Create new show
 //@route POST /api/shows
@@ -257,13 +259,34 @@ const getUserReviews = asyncHandler(async (req, res) => {
   for (let i = 0; i < shows.length; i++) {
     for (let j = 0; j < shows[i].reviews.length; j++) {
       if (shows[i].reviews[j].user === req.user._id.toString()) {
+        let company = await Company.findById(shows[i].company);
+        let performanceVenueId;
+        let performanceDate;
+        let companyName = company.name;
+        let performanceVenueName;
+        for (let k = 0; k < shows[i].performances.length; k++) {
+          if (
+            shows[i].performances[k]._id.toString() ===
+            shows[i].reviews[j].performanceId
+          ) {
+            performanceVenueId = shows[i].performances[k].venueId;
+            performanceDate = shows[i].performances[k].date;
+          }
+        }
+        let venue = await Venue.findById(performanceVenueId);
+        performanceVenueName = venue.name;
         let tempReview = {
           poster: shows[i].coverImage,
           rating: shows[i].reviews[j].rating,
           title: shows[i].title,
           showId: shows[i]._id,
-          company: shows[i].company,
+          companyId: shows[i].company,
+          companyName: companyName,
           performanceId: shows[i].reviews[j].performanceId,
+          performanceVenueId: performanceVenueId,
+          performanceVenueName: performanceVenueName,
+          reviewDate: shows[i].reviews[j].createdAt,
+          performanceDate: performanceDate,
         };
         reviews = [...reviews, tempReview];
       }
@@ -271,27 +294,6 @@ const getUserReviews = asyncHandler(async (req, res) => {
   }
 
   res.json({ reviews });
-});
-
-//@desc Get performance date
-//@route GET /api/shows/:id/performance
-//@access Public
-const getPerformanceDate = asyncHandler(async (req, res) => {
-  const show = await Show.findById(req.params.id);
-  const performanceId = req.query.performanceId;
-  let performanceDate;
-
-  if (show) {
-    for (let i = 0; i < show.performances.length; i++) {
-      if (show.performances[i]._id.toString() === performanceId) {
-        performanceDate = show.performances[i].date;
-      }
-    }
-    res.json(performanceDate);
-  } else {
-    res.status(404);
-    throw new Error("Show not Found");
-  }
 });
 
 export {
@@ -306,5 +308,4 @@ export {
   getCompanyShows,
   addShowRole,
   getUserReviews,
-  getPerformanceDate,
 };

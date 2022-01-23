@@ -1,23 +1,28 @@
 import mongoose from "mongoose";
 
-const reviewSchema = mongoose.Schema({
-  user: {
-    type: String,
-    required: true,
+const reviewSchema = mongoose.Schema(
+  {
+    user: {
+      type: String,
+      required: true,
+    },
+    performanceId: {
+      type: String,
+      required: true,
+    },
+    rating: {
+      type: Number,
+      required: true,
+    },
+    comment: {
+      type: String,
+      required: false,
+    },
   },
-  performanceId: {
-    type: String,
-    required: true,
-  },
-  rating: {
-    type: Number,
-    required: true,
-  },
-  comment: {
-    type: String,
-    required: false,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 const performanceSchema = mongoose.Schema({
   venueId: {
