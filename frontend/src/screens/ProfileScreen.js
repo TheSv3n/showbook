@@ -50,7 +50,7 @@ const ProfileScreen = ({ history }) => {
         setDateOfBirth(user.dateOfBirth);
       }
     }
-  }, [dispatch, userInfo, user, history]);
+  }, [dispatch, userInfo, user, history, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Image } from "react-bootstrap";
 import RatingWidget from "./RatingWidget";
-import axios from "axios";
 import { Link } from "react-router-dom";
 
 const ReviewTableRow = ({ review }) => {

@@ -51,10 +51,29 @@ const getAllShows = asyncHandler(async (req, res) => {
     : {};
 
   const count = await Show.countDocuments({ ...keyword });
-  const shows = await Show.find({ ...keyword })
+  const tempShows = await Show.find({ ...keyword })
     .sort(ranked === "true" ? { rating: -1 } : { createdAt: -1 })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
+
+  //add company names
+  let shows = [];
+  for (let i = 0; i < tempShows.length; i++) {
+    let company = await Company.findById(tempShows[i].company);
+    let companyName = company.name;
+    let tempShow = {
+      _id: tempShows[i]._id,
+      title: tempShows[i].title,
+      coverImage: tempShows[i].coverImage,
+      companyName: companyName,
+      synopsis: tempShows[i].synopsis,
+      performanceCount: tempShows[i].performances.length,
+      reviewCount: tempShows[i].reviews.length,
+      rating: tempShows[i].rating,
+    };
+
+    shows = [...shows, tempShow];
+  }
   res.json({ shows, page, pages: Math.ceil(count / pageSize), count });
 });
 

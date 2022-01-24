@@ -108,7 +108,7 @@ const NewCastMemberScreen = ({ history }) => {
                   <Form.Label>Name</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Show name"
+                    placeholder="Cast Member name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   ></Form.Control>
