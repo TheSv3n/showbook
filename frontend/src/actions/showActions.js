@@ -31,6 +31,9 @@ import {
   SHOW_USER_REVIEWS_REQUEST,
   SHOW_USER_REVIEWS_SUCCESS,
   SHOW_USER_REVIEWS_FAIL,
+  SHOW_REVIEW_DETAILS_REQUEST,
+  SHOW_REVIEW_DETAILS_SUCCESS,
+  SHOW_REVIEW_DETAILS_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -357,3 +360,29 @@ export const listUserReviews = () => async (dispatch, getState) => {
     });
   }
 };
+
+export const getShowReviewInfo =
+  (reviewId, update) => async (dispatch, getState) => {
+    try {
+      if (!update) {
+        dispatch({
+          type: SHOW_REVIEW_DETAILS_REQUEST,
+        });
+      }
+
+      const { data } = await axios.get(`/api/shows/reviews/${reviewId}`);
+
+      dispatch({
+        type: SHOW_REVIEW_DETAILS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: SHOW_REVIEW_DETAILS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

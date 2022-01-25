@@ -34,6 +34,9 @@ import {
   SHOW_USER_REVIEWS_REQUEST,
   SHOW_USER_REVIEWS_SUCCESS,
   SHOW_USER_REVIEWS_FAIL,
+  SHOW_REVIEW_DETAILS_REQUEST,
+  SHOW_REVIEW_DETAILS_SUCCESS,
+  SHOW_REVIEW_DETAILS_FAIL,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -252,6 +255,28 @@ export const showUserReviewsReducer = (state = { reviews: [] }, action) => {
       };
     case SHOW_USER_REVIEWS_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const showReviewInfoReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SHOW_REVIEW_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case SHOW_REVIEW_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        review: action.payload,
+      };
+    case SHOW_REVIEW_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

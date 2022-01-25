@@ -263,15 +263,13 @@ const addShowRole = asyncHandler(async (req, res) => {
 const getUserReviews = asyncHandler(async (req, res) => {
   const page = Number(req.query.pageNumber) || 1;
 
-  const keyword = {
+  const shows = await Show.find({
     $or: [
       {
         "reviews.user": req.user._id,
       },
     ],
-  };
-
-  const shows = await Show.find({ ...keyword });
+  });
 
   let reviews = [];
 
@@ -295,6 +293,7 @@ const getUserReviews = asyncHandler(async (req, res) => {
         let venue = await Venue.findById(performanceVenueId);
         performanceVenueName = venue.name;
         let tempReview = {
+          reviewId: shows[i].reviews[j]._id,
           poster: shows[i].coverImage,
           rating: shows[i].reviews[j].rating,
           title: shows[i].title,
@@ -315,6 +314,46 @@ const getUserReviews = asyncHandler(async (req, res) => {
   res.json({ reviews });
 });
 
+//@desc Fetch Show Review
+//route GET /api/shows/reviews/:id
+//@access Public
+const getShowReview = asyncHandler(async (req, res) => {
+  const shows = await Show.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (shows) {
+    let review;
+
+    for (let i = 0; i < shows[0].reviews.length; i++) {
+      if (shows[0].reviews[i]._id.toString() === req.params.id) {
+        review = {
+          _id: shows[0].reviews[i]._id,
+          performanceId: shows[0].reviews[i].performanceId,
+          comment: shows[0].reviews[i].comment,
+          rating: shows[0].reviews[i].rating,
+          user: shows[0].reviews[i].user,
+          createdAt: shows[0].reviews[i].createdAt,
+          updatedAt: shows[0].reviews[i].updatedAt,
+          showId: shows[0]._id,
+          showTitle: shows[0].title,
+          showCoverImage: shows[0].coverImage,
+          showCompany: shows[0].company,
+        };
+      }
+    }
+
+    res.json(review);
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
+});
+
 export {
   createShow,
   getAllShows,
@@ -327,4 +366,5 @@ export {
   getCompanyShows,
   addShowRole,
   getUserReviews,
+  getShowReview,
 };

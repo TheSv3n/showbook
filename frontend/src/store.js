@@ -13,6 +13,7 @@ import {
   companyShowListReducer,
   addShowRoleReducer,
   showUserReviewsReducer,
+  showReviewInfoReducer,
 } from "./reducers/showReducers";
 
 import {
@@ -58,6 +59,7 @@ const reducer = combineReducers({
   addShowImage: addShowImageReducer,
   addShowRole: addShowRoleReducer,
   showUserReviews: showUserReviewsReducer,
+  showReviewInfo: showReviewInfoReducer,
   venueList: venueListReducer,
   venueInfo: venueInfoReducer,
   addVenueReview: addVenueReviewReducer,
