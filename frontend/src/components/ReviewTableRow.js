@@ -40,6 +40,9 @@ const ReviewTableRow = ({ review }) => {
       </td>
       <td className="text-light">{review.performanceDate.substring(0, 10)}</td>
       <td className="text-light">{review.reviewDate.substring(0, 10)}</td>
+      <td className="text-light">
+        <Link to={`/showreview/${review.reviewId}`}>View</Link>
+      </td>
     </tr>
   );
 };

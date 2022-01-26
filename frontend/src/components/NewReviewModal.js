@@ -49,6 +49,13 @@ const NewReviewModal = ({
           })
         );
         break;
+      case "comment":
+        /*dispatch(
+          addReviewComment(id, {
+            comment: comment,
+          })
+        );*/
+        break;
 
       default:
     }
@@ -100,17 +107,20 @@ const NewReviewModal = ({
                   ) : (
                     ""
                   )}
-
-                  <Form.Group controlId="rating">
-                    <Form.Label>Rating - </Form.Label>
-                    <RatingWidget
-                      value={rating}
-                      color={"orange"}
-                      newReview={true}
-                      text={""}
-                      setRating={setRating}
-                    />
-                  </Form.Group>
+                  {type !== "comment" ? (
+                    <Form.Group controlId="rating">
+                      <Form.Label>Rating - </Form.Label>
+                      <RatingWidget
+                        value={rating}
+                        color={"orange"}
+                        newReview={true}
+                        text={""}
+                        setRating={setRating}
+                      />
+                    </Form.Group>
+                  ) : (
+                    ""
+                  )}
 
                   <Form.Group controlId="comment">
                     <Form.Label>Comment</Form.Label>

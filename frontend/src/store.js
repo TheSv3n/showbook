@@ -14,6 +14,7 @@ import {
   addShowRoleReducer,
   showUserReviewsReducer,
   showReviewInfoReducer,
+  addShowReviewCommentReducer,
 } from "./reducers/showReducers";
 
 import {
@@ -54,6 +55,7 @@ const reducer = combineReducers({
   showInfo: showInfoReducer,
   showCreate: showCreateReducer,
   addShowReview: addShowReviewReducer,
+  addShowReviewComment: addShowReviewCommentReducer,
   showVenuePerformances: showVenuePerformancesReducer,
   addShowPerformance: addShowPerformanceReducer,
   addShowImage: addShowImageReducer,

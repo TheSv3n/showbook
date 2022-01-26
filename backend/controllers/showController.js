@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import Show from "../models/showModel.js";
 import Company from "../models/companyModel.js";
 import Venue from "../models/venueModel.js";
+import User from "../models/userModel.js";
 
 //@desc Create new show
 //@route POST /api/shows
@@ -331,18 +332,41 @@ const getShowReview = asyncHandler(async (req, res) => {
 
     for (let i = 0; i < shows[0].reviews.length; i++) {
       if (shows[0].reviews[i]._id.toString() === req.params.id) {
+        let company = await Company.findById(shows[0].company);
+        let user = await User.findById(shows[0].reviews[i].user);
+        let companyName = company.name;
+        let userName = user.userName;
+        let performanceVenueId;
+        let performanceDate;
+        let performanceVenueName;
+        for (let j = 0; j < shows[0].performances.length; j++) {
+          if (
+            shows[0].performances[j]._id.toString() ===
+            shows[0].reviews[i].performanceId
+          ) {
+            performanceVenueId = shows[0].performances[j].venueId;
+            performanceDate = shows[0].performances[j].date;
+          }
+        }
+        let venue = await Venue.findById(performanceVenueId);
+        performanceVenueName = venue.name;
         review = {
           _id: shows[0].reviews[i]._id,
           performanceId: shows[0].reviews[i].performanceId,
           comment: shows[0].reviews[i].comment,
           rating: shows[0].reviews[i].rating,
           user: shows[0].reviews[i].user,
+          userName: userName,
           createdAt: shows[0].reviews[i].createdAt,
           updatedAt: shows[0].reviews[i].updatedAt,
           showId: shows[0]._id,
           showTitle: shows[0].title,
           showCoverImage: shows[0].coverImage,
-          showCompany: shows[0].company,
+          showCompanyId: shows[0].company,
+          showCompanyName: companyName,
+          performanceVenueId: performanceVenueId,
+          performanceVenueName: performanceVenueName,
+          performanceDate: performanceDate,
         };
       }
     }

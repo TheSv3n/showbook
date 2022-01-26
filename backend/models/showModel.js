@@ -1,5 +1,21 @@
 import mongoose from "mongoose";
 
+const reviewCommentSchema = mongoose.Schema(
+  {
+    user: {
+      type: String,
+      required: true,
+    },
+    comment: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const reviewSchema = mongoose.Schema(
   {
     user: {
@@ -18,6 +34,7 @@ const reviewSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    reviewComments: [reviewCommentSchema],
   },
   {
     timestamps: true,
