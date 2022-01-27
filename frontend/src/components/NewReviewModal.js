@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
-import { addShowReview } from "../actions/showActions";
+import { addShowReview, addShowReviewComment } from "../actions/showActions";
 import { addVenueReview } from "../actions/venueActions";
 import { useDispatch } from "react-redux";
 import RatingWidget from "./RatingWidget";
@@ -49,12 +49,12 @@ const NewReviewModal = ({
           })
         );
         break;
-      case "comment":
-        /*dispatch(
-          addReviewComment(id, {
+      case "showreviewcomment":
+        dispatch(
+          addShowReviewComment(id, {
             comment: comment,
           })
-        );*/
+        );
         break;
 
       default:
@@ -107,7 +107,7 @@ const NewReviewModal = ({
                   ) : (
                     ""
                   )}
-                  {type !== "comment" ? (
+                  {type !== "showreviewcomment" ? (
                     <Form.Group controlId="rating">
                       <Form.Label>Rating - </Form.Label>
                       <RatingWidget

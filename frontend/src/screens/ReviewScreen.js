@@ -51,8 +51,8 @@ const ReviewScreen = ({ match, history }) => {
             <NewReviewModal
               showModal={showReviewModal}
               updateShowModal={updateShowReviewModal}
-              id={review.reviewId}
-              type={"comment"}
+              id={review._id}
+              type={"showreviewcomment"}
             />
             <Container>
               <Row className="mb-4">

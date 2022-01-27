@@ -378,6 +378,13 @@ const getShowReview = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Add Show Review Comment
+//route PUT /api/shows/reviews/:id/comments
+//@access Private
+const addShowReviewComment = asyncHandler(async (req, res) => {
+  //TODO
+});
+
 export {
   createShow,
   getAllShows,
@@ -391,4 +398,5 @@ export {
   addShowRole,
   getUserReviews,
   getShowReview,
+  addShowReviewComment,
 };
