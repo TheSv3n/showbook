@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Col } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "../css/review.css";
 import RatingWidget from "../components/RatingWidget";
@@ -62,14 +63,21 @@ const Review = ({ review, performances, type }) => {
       )}
 
       <div className="text-light">{review.comment} </div>
-      {userInfo ? (
-        <div className="align-right">
-          <i className="bi bi-pencil-square text-light review-icon mx-1"></i>
-          <i className="bi bi-trash text-light review-icon mx-1"></i>
-        </div>
-      ) : (
-        ""
-      )}
+      <div className="d-flex justify-content-between">
+        <span className="align-right">
+          {userInfo && userInfo._id === review.user ? (
+            <>
+              <i className="bi bi-pencil-square text-light review-icon mx-1"></i>
+              <i className="bi bi-trash text-light review-icon mx-1"></i>
+            </>
+          ) : (
+            ""
+          )}
+        </span>
+        <Link to={`/showreview/${review._id}`} className="text-white">
+          <span className="align-left">Show full review</span>
+        </Link>
+      </div>
     </li>
   );
 };

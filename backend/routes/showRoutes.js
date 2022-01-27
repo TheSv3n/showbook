@@ -29,6 +29,6 @@ router.route("/:id/name").get(getShowName);
 router.route("/venue/:id/performances").get(getVenuePerformances);
 router.route("/company/:id").get(getCompanyShows);
 router.route("/reviews/:id").get(getShowReview);
-router.route("/reviews/:id/comments").put(addShowReviewComment);
+router.route("/reviews/:id/comments").put(protect, addShowReviewComment);
 
 export default router;
