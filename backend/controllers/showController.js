@@ -359,6 +359,7 @@ const getShowReview = asyncHandler(async (req, res) => {
           userName: userName,
           createdAt: shows[0].reviews[i].createdAt,
           updatedAt: shows[0].reviews[i].updatedAt,
+          reviewComments: shows[0].reviews[i].reviewComments,
           showId: shows[0]._id,
           showTitle: shows[0].title,
           showCoverImage: shows[0].coverImage,

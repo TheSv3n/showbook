@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getShowReviewInfo } from "../actions/showActions";
 import Loader from "../components/Loader";
-import { Image, Container, Row, Col, Button } from "react-bootstrap";
+import { Image, Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import RatingWidget from "../components/RatingWidget";
 import NewReviewModal from "../components/NewReviewModal";
+import Review from "../components/Review";
 
 const ReviewScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -125,6 +126,23 @@ const ReviewScreen = ({ match, history }) => {
                     )}
                   </span>
                 </h5>
+                <Container>
+                  <ul className="list-group">
+                    {review.reviewComments.length === 0 ? (
+                      <div className="text-light">No Reviews</div>
+                    ) : (
+                      review.reviewComments.map((comment) => {
+                        return (
+                          <Review
+                            review={comment}
+                            key={comment._id}
+                            type="showcomment"
+                          />
+                        );
+                      })
+                    )}
+                  </ul>
+                </Container>
               </Row>
             </Container>
           </>

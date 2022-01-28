@@ -35,6 +35,14 @@ const Review = ({ review, performances, type }) => {
     setPerformanceDate(performanceDate.substr(0, 10));
   };
 
+  const editHandler = () => {
+    //TODO
+  };
+
+  const deleteHandler = () => {
+    //TODO
+  };
+
   useEffect(() => {
     getUserName(review.user);
     if (type === "show") {
@@ -46,13 +54,19 @@ const Review = ({ review, performances, type }) => {
     <li className="list-group-item review-card bg-secondary my-2">
       <div className="d-flex">
         <Col md={6}>
-          <div className="user">{userName}</div>
+          <Link to={`/user/${review.user}`}>
+            <div className="user">{userName}</div>
+          </Link>
         </Col>
-        <Col md={6}>
-          <div className="align-right">
-            <RatingWidget value={review.rating} text={""} color={"orange"} />
-          </div>
-        </Col>
+        {type === "showcomment" ? (
+          ""
+        ) : (
+          <Col md={6}>
+            <div className="align-right">
+              <RatingWidget value={review.rating} text={""} color={"orange"} />
+            </div>
+          </Col>
+        )}
       </div>
       {type === "show" ? (
         <div className="performance">
@@ -67,16 +81,26 @@ const Review = ({ review, performances, type }) => {
         <span className="align-right">
           {userInfo && userInfo._id === review.user ? (
             <>
-              <i className="bi bi-pencil-square text-light review-icon mx-1"></i>
-              <i className="bi bi-trash text-light review-icon mx-1"></i>
+              <i
+                className="bi bi-pencil-square text-light review-icon mx-1"
+                onClick={editHandler}
+              ></i>
+              <i
+                className="bi bi-trash text-light review-icon mx-1"
+                onClick={deleteHandler}
+              ></i>
             </>
           ) : (
             ""
           )}
         </span>
-        <Link to={`/showreview/${review._id}`} className="text-white">
-          <span className="align-left">Show full review</span>
-        </Link>
+        {type === "showcomment" ? (
+          ""
+        ) : (
+          <Link to={`/showreview/${review._id}`} className="text-white">
+            <span className="align-left">Show full review</span>
+          </Link>
+        )}
       </div>
     </li>
   );
