@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../css/review.css";
 import RatingWidget from "../components/RatingWidget";
+import Loader from "../components/Loader";
+import { editShowReviewComment } from "../actions/showActions";
+import { SHOW_UPDATE_REVIEW_COMMENT_RESET } from "../constants/showConstants";
 
-const Review = ({ review, performances, type }) => {
+const Review = ({ review, performances, type, reviewId }) => {
+  const dispatch = useDispatch();
   const [userName, setUserName] = useState("");
   const [performanceDate, setPerformanceDate] = useState("");
   const [performanceVenue, setPerformanceVenue] = useState("");
   const [showEditFields, setShowEditFields] = useState("");
+  const [commentText, setCommentText] = useState("");
   const [editedComment, setEditedComment] = useState("");
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const updateShowReviewComment = useSelector(
+    (state) => state.updateShowReviewComment
+  );
+  const { loading, success, comment } = updateShowReviewComment;
 
   const getUserName = async (userId) => {
     const { data: userName } = await axios.get(`/api/users/${userId}/username`);
@@ -46,9 +56,16 @@ const Review = ({ review, performances, type }) => {
     //TODO
   };
 
-  const submitHandler = () => {
-    //TODO
-    setShowEditFields(!showEditFields);
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (editedComment !== "") {
+      dispatch(
+        editShowReviewComment(reviewId, {
+          comment: editedComment,
+          commentId: review._id,
+        })
+      );
+    }
   };
 
   useEffect(() => {
@@ -56,7 +73,15 @@ const Review = ({ review, performances, type }) => {
     if (type === "show") {
       getPerformanceInfo();
     }
-  }, [review]);
+    if (!success) {
+      setCommentText(review.comment);
+    }
+    if (success && comment._id === review._id) {
+      setCommentText(comment.comment);
+      setShowEditFields(false);
+      dispatch({ type: SHOW_UPDATE_REVIEW_COMMENT_RESET });
+    }
+  }, [review, comment, success]);
 
   return (
     <li className="list-group-item review-card bg-secondary my-2">
@@ -95,16 +120,21 @@ const Review = ({ review, performances, type }) => {
               onChange={(e) => setEditedComment(e.target.value)}
             ></Form.Control>
           </Form.Group>
-          <Button type="submit" variant="primary" className="my-2">
-            Submit
-          </Button>
+          {loading ? (
+            <Loader />
+          ) : (
+            <Button type="submit" variant="primary" className="my-2">
+              Submit
+            </Button>
+          )}
+
           <Button variant="danger" className="my-2 mx-2" onClick={editHandler}>
             Cancel
           </Button>
         </Form>
       ) : (
         <>
-          <div className="text-light">{review.comment} </div>
+          <div className="text-light">{commentText} </div>
           <div className="d-flex justify-content-between">
             <span className="align-right">
               {userInfo && userInfo._id === review.user ? (

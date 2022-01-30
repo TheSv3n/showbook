@@ -14,6 +14,7 @@ import {
   getUserReviews,
   getShowReview,
   addShowReviewComment,
+  updateShowReviewComment,
 } from "../controllers/showController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -29,6 +30,9 @@ router.route("/:id/name").get(getShowName);
 router.route("/venue/:id/performances").get(getVenuePerformances);
 router.route("/company/:id").get(getCompanyShows);
 router.route("/reviews/:id").get(getShowReview);
-router.route("/reviews/:id/comments").put(protect, addShowReviewComment);
+router
+  .route("/reviews/:id/comments")
+  .post(protect, addShowReviewComment)
+  .put(protect, updateShowReviewComment);
 
 export default router;

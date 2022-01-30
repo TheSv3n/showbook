@@ -380,7 +380,7 @@ const getShowReview = asyncHandler(async (req, res) => {
 });
 
 //@desc Add Show Review Comment
-//route PUT /api/shows/reviews/:id/comments
+//route POST /api/shows/reviews/:id/comments
 //@access Private
 const addShowReviewComment = asyncHandler(async (req, res) => {
   const { comment } = req.body;
@@ -412,6 +412,42 @@ const addShowReviewComment = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Update Show Review Comment
+//route PUT /api/shows/reviews/:id/comments
+//@access Private
+const updateShowReviewComment = asyncHandler(async (req, res) => {
+  const { comment, commentId } = req.body;
+  const shows = await Show.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (shows) {
+    for (let i = 0; i < shows[0].reviews.length; i++) {
+      if (shows[0].reviews[i]._id.toString() === req.params.id) {
+        for (let j = 0; j < shows[0].reviews[i].reviewComments.length; j++) {
+          if (
+            shows[0].reviews[i].reviewComments[j]._id.toString() === commentId
+          ) {
+            shows[0].reviews[i].reviewComments[j].comment = comment;
+          }
+        }
+      }
+    }
+
+    let newComment = { comment: comment, _id: commentId };
+
+    await shows[0].save();
+    res.status(201).json(newComment);
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
+});
+
 export {
   createShow,
   getAllShows,
@@ -426,4 +462,5 @@ export {
   getUserReviews,
   getShowReview,
   addShowReviewComment,
+  updateShowReviewComment,
 };

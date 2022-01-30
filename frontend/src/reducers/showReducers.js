@@ -40,6 +40,13 @@ import {
   SHOW_ADD_REVIEW_COMMENT_REQUEST,
   SHOW_ADD_REVIEW_COMMENT_SUCCESS,
   SHOW_ADD_REVIEW_COMMENT_FAIL,
+  SHOW_UPDATE_REVIEW_REQUEST,
+  SHOW_UPDATE_REVIEW_SUCCESS,
+  SHOW_UPDATE_REVIEW_FAIL,
+  SHOW_UPDATE_REVIEW_COMMENT_REQUEST,
+  SHOW_UPDATE_REVIEW_COMMENT_SUCCESS,
+  SHOW_UPDATE_REVIEW_COMMENT_FAIL,
+  SHOW_UPDATE_REVIEW_COMMENT_RESET,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -301,6 +308,54 @@ export const addShowReviewCommentReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const updateShowReviewReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SHOW_UPDATE_REVIEW_REQUEST:
+      return {
+        loading: true,
+      };
+    case SHOW_UPDATE_REVIEW_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        review: action.payload,
+      };
+    case SHOW_UPDATE_REVIEW_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const updateShowReviewCommentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SHOW_UPDATE_REVIEW_COMMENT_REQUEST:
+      return {
+        loading: true,
+      };
+    case SHOW_UPDATE_REVIEW_COMMENT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        comment: action.payload,
+      };
+    case SHOW_UPDATE_REVIEW_COMMENT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case SHOW_UPDATE_REVIEW_COMMENT_RESET:
+      return {
+        state: {},
       };
     default:
       return state;

@@ -137,6 +137,7 @@ const ReviewScreen = ({ match, history }) => {
                             review={comment}
                             key={comment._id}
                             type="showcomment"
+                            reviewId={reviewId}
                           />
                         );
                       })
