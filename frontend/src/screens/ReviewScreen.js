@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getShowReviewInfo } from "../actions/showActions";
 import Loader from "../components/Loader";
-import { Image, Container, Row, Col } from "react-bootstrap";
+import { Image, Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import RatingWidget from "../components/RatingWidget";
 import NewReviewModal from "../components/NewReviewModal";
@@ -12,6 +12,9 @@ const ReviewScreen = ({ match, history }) => {
   const dispatch = useDispatch();
   const reviewId = match.params.id;
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [showEditFields, setShowEditFields] = useState("");
+  const [commentText, setCommentText] = useState("");
+  const [editedComment, setEditedComment] = useState("");
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -35,6 +38,13 @@ const ReviewScreen = ({ match, history }) => {
       history.push(`/login?redirect=review/${reviewId}`);
     }
   };
+
+  const editHandler = () => {
+    setShowEditFields(!showEditFields);
+    setEditedComment(review.comment);
+  };
+
+  const submitHandler = () => {};
 
   useEffect(() => {
     if (!review || review._id !== reviewId) {
@@ -105,8 +115,49 @@ const ReviewScreen = ({ match, history }) => {
                         text={""}
                         color={"orange"}
                       />
+                      {userInfo && userInfo._id === review.user ? (
+                        <i
+                          className="bi bi-pencil-square text-light review-icon mx-1"
+                          onClick={editHandler}
+                        ></i>
+                      ) : (
+                        ""
+                      )}
                     </span>
-                    <div>{review.comment}</div>
+                    {showEditFields ? (
+                      <Form onSubmit={submitHandler}>
+                        <Form.Group controlId="comment">
+                          <Form.Control
+                            as="textarea"
+                            rows={5}
+                            placeholder="Enter comment"
+                            value={editedComment}
+                            onChange={(e) => setEditedComment(e.target.value)}
+                          ></Form.Control>
+                        </Form.Group>
+                        {loading ? (
+                          <Loader />
+                        ) : (
+                          <Button
+                            type="submit"
+                            variant="primary"
+                            className="my-2"
+                          >
+                            Submit
+                          </Button>
+                        )}
+
+                        <Button
+                          variant="danger"
+                          className="my-2 mx-2"
+                          onClick={editHandler}
+                        >
+                          Cancel
+                        </Button>
+                      </Form>
+                    ) : (
+                      <div>{review.comment}</div>
+                    )}
                   </Row>
                 </Col>
               </Row>

@@ -412,6 +412,35 @@ const addShowReviewComment = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Update Show Review
+//route PUT /api/shows/reviews/:id
+//@access Private
+const updateShowReview = asyncHandler(async (req, res) => {
+  const { comment, rating } = req.body;
+  const shows = await Show.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (shows) {
+    for (let i = 0; i < shows[0].reviews.length; i++) {
+      if (shows[0].reviews[i]._id.toString() === req.params.id) {
+        shows[0].reviews[i].comment = comment;
+        shows[0].reviews[i].rating = rating;
+      }
+    }
+
+    await shows[0].save();
+    res.status(200).json({ message: "Review updated" });
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
+});
+
 //@desc Update Show Review Comment
 //route PUT /api/shows/reviews/:id/comments
 //@access Private
@@ -441,7 +470,7 @@ const updateShowReviewComment = asyncHandler(async (req, res) => {
     let newComment = { comment: comment, _id: commentId };
 
     await shows[0].save();
-    res.status(201).json(newComment);
+    res.status(200).json({ message: "Comment Updated" });
   } else {
     res.status(404);
     throw new Error("Show not Found");
@@ -462,5 +491,6 @@ export {
   getUserReviews,
   getShowReview,
   addShowReviewComment,
+  updateShowReview,
   updateShowReviewComment,
 };

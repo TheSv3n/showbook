@@ -169,7 +169,7 @@ export const addShowReview = (showId, review) => async (dispatch, getState) => {
       },
     };
 
-    await axios.put(`/api/shows/${showId}/reviews`, review, config);
+    await axios.post(`/api/shows/${showId}/reviews`, review, config);
 
     dispatch({
       type: SHOW_ADD_REVIEW_SUCCESS,

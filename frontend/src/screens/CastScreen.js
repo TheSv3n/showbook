@@ -6,6 +6,7 @@ import Loader from "../components/Loader";
 import { getShowInfo } from "../actions/showActions";
 import CastListItem from "../components/CastListItem";
 import NewRoleModal from "../components/NewRoleModal";
+import axios from "axios";
 
 const CastScreen = ({ match }) => {
   const dispatch = useDispatch();
@@ -23,9 +24,16 @@ const CastScreen = ({ match }) => {
     setShowNewRoleModal(!showNewRoleModal);
   };
 
+  const getCompanyName = async (companyId) => {
+    const { data: name } = await axios.get(`/api/companies/${companyId}/name`);
+    setCompanyName(name);
+  };
+
   useEffect(() => {
     if (!show || show._id !== showId) {
       dispatch(getShowInfo(showId, false));
+    } else {
+      getCompanyName(show.company);
     }
   }, [dispatch, showId, show]);
 
@@ -42,16 +50,30 @@ const CastScreen = ({ match }) => {
               showId={showId}
             />
             <Container>
-              <Link to={`/show/${showId}`}>
-                <Row className="align-items-center ">
-                  <Col sm={1}>
+              <Row className="align-items-center ">
+                <Col sm={1}>
+                  <Link to={`/show/${showId}`}>
                     <Image src={show.coverImage} alt={show.name} fluid></Image>
-                  </Col>
-                  <Col sm={7}>
-                    <h2 className="text-white">{show.title} - Cast</h2>
-                  </Col>
-                </Row>
-              </Link>
+                  </Link>
+                </Col>
+                <Col sm={7}>
+                  <Link to={`/show/${showId}`}>
+                    <h2 className="text-white">{show.title}</h2>
+                  </Link>
+                  <h5 className="text-secondary">
+                    By{" "}
+                    <Link
+                      className="link text-secondary"
+                      to={`/company/${show.company}`}
+                    >
+                      {companyName}
+                    </Link>
+                  </h5>
+                </Col>
+              </Row>
+              <Row>
+                <h5 className="text-white">Full Cast List</h5>
+              </Row>
               <Row className="text-white">
                 {userInfo ? (
                   <Col sm={1}>

@@ -14,6 +14,7 @@ import {
   getUserReviews,
   getShowReview,
   addShowReviewComment,
+  updateShowReview,
   updateShowReviewComment,
 } from "../controllers/showController.js";
 
@@ -24,12 +25,12 @@ router.route("/myreviews").get(protect, getUserReviews);
 router.route("/:id").get(getShow);
 router.route("/:id/performances").put(protect, addPerformance);
 router.route("/:id/images").put(protect, addShowImage);
-router.route("/:id/reviews").put(protect, addShowReview);
+router.route("/:id/reviews").post(protect, addShowReview);
 router.route("/:id/roles").put(protect, addShowRole);
 router.route("/:id/name").get(getShowName);
 router.route("/venue/:id/performances").get(getVenuePerformances);
 router.route("/company/:id").get(getCompanyShows);
-router.route("/reviews/:id").get(getShowReview);
+router.route("/reviews/:id").get(getShowReview).put(protect, updateShowReview);
 router
   .route("/reviews/:id/comments")
   .post(protect, addShowReviewComment)

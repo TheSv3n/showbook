@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Row, Col, Container } from "react-bootstrap";
+import { Form, Button, Col } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -137,7 +137,9 @@ const Review = ({ review, performances, type, reviewId }) => {
           <div className="text-light">{commentText} </div>
           <div className="d-flex justify-content-between">
             <span className="align-right">
-              {userInfo && userInfo._id === review.user ? (
+              {userInfo &&
+              userInfo._id === review.user &&
+              type === "showcomment" ? (
                 <>
                   <i
                     className="bi bi-pencil-square text-light review-icon mx-1"
