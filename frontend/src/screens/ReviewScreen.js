@@ -7,6 +7,9 @@ import { Link } from "react-router-dom";
 import RatingWidget from "../components/RatingWidget";
 import NewReviewModal from "../components/NewReviewModal";
 import Review from "../components/Review";
+import { editShowReview } from "../actions/showActions";
+import { SHOW_UPDATE_REVIEW_RESET } from "../constants/showConstants";
+import DeleteModal from "../components/DeleteModal";
 
 const ReviewScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -14,7 +17,10 @@ const ReviewScreen = ({ match, history }) => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showEditFields, setShowEditFields] = useState("");
   const [commentText, setCommentText] = useState("");
+  const [rating, setRating] = useState(0);
   const [editedComment, setEditedComment] = useState("");
+  const [editedRating, setEditedRating] = useState(0);
+  const [showDeleteModal, setShowDeleteModal] = useState();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -27,8 +33,15 @@ const ReviewScreen = ({ match, history }) => {
   );
   const { loading: loadingAddComment } = addShowReviewComment;
 
+  const updateShowReview = useSelector((state) => state.updateShowReview);
+  const { loading: loadingUpdateReview, success } = updateShowReview;
+
   const updateShowReviewModal = () => {
     setShowReviewModal(!showReviewModal);
+  };
+
+  const updateShowDeleteModal = () => {
+    setShowDeleteModal(!showDeleteModal);
   };
 
   const handleNewCommentLink = () => {
@@ -42,15 +55,38 @@ const ReviewScreen = ({ match, history }) => {
   const editHandler = () => {
     setShowEditFields(!showEditFields);
     setEditedComment(review.comment);
+    setEditedRating(review.rating);
   };
 
-  const submitHandler = () => {};
+  const deleteHandler = () => {
+    //TODO
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (editedComment !== "") {
+      dispatch(
+        editShowReview(reviewId, {
+          comment: editedComment,
+          rating: editedRating,
+        })
+      );
+    }
+  };
 
   useEffect(() => {
     if (!review || review._id !== reviewId) {
       dispatch(getShowReviewInfo(reviewId, false));
+    } else {
+      setCommentText(review.comment);
+      setRating(review.rating);
     }
-  }, [dispatch, reviewId, review]);
+    if (success) {
+      setCommentText(review.comment);
+      setShowEditFields(false);
+      dispatch({ type: SHOW_UPDATE_REVIEW_RESET });
+    }
+  }, [dispatch, reviewId, review, success]);
 
   return (
     <section className="p-5 ">
@@ -65,6 +101,13 @@ const ReviewScreen = ({ match, history }) => {
               id={review._id}
               type={"showreviewcomment"}
             />
+            <DeleteModal
+              showModal={showDeleteModal}
+              updateShowModal={updateShowDeleteModal}
+              type={"review"}
+              submitDelete={deleteHandler}
+            />
+
             <Container>
               <Row className="mb-4">
                 <Col md={3}>
@@ -111,15 +154,23 @@ const ReviewScreen = ({ match, history }) => {
                     <h6 className="text-secondary mt-1">Rating </h6>
                     <span className="mx-2">
                       <RatingWidget
-                        value={review.rating}
+                        value={showEditFields ? editedRating : rating}
                         text={""}
                         color={"orange"}
+                        newReview={showEditFields}
+                        setRating={setEditedRating}
                       />
                       {userInfo && userInfo._id === review.user ? (
-                        <i
-                          className="bi bi-pencil-square text-light review-icon mx-1"
-                          onClick={editHandler}
-                        ></i>
+                        <>
+                          <i
+                            className="bi bi-pencil-square text-light review-icon mx-1"
+                            onClick={editHandler}
+                          ></i>
+                          <i
+                            className="bi bi-trash text-light review-icon mx-1"
+                            onClick={updateShowDeleteModal}
+                          ></i>
+                        </>
                       ) : (
                         ""
                       )}
@@ -135,28 +186,29 @@ const ReviewScreen = ({ match, history }) => {
                             onChange={(e) => setEditedComment(e.target.value)}
                           ></Form.Control>
                         </Form.Group>
-                        {loading ? (
+                        {loadingUpdateReview ? (
                           <Loader />
                         ) : (
-                          <Button
-                            type="submit"
-                            variant="primary"
-                            className="my-2"
-                          >
-                            Submit
-                          </Button>
+                          <>
+                            <Button
+                              type="submit"
+                              variant="primary"
+                              className="my-2"
+                            >
+                              Submit
+                            </Button>
+                            <Button
+                              variant="danger"
+                              className="my-2 mx-2"
+                              onClick={editHandler}
+                            >
+                              Cancel
+                            </Button>
+                          </>
                         )}
-
-                        <Button
-                          variant="danger"
-                          className="my-2 mx-2"
-                          onClick={editHandler}
-                        >
-                          Cancel
-                        </Button>
                       </Form>
                     ) : (
-                      <div>{review.comment}</div>
+                      <div>{commentText}</div>
                     )}
                   </Row>
                 </Col>

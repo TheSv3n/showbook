@@ -434,6 +434,12 @@ const updateShowReview = asyncHandler(async (req, res) => {
     }
 
     await shows[0].save();
+    shows[0].numReviews = shows[0].reviews.length;
+
+    shows[0].rating =
+      shows[0].reviews.reduce((acc, review) => review.rating + acc, 0) /
+      shows[0].reviews.length;
+    await shows[0].save();
     res.status(200).json({ message: "Review updated" });
   } else {
     res.status(404);
@@ -466,8 +472,6 @@ const updateShowReviewComment = asyncHandler(async (req, res) => {
         }
       }
     }
-
-    let newComment = { comment: comment, _id: commentId };
 
     await shows[0].save();
     res.status(200).json({ message: "Comment Updated" });

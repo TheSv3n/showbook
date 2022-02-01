@@ -40,6 +40,9 @@ import {
   SHOW_UPDATE_REVIEW_COMMENT_REQUEST,
   SHOW_UPDATE_REVIEW_COMMENT_SUCCESS,
   SHOW_UPDATE_REVIEW_COMMENT_FAIL,
+  SHOW_UPDATE_REVIEW_REQUEST,
+  SHOW_UPDATE_REVIEW_SUCCESS,
+  SHOW_UPDATE_REVIEW_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -424,6 +427,46 @@ export const addShowReviewComment =
     } catch (error) {
       dispatch({
         type: SHOW_ADD_REVIEW_COMMENT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const editShowReview =
+  (reviewId, review) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: SHOW_UPDATE_REVIEW_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `/api/shows/reviews/${reviewId}`,
+        review,
+        config
+      );
+
+      dispatch({
+        type: SHOW_UPDATE_REVIEW_SUCCESS,
+        payload: data,
+      });
+      dispatch(getShowReviewInfo(reviewId, true));
+    } catch (error) {
+      dispatch({
+        type: SHOW_UPDATE_REVIEW_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message
