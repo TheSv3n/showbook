@@ -6,8 +6,14 @@ import axios from "axios";
 import "../css/review.css";
 import RatingWidget from "../components/RatingWidget";
 import Loader from "../components/Loader";
-import { editShowReviewComment } from "../actions/showActions";
-import { SHOW_UPDATE_REVIEW_COMMENT_RESET } from "../constants/showConstants";
+import {
+  editShowReviewComment,
+  deleteShowReviewCommment,
+} from "../actions/showActions";
+import {
+  SHOW_UPDATE_REVIEW_COMMENT_RESET,
+  SHOW_DELETE_REVIEW_COMMENT_RESET,
+} from "../constants/showConstants";
 import DeleteModal from "../components/DeleteModal";
 
 const Review = ({ review, performances, type, reviewId }) => {
@@ -27,6 +33,12 @@ const Review = ({ review, performances, type, reviewId }) => {
     (state) => state.updateShowReviewComment
   );
   const { loading, success } = updateShowReviewComment;
+
+  const showReviewDeleteComment = useSelector(
+    (state) => state.showReviewDeleteComment
+  );
+  const { loading: loadingDeleteComment, success: successDelete } =
+    showReviewDeleteComment;
 
   const getUserName = async (userId) => {
     const { data: userName } = await axios.get(`/api/users/${userId}/username`);
@@ -59,7 +71,7 @@ const Review = ({ review, performances, type, reviewId }) => {
   };
 
   const deleteHandler = () => {
-    //TODO
+    dispatch(deleteShowReviewCommment(reviewId, { commentId: review._id }));
   };
 
   const submitHandler = (e) => {
@@ -85,6 +97,10 @@ const Review = ({ review, performances, type, reviewId }) => {
     if (success) {
       setShowEditFields(false);
       dispatch({ type: SHOW_UPDATE_REVIEW_COMMENT_RESET });
+    }
+    if (successDelete) {
+      setShowDeleteModal(!showDeleteModal);
+      dispatch({ type: SHOW_DELETE_REVIEW_COMMENT_RESET });
     }
   }, [review, success]);
 

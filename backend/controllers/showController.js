@@ -481,6 +481,88 @@ const updateShowReviewComment = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Delete Show Review
+//route DELETE /api/shows/reviews/:id
+//@access Private
+const deleteShowReview = asyncHandler(async (req, res) => {
+  const shows = await Show.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (shows) {
+    let tempReviews = [...shows[0].reviews];
+
+    let index = -1;
+
+    for (let i = 0; i < tempReviews.length; i++) {
+      if (tempReviews[i]._id.toString() === req.params.id) {
+        index = i;
+      }
+    }
+
+    tempReviews.splice(index, 1);
+    shows[0].reviews = tempReviews;
+
+    await shows[0].save();
+    shows[0].numReviews = shows[0].reviews.length;
+
+    shows[0].rating =
+      shows[0].reviews.reduce((acc, review) => review.rating + acc, 0) /
+      shows[0].reviews.length;
+
+    await shows[0].save();
+    res.status(200).json({ message: "Review deleted" });
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
+});
+
+//@desc Delete Show Review
+//route DELETE /api/shows/reviews/:id
+//@access Private
+const deleteShowReviewComment = asyncHandler(async (req, res) => {
+  //TODO - convert to take ID from query
+  const { commentId } = req.body;
+  const shows = await Show.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (shows) {
+    let tempReviews = [...shows[0].reviews];
+
+    let reviewIndex = -1;
+    let commentIndex = -1;
+
+    for (let i = 0; i < tempReviews.length; i++) {
+      if (tempReviews[i]._id.toString() === req.params.id) {
+        tempComments = [...tempReviews[i].reviewComments];
+        reviewIndex = i;
+        for (let j = 0; j < tempComments.length; j++) {
+          commentIndex = j;
+        }
+      }
+    }
+
+    tempComments.splice(commentIndex, 1);
+    shows[0].reviews[reviewIndex].reviewComments = tempComments;
+
+    await shows[0].save();
+    res.status(200).json({ message: "Comment deleted" });
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
+});
+
 export {
   createShow,
   getAllShows,
@@ -497,4 +579,6 @@ export {
   addShowReviewComment,
   updateShowReview,
   updateShowReviewComment,
+  deleteShowReview,
+  deleteShowReviewComment,
 };

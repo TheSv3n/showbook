@@ -43,6 +43,12 @@ import {
   SHOW_UPDATE_REVIEW_REQUEST,
   SHOW_UPDATE_REVIEW_SUCCESS,
   SHOW_UPDATE_REVIEW_FAIL,
+  SHOW_DELETE_REVIEW_REQUEST,
+  SHOW_DELETE_REVIEW_SUCCESS,
+  SHOW_DELETE_REVIEW_FAIL,
+  SHOW_DELETE_REVIEW_COMMENT_REQUEST,
+  SHOW_DELETE_REVIEW_COMMENT_SUCCESS,
+  SHOW_DELETE_REVIEW_COMMENT_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -507,6 +513,75 @@ export const editShowReviewComment =
     } catch (error) {
       dispatch({
         type: SHOW_UPDATE_REVIEW_COMMENT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const deleteShowReview =
+  (reviewId, showId) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: SHOW_DELETE_REVIEW_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.delete(`/api/shows/reviews/${reviewId}`, config);
+
+      dispatch({
+        type: SHOW_DELETE_REVIEW_SUCCESS,
+      });
+      dispatch(getShowInfo(showId, true));
+    } catch (error) {
+      dispatch({
+        type: SHOW_DELETE_REVIEW_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const deleteShowReviewCommment =
+  (reviewId, commentId) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: SHOW_DELETE_REVIEW_COMMENT_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      //TODO - convert to take ID from query
+      await axios.delete(`/api/shows/reviews/${reviewId}`, config);
+
+      dispatch({
+        type: SHOW_DELETE_REVIEW_COMMENT_SUCCESS,
+      });
+    } catch (error) {
+      dispatch({
+        type: SHOW_DELETE_REVIEW_COMMENT_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

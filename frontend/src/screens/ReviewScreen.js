@@ -7,8 +7,11 @@ import { Link } from "react-router-dom";
 import RatingWidget from "../components/RatingWidget";
 import NewReviewModal from "../components/NewReviewModal";
 import Review from "../components/Review";
-import { editShowReview } from "../actions/showActions";
-import { SHOW_UPDATE_REVIEW_RESET } from "../constants/showConstants";
+import { editShowReview, deleteShowReview } from "../actions/showActions";
+import {
+  SHOW_DELETE_REVIEW_RESET,
+  SHOW_UPDATE_REVIEW_RESET,
+} from "../constants/showConstants";
 import DeleteModal from "../components/DeleteModal";
 
 const ReviewScreen = ({ match, history }) => {
@@ -36,6 +39,10 @@ const ReviewScreen = ({ match, history }) => {
   const updateShowReview = useSelector((state) => state.updateShowReview);
   const { loading: loadingUpdateReview, success } = updateShowReview;
 
+  const showReviewDelete = useSelector((state) => state.showReviewDelete);
+  const { loading: loadingDeleteReview, success: successDelete } =
+    showReviewDelete;
+
   const updateShowReviewModal = () => {
     setShowReviewModal(!showReviewModal);
   };
@@ -59,7 +66,7 @@ const ReviewScreen = ({ match, history }) => {
   };
 
   const deleteHandler = () => {
-    //TODO
+    dispatch(deleteShowReview(reviewId, review.showId));
   };
 
   const submitHandler = (e) => {
@@ -86,7 +93,11 @@ const ReviewScreen = ({ match, history }) => {
       setShowEditFields(false);
       dispatch({ type: SHOW_UPDATE_REVIEW_RESET });
     }
-  }, [dispatch, reviewId, review, success]);
+    if (successDelete) {
+      history.push(`/show/${review.showId}`);
+      dispatch({ type: SHOW_DELETE_REVIEW_RESET });
+    }
+  }, [dispatch, reviewId, review, success, successDelete]);
 
   return (
     <section className="p-5 ">
@@ -186,7 +197,7 @@ const ReviewScreen = ({ match, history }) => {
                             onChange={(e) => setEditedComment(e.target.value)}
                           ></Form.Control>
                         </Form.Group>
-                        {loadingUpdateReview ? (
+                        {loadingUpdateReview || loadingDeleteReview ? (
                           <Loader />
                         ) : (
                           <>
