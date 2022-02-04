@@ -522,12 +522,11 @@ const deleteShowReview = asyncHandler(async (req, res) => {
   }
 });
 
-//@desc Delete Show Review
-//route DELETE /api/shows/reviews/:id
+//@desc Delete Show Review Comment
+//route DELETE /api/shows/reviews/:id/comments
 //@access Private
 const deleteShowReviewComment = asyncHandler(async (req, res) => {
-  //TODO - convert to take ID from query
-  const { commentId } = req.body;
+  const commentId = req.query.commentId;
   const shows = await Show.find({
     $or: [
       {
@@ -538,6 +537,7 @@ const deleteShowReviewComment = asyncHandler(async (req, res) => {
 
   if (shows) {
     let tempReviews = [...shows[0].reviews];
+    let tempComments;
 
     let reviewIndex = -1;
     let commentIndex = -1;
@@ -547,7 +547,9 @@ const deleteShowReviewComment = asyncHandler(async (req, res) => {
         tempComments = [...tempReviews[i].reviewComments];
         reviewIndex = i;
         for (let j = 0; j < tempComments.length; j++) {
-          commentIndex = j;
+          if (tempComments[j]._id.toString() === commentId) {
+            commentIndex = j;
+          }
         }
       }
     }

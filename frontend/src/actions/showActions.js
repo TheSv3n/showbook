@@ -573,12 +573,15 @@ export const deleteShowReviewCommment =
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-      //TODO - convert to take ID from query
-      await axios.delete(`/api/shows/reviews/${reviewId}`, config);
+      await axios.delete(
+        `/api/shows/reviews/${reviewId}/comments?commentId=${commentId}`,
+        config
+      );
 
       dispatch({
         type: SHOW_DELETE_REVIEW_COMMENT_SUCCESS,
       });
+      dispatch(getShowReviewInfo(reviewId, true));
     } catch (error) {
       dispatch({
         type: SHOW_DELETE_REVIEW_COMMENT_FAIL,

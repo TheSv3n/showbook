@@ -128,4 +128,23 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser, authUser, getUserName, getUserProfile };
+//@desc Get user by ID
+//@route GET /api/users/:id
+//@access Public
+const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select({
+    userName: 1,
+    name: 1,
+    isAdmin: 1,
+    friends: 1,
+    image: 1,
+  });
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+export { registerUser, authUser, getUserName, getUserProfile, getUserById };

@@ -71,7 +71,7 @@ const Review = ({ review, performances, type, reviewId }) => {
   };
 
   const deleteHandler = () => {
-    dispatch(deleteShowReviewCommment(reviewId, { commentId: review._id }));
+    dispatch(deleteShowReviewCommment(reviewId, review._id));
   };
 
   const submitHandler = (e) => {
@@ -102,7 +102,7 @@ const Review = ({ review, performances, type, reviewId }) => {
       setShowDeleteModal(!showDeleteModal);
       dispatch({ type: SHOW_DELETE_REVIEW_COMMENT_RESET });
     }
-  }, [review, success]);
+  }, [review, success, successDelete]);
 
   return (
     <>

@@ -34,6 +34,7 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    friends: [String],
   },
   {
     timestamps: true,
