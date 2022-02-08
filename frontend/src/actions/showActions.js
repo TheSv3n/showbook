@@ -347,7 +347,7 @@ export const createShowRole = (showId, role) => async (dispatch, getState) => {
   }
 };
 
-export const listMyReviews = () => async (dispatch, getState) => {
+export const listMyShowReviews = () => async (dispatch, getState) => {
   try {
     dispatch({ type: SHOW_MY_REVIEWS_REQUEST });
 
@@ -595,3 +595,24 @@ export const deleteShowReviewCommment =
       });
     }
   };
+
+export const listUserShowReviews = (userId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: SHOW_USER_REVIEWS_REQUEST });
+
+    const { data } = await axios.get(`/api/shows/userreviews/${userId}`);
+
+    dispatch({
+      type: SHOW_USER_REVIEWS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SHOW_USER_REVIEWS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

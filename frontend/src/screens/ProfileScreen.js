@@ -8,7 +8,7 @@ import {
   logout,
   updateUserProfile,
 } from "../actions/userActions";
-import { listMyReviews } from "../actions/showActions";
+import { listMyShowReviews } from "../actions/showActions";
 import ReviewTableRow from "../components/ReviewTableRow";
 
 const ProfileScreen = ({ history }) => {
@@ -43,7 +43,7 @@ const ProfileScreen = ({ history }) => {
       if (!user || !user.name || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserProfile());
-        dispatch(listMyReviews());
+        dispatch(listMyShowReviews());
       } else {
         setName(user.name);
         setEmail(user.email);

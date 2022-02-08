@@ -258,59 +258,13 @@ const addShowRole = asyncHandler(async (req, res) => {
   }
 });
 
-//@desc Fetch User Reviews
+//@desc Fetch Logged-in User's Reviews
 //@route GET /api/myreviews
 //@access Private
-const getUserReviews = asyncHandler(async (req, res) => {
+const getMyReviews = asyncHandler(async (req, res) => {
   const page = Number(req.query.pageNumber) || 1;
 
-  const shows = await Show.find({
-    $or: [
-      {
-        "reviews.user": req.user._id,
-      },
-    ],
-  });
-
-  let reviews = [];
-
-  for (let i = 0; i < shows.length; i++) {
-    for (let j = 0; j < shows[i].reviews.length; j++) {
-      if (shows[i].reviews[j].user === req.user._id.toString()) {
-        let company = await Company.findById(shows[i].company);
-        let performanceVenueId;
-        let performanceDate;
-        let companyName = company.name;
-        let performanceVenueName;
-        for (let k = 0; k < shows[i].performances.length; k++) {
-          if (
-            shows[i].performances[k]._id.toString() ===
-            shows[i].reviews[j].performanceId
-          ) {
-            performanceVenueId = shows[i].performances[k].venueId;
-            performanceDate = shows[i].performances[k].date;
-          }
-        }
-        let venue = await Venue.findById(performanceVenueId);
-        performanceVenueName = venue.name;
-        let tempReview = {
-          reviewId: shows[i].reviews[j]._id,
-          poster: shows[i].coverImage,
-          rating: shows[i].reviews[j].rating,
-          title: shows[i].title,
-          showId: shows[i]._id,
-          companyId: shows[i].company,
-          companyName: companyName,
-          performanceId: shows[i].reviews[j].performanceId,
-          performanceVenueId: performanceVenueId,
-          performanceVenueName: performanceVenueName,
-          reviewDate: shows[i].reviews[j].createdAt,
-          performanceDate: performanceDate,
-        };
-        reviews = [...reviews, tempReview];
-      }
-    }
-  }
+  let reviews = await getUserReviewsById(req.user._id.toString());
 
   res.json({ reviews });
 });
@@ -565,6 +519,76 @@ const deleteShowReviewComment = asyncHandler(async (req, res) => {
   }
 });
 
+const getUserReviewsById = async (userId, page) => {
+  const shows = await Show.find({
+    $or: [
+      {
+        "reviews.user": userId,
+      },
+    ],
+  });
+
+  let reviews = [];
+
+  for (let i = 0; i < shows.length; i++) {
+    for (let j = 0; j < shows[i].reviews.length; j++) {
+      if (shows[i].reviews[j].user === userId) {
+        let company = await Company.findById(shows[i].company);
+        let performanceVenueId;
+        let performanceDate;
+        let companyName = company.name;
+        let performanceVenueName;
+        for (let k = 0; k < shows[i].performances.length; k++) {
+          if (
+            shows[i].performances[k]._id.toString() ===
+            shows[i].reviews[j].performanceId
+          ) {
+            performanceVenueId = shows[i].performances[k].venueId;
+            performanceDate = shows[i].performances[k].date;
+          }
+        }
+        let venue = await Venue.findById(performanceVenueId);
+        performanceVenueName = venue.name;
+        let tempReview = {
+          reviewId: shows[i].reviews[j]._id,
+          poster: shows[i].coverImage,
+          rating: shows[i].reviews[j].rating,
+          title: shows[i].title,
+          showId: shows[i]._id,
+          companyId: shows[i].company,
+          companyName: companyName,
+          performanceId: shows[i].reviews[j].performanceId,
+          performanceVenueId: performanceVenueId,
+          performanceVenueName: performanceVenueName,
+          reviewDate: shows[i].reviews[j].createdAt,
+          performanceDate: performanceDate,
+          privateReview: shows[i].reviews[j].privateReview,
+        };
+        reviews = [...reviews, tempReview];
+      }
+    }
+  }
+  return reviews;
+};
+
+//@desc Fetch User's Reviews
+//@route GET /api/userreviews/:id
+//@access Public
+const getUserReviews = asyncHandler(async (req, res) => {
+  const page = Number(req.query.pageNumber) || 1;
+
+  let tempReviews = await getUserReviewsById(req.params.id);
+  let reviews = [];
+
+  for (let i = 0; i < tempReviews.length; i++) {
+    if (!tempReviews[i].privateReview) {
+      reviews.push(tempReviews[i]);
+    }
+  }
+
+  res.json({ reviews });
+});
+
 export {
   createShow,
   getAllShows,
@@ -576,11 +600,12 @@ export {
   getShowName,
   getCompanyShows,
   addShowRole,
-  getUserReviews,
+  getMyReviews,
   getShowReview,
   addShowReviewComment,
   updateShowReview,
   updateShowReviewComment,
   deleteShowReview,
   deleteShowReviewComment,
+  getUserReviews,
 };

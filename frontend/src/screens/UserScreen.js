@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserDetailsById } from "../actions/userActions";
 import { Image, Container, Row, Col } from "react-bootstrap";
 import Loader from "../components/Loader";
+import { listUserShowReviews } from "../actions/showActions";
 
 const UserScreen = ({ match }) => {
   const dispatch = useDispatch();
@@ -14,9 +15,17 @@ const UserScreen = ({ match }) => {
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
 
+  const showUserReviews = useSelector((state) => state.showUserReviews);
+  const {
+    loading: loadingShowReviews,
+    error: errorShowReviews,
+    reviews: showReviews,
+  } = showUserReviews;
+
   useEffect(() => {
     if (!user || user._id !== userId) {
       dispatch(getUserDetailsById(userId));
+      dispatch(listUserShowReviews(userId));
     }
   }, [dispatch, userId, userInfo, user]);
 

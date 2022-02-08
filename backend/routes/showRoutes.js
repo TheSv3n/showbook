@@ -11,19 +11,20 @@ import {
   getShowName,
   getCompanyShows,
   addShowRole,
-  getUserReviews,
+  getMyReviews,
   getShowReview,
   addShowReviewComment,
   updateShowReview,
   updateShowReviewComment,
   deleteShowReview,
   deleteShowReviewComment,
+  getUserReviews,
 } from "../controllers/showController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
 
 router.route("/").post(protect, createShow).get(getAllShows);
-router.route("/myreviews").get(protect, getUserReviews);
+router.route("/myreviews").get(protect, getMyReviews);
 router.route("/:id").get(getShow);
 router.route("/:id/performances").put(protect, addPerformance);
 router.route("/:id/images").put(protect, addShowImage);
@@ -42,5 +43,7 @@ router
   .post(protect, addShowReviewComment)
   .put(protect, updateShowReviewComment)
   .delete(protect, deleteShowReviewComment);
+
+router.route("/userreviews/:id").get(getUserReviews);
 
 export default router;
