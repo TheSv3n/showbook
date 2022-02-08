@@ -49,6 +49,9 @@ import {
   SHOW_DELETE_REVIEW_COMMENT_REQUEST,
   SHOW_DELETE_REVIEW_COMMENT_SUCCESS,
   SHOW_DELETE_REVIEW_COMMENT_FAIL,
+  SHOW_MY_REVIEWS_REQUEST,
+  SHOW_MY_REVIEWS_SUCCESS,
+  SHOW_MY_REVIEWS_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -344,9 +347,9 @@ export const createShowRole = (showId, role) => async (dispatch, getState) => {
   }
 };
 
-export const listUserReviews = () => async (dispatch, getState) => {
+export const listMyReviews = () => async (dispatch, getState) => {
   try {
-    dispatch({ type: SHOW_USER_REVIEWS_REQUEST });
+    dispatch({ type: SHOW_MY_REVIEWS_REQUEST });
 
     const {
       userLogin: { userInfo },
@@ -362,12 +365,12 @@ export const listUserReviews = () => async (dispatch, getState) => {
     const { data } = await axios.get(`/api/shows/myreviews`, config);
 
     dispatch({
-      type: SHOW_USER_REVIEWS_SUCCESS,
+      type: SHOW_MY_REVIEWS_SUCCESS,
       payload: data,
     });
   } catch (error) {
     dispatch({
-      type: SHOW_USER_REVIEWS_FAIL,
+      type: SHOW_MY_REVIEWS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

@@ -55,6 +55,9 @@ import {
   SHOW_DELETE_REVIEW_COMMENT_SUCCESS,
   SHOW_DELETE_REVIEW_COMMENT_FAIL,
   SHOW_DELETE_REVIEW_COMMENT_RESET,
+  SHOW_MY_REVIEWS_REQUEST,
+  SHOW_MY_REVIEWS_SUCCESS,
+  SHOW_MY_REVIEWS_FAIL,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -262,16 +265,16 @@ export const addShowRoleReducer = (state = {}, action) => {
   }
 };
 
-export const showUserReviewsReducer = (state = { reviews: [] }, action) => {
+export const showMyReviewsReducer = (state = { reviews: [] }, action) => {
   switch (action.type) {
-    case SHOW_USER_REVIEWS_REQUEST:
+    case SHOW_MY_REVIEWS_REQUEST:
       return { loading: true, reviews: [] };
-    case SHOW_USER_REVIEWS_SUCCESS:
+    case SHOW_MY_REVIEWS_SUCCESS:
       return {
         loading: false,
         reviews: action.payload.reviews,
       };
-    case SHOW_USER_REVIEWS_FAIL:
+    case SHOW_MY_REVIEWS_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;
@@ -399,6 +402,22 @@ export const showReviewDeleteCommentReducer = (state = {}, action) => {
       return {
         state: {},
       };
+    default:
+      return state;
+  }
+};
+
+export const showUserReviewsReducer = (state = { reviews: [] }, action) => {
+  switch (action.type) {
+    case SHOW_USER_REVIEWS_REQUEST:
+      return { loading: true, reviews: [] };
+    case SHOW_USER_REVIEWS_SUCCESS:
+      return {
+        loading: false,
+        reviews: action.payload.reviews,
+      };
+    case SHOW_USER_REVIEWS_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

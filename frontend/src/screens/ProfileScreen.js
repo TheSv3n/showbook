@@ -8,7 +8,7 @@ import {
   logout,
   updateUserProfile,
 } from "../actions/userActions";
-import { listUserReviews } from "../actions/showActions";
+import { listMyReviews } from "../actions/showActions";
 import ReviewTableRow from "../components/ReviewTableRow";
 
 const ProfileScreen = ({ history }) => {
@@ -29,12 +29,12 @@ const ProfileScreen = ({ history }) => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
 
-  const showUserReviews = useSelector((state) => state.showUserReviews);
+  const showMyReviews = useSelector((state) => state.showMyReviews);
   const {
     loading: loadingReviews,
     error: errorReviews,
     reviews,
-  } = showUserReviews;
+  } = showMyReviews;
 
   useEffect(() => {
     if (!userInfo) {
@@ -43,7 +43,7 @@ const ProfileScreen = ({ history }) => {
       if (!user || !user.name || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserProfile());
-        dispatch(listUserReviews());
+        dispatch(listMyReviews());
       } else {
         setName(user.name);
         setEmail(user.email);

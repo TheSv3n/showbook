@@ -34,6 +34,11 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    privateProfile: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
     friends: [String],
   },
   {
