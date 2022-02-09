@@ -34,6 +34,10 @@ const reviewSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    privateReview: {
+      type: Boolean,
+      required: true,
+    },
     reviewComments: [reviewCommentSchema],
   },
   {

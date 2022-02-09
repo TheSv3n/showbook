@@ -78,4 +78,64 @@ const getAllCompanies = asyncHandler(async (req, res) => {
   res.json({ companies, page, pages: Math.ceil(count / pageSize), count });
 });
 
-export { createCompany, getCompany, getCompanyName, getAllCompanies };
+//@desc Add Company Review
+//route PUT /api/companies/:id/reviews
+//@access Private
+const addCompanyReview = asyncHandler(async (req, res) => {
+  const { comment, rating } = req.body;
+  const company = await Company.findById(req.params.id);
+
+  if (company) {
+    const newReview = {
+      comment: comment,
+      rating: rating,
+      user: req.user._id,
+    };
+
+    company.reviews.push(newReview);
+
+    company.numReviews = company.reviews.length;
+
+    company.rating =
+      company.reviews.reduce((acc, review) => review.rating + acc, 0) /
+      company.reviews.length;
+
+    await company.save();
+    res.status(201).json({ message: "Review Added" });
+  } else {
+    res.status(404);
+    throw new Error("Company not Found");
+  }
+});
+
+//@desc Add Image
+//route PUT /api/companies/:id/images
+//@access Private
+const addCompanyImage = asyncHandler(async (req, res) => {
+  const { image, comment } = req.body;
+  const company = await Company.findById(req.params.id);
+
+  if (company) {
+    const newImage = {
+      image: image,
+      comment: comment,
+      user: req.user._id,
+    };
+
+    company.images.push(newImage);
+    await company.save();
+    res.status(201).json({ message: "Image Added" });
+  } else {
+    res.status(404);
+    throw new Error("Company not Found");
+  }
+});
+
+export {
+  createCompany,
+  getCompany,
+  getCompanyName,
+  getAllCompanies,
+  addCompanyReview,
+  addCompanyImage,
+};

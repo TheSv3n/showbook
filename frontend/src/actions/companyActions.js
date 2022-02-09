@@ -9,6 +9,12 @@ import {
   COMPANY_CREATE_REQUEST,
   COMPANY_CREATE_SUCCESS,
   COMPANY_CREATE_FAIL,
+  COMPANY_ADD_REVIEW_REQUEST,
+  COMPANY_ADD_REVIEW_SUCCESS,
+  COMPANY_ADD_REVIEW_FAIL,
+  COMPANY_ADD_IMAGE_REQUEST,
+  COMPANY_ADD_IMAGE_SUCCESS,
+  COMPANY_ADD_IMAGE_FAIL,
 } from "../constants/companyConstants";
 import axios from "axios";
 
@@ -122,3 +128,73 @@ export const createCompany = (company) => async (dispatch, getState) => {
     });
   }
 };
+
+export const addCompanyReview =
+  (companyId, review) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: COMPANY_ADD_REVIEW_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.put(`/api/companies/${companyId}/reviews`, review, config);
+
+      dispatch({
+        type: COMPANY_ADD_REVIEW_SUCCESS,
+      });
+      dispatch(getCompanyInfo(companyId, true));
+    } catch (error) {
+      dispatch({
+        type: COMPANY_ADD_REVIEW_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const createCompanyImage =
+  (companyId, image) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: COMPANY_ADD_IMAGE_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.put(`/api/companies/${companyId}/images`, image, config);
+
+      dispatch({
+        type: COMPANY_ADD_IMAGE_SUCCESS,
+      });
+      dispatch(getCompanyInfo(companyId, true));
+    } catch (error) {
+      dispatch({
+        type: COMPANY_ADD_IMAGE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

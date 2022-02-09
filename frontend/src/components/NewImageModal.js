@@ -8,6 +8,7 @@ import { createVenueImage } from "../actions/venueActions";
 import { SHOW_ADD_IMAGE_RESET } from "../constants/showConstants";
 import { VENUE_ADD_IMAGE_RESET } from "../constants/venueConstants";
 import PerformanceModal from "./PerformanceModal";
+import { createCompanyImage } from "../actions/companyActions";
 
 const NewImageModal = ({
   id,
@@ -62,7 +63,7 @@ const NewImageModal = ({
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (type === "show") {
+    /*if (type === "show") {
       if (image !== "" && imageName !== "No Image") {
         dispatch(
           createShowImage(id, {
@@ -81,6 +82,37 @@ const NewImageModal = ({
             comment: comment,
           })
         );
+      }
+    }*/
+    if (image !== "" && imageName !== "No Image") {
+      switch (type) {
+        case "show":
+          dispatch(
+            createShowImage(id, {
+              image: image,
+              comment: comment,
+              performance: performanceId,
+            })
+          );
+          break;
+        case "venue":
+          dispatch(
+            createVenueImage(id, {
+              image: image,
+              comment: comment,
+            })
+          );
+          break;
+        case "company":
+          dispatch(
+            createCompanyImage(id, {
+              image: image,
+              comment: comment,
+            })
+          );
+          break;
+
+        default:
       }
     }
   };

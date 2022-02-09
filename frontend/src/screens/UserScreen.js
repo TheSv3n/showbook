@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetailsById } from "../actions/userActions";
-import { Image, Container, Row, Col } from "react-bootstrap";
+import { Image, Container, Row, Col, Table } from "react-bootstrap";
 import Loader from "../components/Loader";
 import { listUserShowReviews } from "../actions/showActions";
+import ReviewTableRow from "../components/ReviewTableRow";
 
 const UserScreen = ({ match }) => {
   const dispatch = useDispatch();
@@ -67,7 +68,35 @@ const UserScreen = ({ match }) => {
                   </span>
                   's Reviews
                 </h5>
-                {/* TODO - load reviews for user by ID */}
+                {loadingShowReviews ? (
+                  <Loader />
+                ) : errorShowReviews ? (
+                  <div>{errorShowReviews}</div>
+                ) : (
+                  <Table
+                    striped
+                    hover
+                    responsive
+                    className="table-sm text-light"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Poster</th>
+                        <th>Show</th>
+                        <th>Company</th>
+                        <th>Rating</th>
+                        <th>Seen At</th>
+                        <th>Date Seen</th>
+                        <th>Date Reviewed</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {showReviews.map((review) => (
+                        <ReviewTableRow key={review._id} review={review} />
+                      ))}
+                    </tbody>
+                  </Table>
+                )}
               </Row>
             </Container>
           </>

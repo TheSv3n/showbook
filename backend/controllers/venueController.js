@@ -107,12 +107,12 @@ const addVenueReview = asyncHandler(async (req, res) => {
     res.status(201).json({ message: "Review Added" });
   } else {
     res.status(404);
-    throw new Error("Show not Found");
+    throw new Error("Venue not Found");
   }
 });
 
 //@desc Add Image
-//route PUT /api/shows/:id/images
+//route PUT /api/venues/:id/images
 //@access Private
 const addVenueImage = asyncHandler(async (req, res) => {
   const { image, comment } = req.body;
