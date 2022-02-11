@@ -3,7 +3,7 @@ import { Image } from "react-bootstrap";
 import RatingWidget from "./RatingWidget";
 import { Link } from "react-router-dom";
 
-const ReviewTableRow = ({ review }) => {
+const ShowReviewTableRow = ({ review }) => {
   return (
     <tr>
       <td className="text-light">
@@ -47,4 +47,4 @@ const ReviewTableRow = ({ review }) => {
   );
 };
 
-export default ReviewTableRow;
+export default ShowReviewTableRow;

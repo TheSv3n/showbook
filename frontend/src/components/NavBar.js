@@ -1,7 +1,11 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 const NavBar = () => {
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-secondary navbar-dark py-3 fixed-top">
@@ -26,11 +30,19 @@ const NavBar = () => {
                   Home
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link to="/profile" className="nav-link text-light">
-                  Profile
-                </Link>
-              </li>
+              {userInfo ? (
+                <li className="nav-item">
+                  <Link to="/profile" className="nav-link text-light">
+                    Profile
+                  </Link>
+                </li>
+              ) : (
+                <li className="nav-item">
+                  <Link to="/login" className="nav-link text-light">
+                    Login
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>

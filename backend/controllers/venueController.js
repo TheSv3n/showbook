@@ -134,6 +134,47 @@ const addVenueImage = asyncHandler(async (req, res) => {
   }
 });
 
+const getUserReviewsById = async (userId, page) => {
+  const venues = await Venue.find({
+    $or: [
+      {
+        "reviews.user": userId,
+      },
+    ],
+  });
+
+  let reviews = [];
+
+  for (let i = 0; i < venues.length; i++) {
+    for (let j = 0; j < venues[i].reviews.length; j++) {
+      if (venues[i].reviews[j].user === userId) {
+        let tempReview;
+        tempReview = {
+          reviewId: venues[i].reviews[j]._id,
+          rating: venues[i].reviews[j].rating,
+          name: venues[i].name,
+          venueId: venues[i]._id,
+          image: venues[i].coverImage,
+        };
+        reviews = [...reviews, tempReview];
+      }
+    }
+  }
+
+  return reviews;
+};
+
+//@desc Fetch Logged-in User's Reviews
+//@route GET /api/venues/myreviews
+//@access Private
+const getMyVenueReviews = asyncHandler(async (req, res) => {
+  const page = Number(req.query.pageNumber) || 1;
+
+  let reviews = await getUserReviewsById(req.user._id.toString());
+
+  res.json({ reviews });
+});
+
 export {
   createVenue,
   getVenue,
@@ -141,4 +182,5 @@ export {
   getAllVenues,
   addVenueReview,
   addVenueImage,
+  getMyVenueReviews,
 };

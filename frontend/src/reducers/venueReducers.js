@@ -18,6 +18,9 @@ import {
   VENUE_ADD_IMAGE_SUCCESS,
   VENUE_ADD_IMAGE_FAIL,
   VENUE_ADD_IMAGE_RESET,
+  VENUE_MY_REVIEWS_REQUEST,
+  VENUE_MY_REVIEWS_SUCCESS,
+  VENUE_MY_REVIEWS_FAIL,
 } from "../constants/venueConstants";
 
 export const venueListReducer = (state = { venues: [] }, action) => {
@@ -135,6 +138,22 @@ export const addVenueImageReducer = (state = {}, action) => {
       return {
         state: {},
       };
+    default:
+      return state;
+  }
+};
+
+export const venueMyReviewsReducer = (state = { reviews: [] }, action) => {
+  switch (action.type) {
+    case VENUE_MY_REVIEWS_REQUEST:
+      return { loading: true, reviews: [] };
+    case VENUE_MY_REVIEWS_SUCCESS:
+      return {
+        loading: false,
+        reviews: action.payload.reviews,
+      };
+    case VENUE_MY_REVIEWS_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

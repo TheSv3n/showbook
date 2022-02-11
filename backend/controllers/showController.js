@@ -259,9 +259,9 @@ const addShowRole = asyncHandler(async (req, res) => {
 });
 
 //@desc Fetch Logged-in User's Reviews
-//@route GET /api/myreviews
+//@route GET /api/shows/myreviews
 //@access Private
-const getMyReviews = asyncHandler(async (req, res) => {
+const getMyShowReviews = asyncHandler(async (req, res) => {
   const page = Number(req.query.pageNumber) || 1;
 
   let reviews = await getUserReviewsById(req.user._id.toString());
@@ -600,7 +600,7 @@ export {
   getShowName,
   getCompanyShows,
   addShowRole,
-  getMyReviews,
+  getMyShowReviews,
   getShowReview,
   addShowReviewComment,
   updateShowReview,

@@ -4,7 +4,7 @@ import { getUserDetailsById } from "../actions/userActions";
 import { Image, Container, Row, Col, Table } from "react-bootstrap";
 import Loader from "../components/Loader";
 import { listUserShowReviews } from "../actions/showActions";
-import ReviewTableRow from "../components/ReviewTableRow";
+import ShowReviewTableRow from "../components/ShowReviewTableRow";
 
 const UserScreen = ({ match }) => {
   const dispatch = useDispatch();
@@ -92,7 +92,7 @@ const UserScreen = ({ match }) => {
                     </thead>
                     <tbody>
                       {showReviews.map((review) => (
-                        <ReviewTableRow key={review._id} review={review} />
+                        <ShowReviewTableRow key={review._id} review={review} />
                       ))}
                     </tbody>
                   </Table>

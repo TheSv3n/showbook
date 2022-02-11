@@ -9,7 +9,9 @@ import {
   updateUserProfile,
 } from "../actions/userActions";
 import { listMyShowReviews } from "../actions/showActions";
-import ReviewTableRow from "../components/ReviewTableRow";
+import { listMyVenueReviews } from "../actions/venueActions";
+import ShowReviewTableRow from "../components/ShowReviewTableRow";
+import VenueReviewTableRow from "../components/VenueReviewTableRow";
 
 const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -31,10 +33,17 @@ const ProfileScreen = ({ history }) => {
 
   const showMyReviews = useSelector((state) => state.showMyReviews);
   const {
-    loading: loadingReviews,
-    error: errorReviews,
-    reviews,
+    loading: loadingShowReviews,
+    error: errorShowReviews,
+    reviews: showReviews,
   } = showMyReviews;
+
+  const venueMyReviews = useSelector((state) => state.venueMyReviews);
+  const {
+    loading: loadingVenueReviews,
+    error: errorVenueReviews,
+    reviews: venueReviews,
+  } = venueMyReviews;
 
   useEffect(() => {
     if (!userInfo) {
@@ -44,6 +53,7 @@ const ProfileScreen = ({ history }) => {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserProfile());
         dispatch(listMyShowReviews());
+        dispatch(listMyVenueReviews());
       } else {
         setName(user.name);
         setEmail(user.email);
@@ -135,10 +145,11 @@ const ProfileScreen = ({ history }) => {
           </Col>
           <Col md={10}>
             <h2>My Reviews</h2>
-            {loadingReviews ? (
+            <h3>Shows</h3>
+            {loadingShowReviews ? (
               <Loader />
-            ) : errorReviews ? (
-              <div>{errorReviews}</div>
+            ) : errorShowReviews ? (
+              <div>{errorShowReviews}</div>
             ) : (
               <Table striped hover responsive className="table-sm text-light">
                 <thead>
@@ -153,8 +164,29 @@ const ProfileScreen = ({ history }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {reviews.map((review) => (
-                    <ReviewTableRow key={review._id} review={review} />
+                  {showReviews.map((review) => (
+                    <ShowReviewTableRow key={review._id} review={review} />
+                  ))}
+                </tbody>
+              </Table>
+            )}
+            <h3>Venues</h3>
+            {loadingVenueReviews ? (
+              <Loader />
+            ) : errorVenueReviews ? (
+              <div>{errorVenueReviews}</div>
+            ) : (
+              <Table striped hover responsive className="table-sm text-light">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Venue</th>
+                    <th>Rating</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {venueReviews.map((review) => (
+                    <VenueReviewTableRow key={review._id} review={review} />
                   ))}
                 </tbody>
               </Table>

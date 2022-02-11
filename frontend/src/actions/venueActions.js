@@ -16,6 +16,9 @@ import {
   VENUE_ADD_IMAGE_REQUEST,
   VENUE_ADD_IMAGE_SUCCESS,
   VENUE_ADD_IMAGE_FAIL,
+  VENUE_MY_REVIEWS_REQUEST,
+  VENUE_MY_REVIEWS_SUCCESS,
+  VENUE_MY_REVIEWS_FAIL,
 } from "../constants/venueConstants";
 
 export const listVenues =
@@ -197,3 +200,35 @@ export const createVenueImage =
       });
     }
   };
+
+export const listMyVenueReviews = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: VENUE_MY_REVIEWS_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/venues/myreviews`, config);
+
+    dispatch({
+      type: VENUE_MY_REVIEWS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: VENUE_MY_REVIEWS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
