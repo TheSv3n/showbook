@@ -15,6 +15,9 @@ import {
   COMPANY_ADD_IMAGE_REQUEST,
   COMPANY_ADD_IMAGE_SUCCESS,
   COMPANY_ADD_IMAGE_FAIL,
+  COMPANY_MY_REVIEWS_REQUEST,
+  COMPANY_MY_REVIEWS_SUCCESS,
+  COMPANY_MY_REVIEWS_FAIL,
 } from "../constants/companyConstants";
 import axios from "axios";
 
@@ -198,3 +201,35 @@ export const createCompanyImage =
       });
     }
   };
+
+export const listMyCompanyReviews = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: COMPANY_MY_REVIEWS_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/companies/myreviews`, config);
+
+    dispatch({
+      type: COMPANY_MY_REVIEWS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: COMPANY_MY_REVIEWS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

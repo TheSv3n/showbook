@@ -131,6 +131,47 @@ const addCompanyImage = asyncHandler(async (req, res) => {
   }
 });
 
+const getUserReviewsById = async (userId, page) => {
+  const companies = await Company.find({
+    $or: [
+      {
+        "reviews.user": userId,
+      },
+    ],
+  });
+
+  let reviews = [];
+
+  for (let i = 0; i < companies.length; i++) {
+    for (let j = 0; j < companies[i].reviews.length; j++) {
+      if (companies[i].reviews[j].user === userId) {
+        let tempReview;
+        tempReview = {
+          reviewId: companies[i].reviews[j]._id,
+          rating: companies[i].reviews[j].rating,
+          name: companies[i].name,
+          companyId: companies[i]._id,
+          image: companies[i].coverImage,
+        };
+        reviews = [...reviews, tempReview];
+      }
+    }
+  }
+
+  return reviews;
+};
+
+//@desc Fetch Logged-in User's Reviews
+//@route GET /api/venues/myreviews
+//@access Private
+const getMyCompanyReviews = asyncHandler(async (req, res) => {
+  const page = Number(req.query.pageNumber) || 1;
+
+  let reviews = await getUserReviewsById(req.user._id.toString());
+
+  res.json({ reviews });
+});
+
 export {
   createCompany,
   getCompany,
@@ -138,4 +179,5 @@ export {
   getAllCompanies,
   addCompanyReview,
   addCompanyImage,
+  getMyCompanyReviews,
 };

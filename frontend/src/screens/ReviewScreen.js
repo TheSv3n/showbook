@@ -25,6 +25,8 @@ const ReviewScreen = ({ match, history }) => {
   const [editedRating, setEditedRating] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState();
 
+  const path = match.path.split("/")[1];
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 

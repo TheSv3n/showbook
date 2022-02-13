@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-bootstrap";
+import { Image, Col } from "react-bootstrap";
 import RatingWidget from "./RatingWidget";
 import { Link } from "react-router-dom";
 
@@ -9,12 +9,14 @@ const VenueReviewTableRow = ({ review }) => {
       <td className="text-light">
         {" "}
         <Link to={`/venue/${review.venueId}`} className="link text-light">
-          <Image
-            src={review.image}
-            alt={review.name}
-            fluid
-            className="list-image"
-          ></Image>
+          <Col sm={4}>
+            <Image
+              src={review.image}
+              alt={review.name}
+              fluid
+              className="list-image"
+            ></Image>
+          </Col>
         </Link>
       </td>
       <td className="text-light">

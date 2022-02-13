@@ -10,6 +10,7 @@ import {
 } from "../actions/userActions";
 import { listMyShowReviews } from "../actions/showActions";
 import { listMyVenueReviews } from "../actions/venueActions";
+import { listMyCompanyReviews } from "../actions/companyActions";
 import ShowReviewTableRow from "../components/ShowReviewTableRow";
 import VenueReviewTableRow from "../components/VenueReviewTableRow";
 
@@ -45,6 +46,13 @@ const ProfileScreen = ({ history }) => {
     reviews: venueReviews,
   } = venueMyReviews;
 
+  const companyMyReviews = useSelector((state) => state.companyMyReviews);
+  const {
+    loading: loadingCompanyReviews,
+    error: errorCompanyReviews,
+    reviews: companyReviews,
+  } = companyMyReviews;
+
   useEffect(() => {
     if (!userInfo) {
       history.push("/login");
@@ -54,6 +62,7 @@ const ProfileScreen = ({ history }) => {
         dispatch(getUserProfile());
         dispatch(listMyShowReviews());
         dispatch(listMyVenueReviews());
+        dispatch(listMyCompanyReviews());
       } else {
         setName(user.name);
         setEmail(user.email);
@@ -186,6 +195,27 @@ const ProfileScreen = ({ history }) => {
                 </thead>
                 <tbody>
                   {venueReviews.map((review) => (
+                    <VenueReviewTableRow key={review._id} review={review} />
+                  ))}
+                </tbody>
+              </Table>
+            )}
+            <h3>Companies</h3>
+            {loadingCompanyReviews ? (
+              <Loader />
+            ) : errorCompanyReviews ? (
+              <div>{errorCompanyReviews}</div>
+            ) : (
+              <Table striped hover responsive className="table-sm text-light">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Company</th>
+                    <th>Rating</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {companyReviews.map((review) => (
                     <VenueReviewTableRow key={review._id} review={review} />
                   ))}
                 </tbody>
