@@ -11,8 +11,7 @@ import {
 import { listMyShowReviews } from "../actions/showActions";
 import { listMyVenueReviews } from "../actions/venueActions";
 import { listMyCompanyReviews } from "../actions/companyActions";
-import ShowReviewTableRow from "../components/ShowReviewTableRow";
-import VenueReviewTableRow from "../components/VenueReviewTableRow";
+import ReviewTableRow from "../components/ReviewTableRow";
 
 const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -174,7 +173,11 @@ const ProfileScreen = ({ history }) => {
                 </thead>
                 <tbody>
                   {showReviews.map((review) => (
-                    <ShowReviewTableRow key={review._id} review={review} />
+                    <ReviewTableRow
+                      key={review._id}
+                      review={review}
+                      type={"show"}
+                    />
                   ))}
                 </tbody>
               </Table>
@@ -195,7 +198,11 @@ const ProfileScreen = ({ history }) => {
                 </thead>
                 <tbody>
                   {venueReviews.map((review) => (
-                    <VenueReviewTableRow key={review._id} review={review} />
+                    <ReviewTableRow
+                      key={review._id}
+                      review={review}
+                      type={"venue"}
+                    />
                   ))}
                 </tbody>
               </Table>
@@ -216,7 +223,11 @@ const ProfileScreen = ({ history }) => {
                 </thead>
                 <tbody>
                   {companyReviews.map((review) => (
-                    <VenueReviewTableRow key={review._id} review={review} />
+                    <ReviewTableRow
+                      key={review._id}
+                      review={review}
+                      type={"company"}
+                    />
                   ))}
                 </tbody>
               </Table>

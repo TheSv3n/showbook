@@ -29,6 +29,7 @@ import {
   addVenueImageReducer,
   venueCreateReducer,
   venueMyReviewsReducer,
+  venueUserReviewsReducer,
 } from "./reducers/venueReducers";
 
 import {
@@ -44,6 +45,7 @@ import {
   addCompanyImageReducer,
   companyCreateReducer,
   companyMyReviewsReducer,
+  companyUserReviewsReducer,
 } from "./reducers/companyReducers";
 
 import {
@@ -82,6 +84,7 @@ const reducer = combineReducers({
   addVenueImage: addVenueImageReducer,
   venueCreate: venueCreateReducer,
   venueMyReviews: venueMyReviewsReducer,
+  venueUserReviews: venueUserReviewsReducer,
   castMemberList: castMemberListReducer,
   castMemberInfo: castMemberInfoReducer,
   castMemberCreate: castMemberCreateReducer,
@@ -92,6 +95,7 @@ const reducer = combineReducers({
   companyShowList: companyShowListReducer,
   companyCreate: companyCreateReducer,
   companyMyReviews: companyMyReviewsReducer,
+  companyUserReviews: companyUserReviewsReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

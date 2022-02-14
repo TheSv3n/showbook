@@ -18,6 +18,9 @@ import {
   COMPANY_MY_REVIEWS_REQUEST,
   COMPANY_MY_REVIEWS_SUCCESS,
   COMPANY_MY_REVIEWS_FAIL,
+  COMPANY_USER_REVIEWS_REQUEST,
+  COMPANY_USER_REVIEWS_SUCCESS,
+  COMPANY_USER_REVIEWS_FAIL,
 } from "../constants/companyConstants";
 import axios from "axios";
 
@@ -233,3 +236,25 @@ export const listMyCompanyReviews = () => async (dispatch, getState) => {
     });
   }
 };
+
+export const listUserCompanyReviews =
+  (userId) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: COMPANY_USER_REVIEWS_REQUEST });
+
+      const { data } = await axios.get(`/api/companies/userreviews/${userId}`);
+
+      dispatch({
+        type: COMPANY_USER_REVIEWS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: COMPANY_USER_REVIEWS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

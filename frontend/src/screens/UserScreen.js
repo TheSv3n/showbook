@@ -4,7 +4,9 @@ import { getUserDetailsById } from "../actions/userActions";
 import { Image, Container, Row, Col, Table } from "react-bootstrap";
 import Loader from "../components/Loader";
 import { listUserShowReviews } from "../actions/showActions";
-import ShowReviewTableRow from "../components/ShowReviewTableRow";
+import { listUserVenueReviews } from "../actions/venueActions";
+import { listUserCompanyReviews } from "../actions/companyActions";
+import ReviewTableRow from "../components/ReviewTableRow";
 
 const UserScreen = ({ match }) => {
   const dispatch = useDispatch();
@@ -23,10 +25,26 @@ const UserScreen = ({ match }) => {
     reviews: showReviews,
   } = showUserReviews;
 
+  const venueUserReviews = useSelector((state) => state.venueUserReviews);
+  const {
+    loading: loadingVenueReviews,
+    error: errorVenueReviews,
+    reviews: venueReviews,
+  } = venueUserReviews;
+
+  const companyUserReviews = useSelector((state) => state.companyUserReviews);
+  const {
+    loading: loadingCompanyReviews,
+    error: errorCompanyReviews,
+    reviews: companyReviews,
+  } = companyUserReviews;
+
   useEffect(() => {
     if (!user || user._id !== userId) {
       dispatch(getUserDetailsById(userId));
       dispatch(listUserShowReviews(userId));
+      dispatch(listUserVenueReviews(userId));
+      dispatch(listUserCompanyReviews(userId));
     }
   }, [dispatch, userId, userInfo, user]);
 
@@ -68,6 +86,7 @@ const UserScreen = ({ match }) => {
                   </span>
                   's Reviews
                 </h5>
+                <h6 className="text-white">Shows</h6>
                 {loadingShowReviews ? (
                   <Loader />
                 ) : errorShowReviews ? (
@@ -92,7 +111,71 @@ const UserScreen = ({ match }) => {
                     </thead>
                     <tbody>
                       {showReviews.map((review) => (
-                        <ShowReviewTableRow key={review._id} review={review} />
+                        <ReviewTableRow
+                          key={review._id}
+                          review={review}
+                          type={"show"}
+                        />
+                      ))}
+                    </tbody>
+                  </Table>
+                )}
+                <h6 className="text-white">Venues</h6>
+                {loadingVenueReviews ? (
+                  <Loader />
+                ) : errorVenueReviews ? (
+                  <div>{errorVenueReviews}</div>
+                ) : (
+                  <Table
+                    striped
+                    hover
+                    responsive
+                    className="table-sm text-light"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Image</th>
+                        <th>Venue</th>
+                        <th>Rating</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {venueReviews.map((review) => (
+                        <ReviewTableRow
+                          key={review._id}
+                          review={review}
+                          type={"venue"}
+                        />
+                      ))}
+                    </tbody>
+                  </Table>
+                )}
+                <h6 className="text-white">Companies</h6>
+                {loadingCompanyReviews ? (
+                  <Loader />
+                ) : errorCompanyReviews ? (
+                  <div>{errorCompanyReviews}</div>
+                ) : (
+                  <Table
+                    striped
+                    hover
+                    responsive
+                    className="table-sm text-light"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Image</th>
+                        <th>Company</th>
+                        <th>Rating</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {companyReviews.map((review) => (
+                        <ReviewTableRow
+                          key={review._id}
+                          review={review}
+                          type={"company"}
+                        />
                       ))}
                     </tbody>
                   </Table>

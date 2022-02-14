@@ -18,7 +18,7 @@ import {
   updateShowReviewComment,
   deleteShowReview,
   deleteShowReviewComment,
-  getUserReviews,
+  getUserShowReviews,
 } from "../controllers/showController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -44,6 +44,6 @@ router
   .put(protect, updateShowReviewComment)
   .delete(protect, deleteShowReviewComment);
 
-router.route("/userreviews/:id").get(getUserReviews);
+router.route("/userreviews/:id").get(getUserShowReviews);
 
 export default router;

@@ -8,6 +8,7 @@ import {
   addVenueReview,
   addVenueImage,
   getMyVenueReviews,
+  getUserVenueReviews,
 } from "../controllers/venueController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -18,5 +19,6 @@ router.route("/:id").get(getVenue);
 router.route("/:id/name").get(getVenueName);
 router.route("/:id/reviews").put(protect, addVenueReview);
 router.route("/:id/images").put(protect, addVenueImage);
+router.route("/userreviews/:id").get(getUserVenueReviews);
 
 export default router;

@@ -8,6 +8,7 @@ import {
   addCompanyReview,
   addCompanyImage,
   getMyCompanyReviews,
+  getUserCompanyReviews,
 } from "../controllers/companyController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -18,5 +19,6 @@ router.route("/:id").get(getCompany);
 router.route("/:id/name").get(getCompanyName);
 router.route("/:id/reviews").put(protect, addCompanyReview);
 router.route("/:id/images").put(protect, addCompanyImage);
+router.route("/userreviews/:id").get(getUserCompanyReviews);
 
 export default router;

@@ -172,6 +172,24 @@ const getMyCompanyReviews = asyncHandler(async (req, res) => {
   res.json({ reviews });
 });
 
+//@desc Fetch User's Company Reviews
+//@route GET /api/companies/userreviews/:id
+//@access Public
+const getUserCompanyReviews = asyncHandler(async (req, res) => {
+  const page = Number(req.query.pageNumber) || 1;
+
+  let tempReviews = await getUserReviewsById(req.params.id);
+  let reviews = [];
+
+  for (let i = 0; i < tempReviews.length; i++) {
+    if (!tempReviews[i].privateReview) {
+      reviews.push(tempReviews[i]);
+    }
+  }
+
+  res.json({ reviews });
+});
+
 export {
   createCompany,
   getCompany,
@@ -180,4 +198,5 @@ export {
   addCompanyReview,
   addCompanyImage,
   getMyCompanyReviews,
+  getUserCompanyReviews,
 };

@@ -175,6 +175,24 @@ const getMyVenueReviews = asyncHandler(async (req, res) => {
   res.json({ reviews });
 });
 
+//@desc Fetch User's Show Reviews
+//@route GET /api/venues/userreviews/:id
+//@access Public
+const getUserVenueReviews = asyncHandler(async (req, res) => {
+  const page = Number(req.query.pageNumber) || 1;
+
+  let tempReviews = await getUserReviewsById(req.params.id);
+  let reviews = [];
+
+  for (let i = 0; i < tempReviews.length; i++) {
+    if (!tempReviews[i].privateReview) {
+      reviews.push(tempReviews[i]);
+    }
+  }
+
+  res.json({ reviews });
+});
+
 export {
   createVenue,
   getVenue,
@@ -183,4 +201,5 @@ export {
   addVenueReview,
   addVenueImage,
   getMyVenueReviews,
+  getUserVenueReviews,
 };

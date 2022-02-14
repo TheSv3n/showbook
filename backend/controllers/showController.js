@@ -571,10 +571,10 @@ const getUserReviewsById = async (userId, page) => {
   return reviews;
 };
 
-//@desc Fetch User's Reviews
-//@route GET /api/userreviews/:id
+//@desc Fetch User's Show Reviews
+//@route GET /api/shows/userreviews/:id
 //@access Public
-const getUserReviews = asyncHandler(async (req, res) => {
+const getUserShowReviews = asyncHandler(async (req, res) => {
   const page = Number(req.query.pageNumber) || 1;
 
   let tempReviews = await getUserReviewsById(req.params.id);
@@ -607,5 +607,5 @@ export {
   updateShowReviewComment,
   deleteShowReview,
   deleteShowReviewComment,
-  getUserReviews,
+  getUserShowReviews,
 };

@@ -19,6 +19,9 @@ import {
   VENUE_MY_REVIEWS_REQUEST,
   VENUE_MY_REVIEWS_SUCCESS,
   VENUE_MY_REVIEWS_FAIL,
+  VENUE_USER_REVIEWS_REQUEST,
+  VENUE_USER_REVIEWS_SUCCESS,
+  VENUE_USER_REVIEWS_FAIL,
 } from "../constants/venueConstants";
 
 export const listVenues =
@@ -225,6 +228,27 @@ export const listMyVenueReviews = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: VENUE_MY_REVIEWS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listUserVenueReviews = (userId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: VENUE_USER_REVIEWS_REQUEST });
+
+    const { data } = await axios.get(`/api/venues/userreviews/${userId}`);
+
+    dispatch({
+      type: VENUE_USER_REVIEWS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: VENUE_USER_REVIEWS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
