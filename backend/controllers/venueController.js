@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Venue from "../models/venueModel.js";
+import User from "../models/userModel.js";
 
 //@desc Create new venue
 //@route POST /api/venues
@@ -193,6 +194,49 @@ const getUserVenueReviews = asyncHandler(async (req, res) => {
   res.json({ reviews });
 });
 
+//@desc Fetch Venue Review
+//route GET /api/venues/reviews/:id
+//@access Public
+const getVenueReview = asyncHandler(async (req, res) => {
+  const venues = await Venue.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (venues) {
+    let review;
+
+    for (let i = 0; i < venues[0].reviews.length; i++) {
+      if (venues[0].reviews[i]._id.toString() === req.params.id) {
+        let user = await User.findById(venues[0].reviews[i].user);
+        let userName = user.userName;
+
+        review = {
+          _id: venues[0].reviews[i]._id,
+          comment: venues[0].reviews[i].comment,
+          rating: venues[0].reviews[i].rating,
+          user: venues[0].reviews[i].user,
+          userName: userName,
+          createdAt: venues[0].reviews[i].createdAt,
+          updatedAt: venues[0].reviews[i].updatedAt,
+          reviewComments: venues[0].reviews[i].reviewComments,
+          venueId: venues[0]._id,
+          venueName: venues[0].name,
+          venueCoverImage: venues[0].coverImage,
+        };
+      }
+    }
+
+    res.json(review);
+  } else {
+    res.status(404);
+    throw new Error("Venue not Found");
+  }
+});
+
 export {
   createVenue,
   getVenue,
@@ -202,4 +246,5 @@ export {
   addVenueImage,
   getMyVenueReviews,
   getUserVenueReviews,
+  getVenueReview,
 };

@@ -22,6 +22,9 @@ import {
   VENUE_USER_REVIEWS_REQUEST,
   VENUE_USER_REVIEWS_SUCCESS,
   VENUE_USER_REVIEWS_FAIL,
+  VENUE_REVIEW_DETAILS_REQUEST,
+  VENUE_REVIEW_DETAILS_SUCCESS,
+  VENUE_REVIEW_DETAILS_FAIL,
 } from "../constants/venueConstants";
 
 export const listVenues =
@@ -256,3 +259,29 @@ export const listUserVenueReviews = (userId) => async (dispatch, getState) => {
     });
   }
 };
+
+export const getVenueReviewInfo =
+  (reviewId, update) => async (dispatch, getState) => {
+    try {
+      if (!update) {
+        dispatch({
+          type: VENUE_REVIEW_DETAILS_REQUEST,
+        });
+      }
+
+      const { data } = await axios.get(`/api/shows/venues/${reviewId}`);
+
+      dispatch({
+        type: VENUE_REVIEW_DETAILS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: VENUE_REVIEW_DETAILS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

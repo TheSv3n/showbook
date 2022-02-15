@@ -24,6 +24,9 @@ import {
   VENUE_USER_REVIEWS_REQUEST,
   VENUE_USER_REVIEWS_SUCCESS,
   VENUE_USER_REVIEWS_FAIL,
+  VENUE_REVIEW_DETAILS_REQUEST,
+  VENUE_REVIEW_DETAILS_SUCCESS,
+  VENUE_REVIEW_DETAILS_FAIL,
 } from "../constants/venueConstants";
 
 export const venueListReducer = (state = { venues: [] }, action) => {
@@ -173,6 +176,28 @@ export const venueUserReviewsReducer = (state = { reviews: [] }, action) => {
       };
     case VENUE_USER_REVIEWS_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const venueReviewInfoReducer = (state = {}, action) => {
+  switch (action.type) {
+    case VENUE_REVIEW_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case VENUE_REVIEW_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        review: action.payload,
+      };
+    case VENUE_REVIEW_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }
