@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { addShowReview, addShowReviewComment } from "../actions/showActions";
-import { addVenueReview } from "../actions/venueActions";
+import { addVenueReview, addVenueReviewComment } from "../actions/venueActions";
 import { useDispatch } from "react-redux";
 import RatingWidget from "./RatingWidget";
 import PerformanceModal from "./PerformanceModal";
@@ -65,6 +65,13 @@ const NewReviewModal = ({
           })
         );
         break;
+      case "venuereviewcomment":
+        dispatch(
+          addVenueReviewComment(id, {
+            comment: comment,
+          })
+        );
+        break;
 
       default:
     }
@@ -116,7 +123,9 @@ const NewReviewModal = ({
                   ) : (
                     ""
                   )}
-                  {type !== "showreviewcomment" ? (
+                  {type !== "showreviewcomment" &&
+                  type !== "venuereviewcomment" &&
+                  type !== "companyreviewcomment" ? (
                     <Form.Group controlId="rating">
                       <Form.Label>Rating - </Form.Label>
                       <RatingWidget

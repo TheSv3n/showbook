@@ -237,6 +237,149 @@ const getVenueReview = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Update Venue Review
+//route PUT /api/venue/reviews/:id
+//@access Private
+const updateVenueReview = asyncHandler(async (req, res) => {
+  const { comment, rating } = req.body;
+  const venues = await Venue.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (venues) {
+    for (let i = 0; i < venues[0].reviews.length; i++) {
+      if (venues[0].reviews[i]._id.toString() === req.params.id) {
+        venues[0].reviews[i].comment = comment;
+        venues[0].reviews[i].rating = rating;
+      }
+    }
+
+    await venues[0].save();
+    venues[0].numReviews = venues[0].reviews.length;
+
+    venues[0].rating =
+      venues[0].reviews.reduce((acc, review) => review.rating + acc, 0) /
+      venues[0].reviews.length;
+    await venues[0].save();
+    res.status(200).json({ message: "Review updated" });
+  } else {
+    res.status(404);
+    throw new Error("Venue not Found");
+  }
+});
+
+//@desc Delete Venue Review
+//route DELETE /api/venues/reviews/:id
+//@access Private
+const deleteVenueReview = asyncHandler(async (req, res) => {
+  const venues = await Venue.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (venues) {
+    let tempReviews = [...venues[0].reviews];
+
+    let index = -1;
+
+    for (let i = 0; i < tempReviews.length; i++) {
+      if (tempReviews[i]._id.toString() === req.params.id) {
+        index = i;
+      }
+    }
+
+    tempReviews.splice(index, 1);
+    venues[0].reviews = tempReviews;
+
+    await venues[0].save();
+    venues[0].numReviews = venues[0].reviews.length;
+
+    venues[0].rating =
+      venues[0].reviews.reduce((acc, review) => review.rating + acc, 0) /
+      venues[0].reviews.length;
+
+    await venues[0].save();
+    res.status(200).json({ message: "Review deleted" });
+  } else {
+    res.status(404);
+    throw new Error("Venue not Found");
+  }
+});
+
+//@desc Add Venue Review Comment
+//route POST /api/venues/reviews/:id/comments
+//@access Private
+const addVenueReviewComment = asyncHandler(async (req, res) => {
+  const { comment } = req.body;
+  const venues = await Venue.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (venues) {
+    const newComment = {
+      comment: comment,
+      user: req.user._id,
+    };
+
+    for (let i = 0; i < venues[0].reviews.length; i++) {
+      if (venues[0].reviews[i]._id.toString() === req.params.id) {
+        venues[0].reviews[i].reviewComments.push(newComment);
+      }
+    }
+
+    await venues[0].save();
+    res.status(201).json({ message: "Comment Added" });
+  } else {
+    res.status(404);
+    throw new Error("Venue not Found");
+  }
+});
+
+//@desc Update Venue Review Comment
+//route PUT /api/venues/reviews/:id/comments
+//@access Private
+const updateVenueReviewComment = asyncHandler(async (req, res) => {
+  const { comment, commentId } = req.body;
+  const venues = await Venue.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (shows) {
+    for (let i = 0; i < venues[0].reviews.length; i++) {
+      if (venues[0].reviews[i]._id.toString() === req.params.id) {
+        for (let j = 0; j < venues[0].reviews[i].reviewComments.length; j++) {
+          if (
+            venues[0].reviews[i].reviewComments[j]._id.toString() === commentId
+          ) {
+            venues[0].reviews[i].reviewComments[j].comment = comment;
+          }
+        }
+      }
+    }
+
+    await venues[0].save();
+    res.status(200).json({ message: "Comment Updated" });
+  } else {
+    res.status(404);
+    throw new Error("Venue not Found");
+  }
+});
+
 export {
   createVenue,
   getVenue,
@@ -247,4 +390,8 @@ export {
   getMyVenueReviews,
   getUserVenueReviews,
   getVenueReview,
+  updateVenueReview,
+  deleteVenueReview,
+  addVenueReviewComment,
+  updateVenueReviewComment,
 };

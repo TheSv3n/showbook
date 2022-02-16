@@ -27,6 +27,16 @@ import {
   VENUE_REVIEW_DETAILS_REQUEST,
   VENUE_REVIEW_DETAILS_SUCCESS,
   VENUE_REVIEW_DETAILS_FAIL,
+  VENUE_UPDATE_REVIEW_REQUEST,
+  VENUE_UPDATE_REVIEW_SUCCESS,
+  VENUE_UPDATE_REVIEW_FAIL,
+  VENUE_DELETE_REVIEW_REQUEST,
+  VENUE_DELETE_REVIEW_SUCCESS,
+  VENUE_DELETE_REVIEW_FAIL,
+  VENUE_DELETE_REVIEW_RESET,
+  VENUE_ADD_REVIEW_COMMENT_REQUEST,
+  VENUE_ADD_REVIEW_COMMENT_SUCCESS,
+  VENUE_ADD_REVIEW_COMMENT_FAIL,
 } from "../constants/venueConstants";
 
 export const venueListReducer = (state = { venues: [] }, action) => {
@@ -194,6 +204,67 @@ export const venueReviewInfoReducer = (state = {}, action) => {
         review: action.payload,
       };
     case VENUE_REVIEW_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const updateVenueReviewReducer = (state = {}, action) => {
+  switch (action.type) {
+    case VENUE_UPDATE_REVIEW_REQUEST:
+      return {
+        loading: true,
+      };
+    case VENUE_UPDATE_REVIEW_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        review: action.payload,
+      };
+    case VENUE_UPDATE_REVIEW_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const venueReviewDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case VENUE_DELETE_REVIEW_REQUEST:
+      return { loading: true };
+    case VENUE_DELETE_REVIEW_SUCCESS:
+      return { loading: false, success: true };
+    case VENUE_DELETE_REVIEW_FAIL:
+      return { loading: false, error: action.payload };
+    case VENUE_DELETE_REVIEW_RESET:
+      return {
+        state: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const addVenueReviewCommentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case VENUE_ADD_REVIEW_COMMENT_REQUEST:
+      return {
+        loading: true,
+      };
+    case VENUE_ADD_REVIEW_COMMENT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        comment: action.payload,
+      };
+    case VENUE_ADD_REVIEW_COMMENT_FAIL:
       return {
         loading: false,
         error: action.payload,

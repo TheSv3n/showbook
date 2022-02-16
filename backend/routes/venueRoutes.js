@@ -10,6 +10,10 @@ import {
   getMyVenueReviews,
   getUserVenueReviews,
   getVenueReview,
+  updateVenueReview,
+  deleteVenueReview,
+  addVenueReviewComment,
+  updateVenueReviewComment,
 } from "../controllers/venueController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -21,5 +25,14 @@ router.route("/:id/name").get(getVenueName);
 router.route("/:id/reviews").put(protect, addVenueReview);
 router.route("/:id/images").put(protect, addVenueImage);
 router.route("/userreviews/:id").get(getUserVenueReviews);
-router.route("/reviews/:id").get(getVenueReview);
+router
+  .route("/reviews/:id")
+  .get(getVenueReview)
+  .put(protect, updateVenueReview)
+  .delete(protect, deleteVenueReview);
+
+router
+  .route("/reviews/:id/comments")
+  .post(protect, addVenueReviewComment)
+  .put(protect, updateVenueReviewComment);
 export default router;

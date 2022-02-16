@@ -119,7 +119,7 @@ const Review = ({ review, performances, type, reviewId }) => {
               <div className="user">{userName}</div>
             </Link>
           </Col>
-          {type === "showcomment" ? (
+          {type === "showcomment" || "venuecomment" ? (
             ""
           ) : (
             <Col md={6}>
@@ -174,9 +174,10 @@ const Review = ({ review, performances, type, reviewId }) => {
             <div className="text-light">{commentText} </div>
             <div className="d-flex justify-content-between">
               <span className="align-right">
-                {userInfo &&
-                userInfo._id === review.user &&
-                type === "showcomment" ? (
+                {(userInfo &&
+                  userInfo._id === review.user &&
+                  type === "showcomment") ||
+                type === "venuecomment" ? (
                   <>
                     <i
                       className="bi bi-pencil-square text-light review-icon mx-1"
@@ -191,7 +192,7 @@ const Review = ({ review, performances, type, reviewId }) => {
                   ""
                 )}
               </span>
-              {type === "showcomment" ? (
+              {type === "showcomment" || type === "venuecomment" ? (
                 ""
               ) : (
                 <Link to={`/showreview/${review._id}`} className="text-white">

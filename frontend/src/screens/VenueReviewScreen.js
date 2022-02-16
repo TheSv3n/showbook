@@ -29,8 +29,8 @@ const VenueReviewScreen = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const showReviewInfo = useSelector((state) => state.showReviewInfo);
-  const { review, loading } = showReviewInfo;
+  const venueReviewInfo = useSelector((state) => state.venueReviewInfo);
+  const { review, loading } = venueReviewInfo;
 
   const addVenueReviewComment = useSelector(
     (state) => state.addVenueReviewComment
@@ -125,8 +125,8 @@ const VenueReviewScreen = ({ match, history }) => {
                 <Col md={3}>
                   <Row>
                     <Image
-                      src={review.showCoverImage}
-                      alt={review.showTitle}
+                      src={review.venueCoverImage}
+                      alt={review.venueName}
                       fluid
                     ></Image>
                   </Row>
@@ -225,7 +225,7 @@ const VenueReviewScreen = ({ match, history }) => {
                 <Container>
                   <ul className="list-group">
                     {review.reviewComments.length === 0 ? (
-                      <div className="text-light">No Reviews</div>
+                      <div className="text-light">No Comments</div>
                     ) : (
                       review.reviewComments.map((comment) => {
                         return (

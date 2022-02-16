@@ -18,6 +18,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import ReviewScreen from "./screens/ReviewScreen";
 import UserScreen from "./screens/UserScreen";
+import VenueReviewScreen from "./screens/VenueReviewScreen";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/company/:id" component={CompanyScreen} />
         <Route path="/user/:id" component={UserScreen} exact />
         <Route path="/showreview/:id" component={ReviewScreen} />
+        <Route path="/venuereview/:id" component={VenueReviewScreen} />
         <Route path="/addshow" component={NewShowScreen} />
         <Route path="/addvenue" component={NewVenueScreen} />
         <Route path="/addcastmember" component={NewCastMemberScreen} />
