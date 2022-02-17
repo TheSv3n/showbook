@@ -165,7 +165,7 @@ const getUserReviewsById = async (userId, page) => {
   return reviews;
 };
 
-//@desc Fetch Logged-in User's Reviews
+//@desc Fetch Logged-in User's Venue Reviews
 //@route GET /api/venues/myreviews
 //@access Private
 const getMyVenueReviews = asyncHandler(async (req, res) => {
@@ -176,7 +176,7 @@ const getMyVenueReviews = asyncHandler(async (req, res) => {
   res.json({ reviews });
 });
 
-//@desc Fetch User's Show Reviews
+//@desc Fetch User's Venue Reviews
 //@route GET /api/venues/userreviews/:id
 //@access Public
 const getUserVenueReviews = asyncHandler(async (req, res) => {
@@ -359,7 +359,7 @@ const updateVenueReviewComment = asyncHandler(async (req, res) => {
     ],
   });
 
-  if (shows) {
+  if (venues) {
     for (let i = 0; i < venues[0].reviews.length; i++) {
       if (venues[0].reviews[i]._id.toString() === req.params.id) {
         for (let j = 0; j < venues[0].reviews[i].reviewComments.length; j++) {
@@ -380,6 +380,49 @@ const updateVenueReviewComment = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Delete Venue Review Comment
+//route DELETE /api/venues/reviews/:id/comments
+//@access Private
+const deleteVenueReviewComment = asyncHandler(async (req, res) => {
+  const commentId = req.query.commentId;
+  const venues = await Venue.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (venues) {
+    let tempReviews = [...venues[0].reviews];
+    let tempComments;
+
+    let reviewIndex = -1;
+    let commentIndex = -1;
+
+    for (let i = 0; i < tempReviews.length; i++) {
+      if (tempReviews[i]._id.toString() === req.params.id) {
+        tempComments = [...tempReviews[i].reviewComments];
+        reviewIndex = i;
+        for (let j = 0; j < tempComments.length; j++) {
+          if (tempComments[j]._id.toString() === commentId) {
+            commentIndex = j;
+          }
+        }
+      }
+    }
+
+    tempComments.splice(commentIndex, 1);
+    venues[0].reviews[reviewIndex].reviewComments = tempComments;
+
+    await venues[0].save();
+    res.status(200).json({ message: "Comment deleted" });
+  } else {
+    res.status(404);
+    throw new Error("Venue not Found");
+  }
+});
+
 export {
   createVenue,
   getVenue,
@@ -394,4 +437,5 @@ export {
   deleteVenueReview,
   addVenueReviewComment,
   updateVenueReviewComment,
+  deleteVenueReviewComment,
 };

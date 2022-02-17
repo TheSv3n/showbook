@@ -34,6 +34,12 @@ import {
   VENUE_ADD_REVIEW_COMMENT_REQUEST,
   VENUE_ADD_REVIEW_COMMENT_SUCCESS,
   VENUE_ADD_REVIEW_COMMENT_FAIL,
+  VENUE_UPDATE_REVIEW_COMMENT_REQUEST,
+  VENUE_UPDATE_REVIEW_COMMENT_SUCCESS,
+  VENUE_UPDATE_REVIEW_COMMENT_FAIL,
+  VENUE_DELETE_REVIEW_COMMENT_REQUEST,
+  VENUE_DELETE_REVIEW_COMMENT_SUCCESS,
+  VENUE_DELETE_REVIEW_COMMENT_FAIL,
 } from "../constants/venueConstants";
 
 export const listVenues =
@@ -401,6 +407,83 @@ export const addVenueReviewComment =
     } catch (error) {
       dispatch({
         type: VENUE_ADD_REVIEW_COMMENT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const editVenueReviewComment =
+  (reviewId, comment) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: VENUE_UPDATE_REVIEW_COMMENT_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `/api/venues/reviews/${reviewId}/comments`,
+        comment,
+        config
+      );
+
+      dispatch({
+        type: VENUE_UPDATE_REVIEW_COMMENT_SUCCESS,
+        payload: data,
+      });
+      dispatch(getVenueReviewInfo(reviewId, true));
+    } catch (error) {
+      dispatch({
+        type: VENUE_UPDATE_REVIEW_COMMENT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const deleteVenueReviewCommment =
+  (reviewId, commentId) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: VENUE_DELETE_REVIEW_COMMENT_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      await axios.delete(
+        `/api/venues/reviews/${reviewId}/comments?commentId=${commentId}`,
+        config
+      );
+
+      dispatch({
+        type: VENUE_DELETE_REVIEW_COMMENT_SUCCESS,
+      });
+      dispatch(getVenueReviewInfo(reviewId, true));
+    } catch (error) {
+      dispatch({
+        type: VENUE_DELETE_REVIEW_COMMENT_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

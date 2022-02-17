@@ -142,7 +142,7 @@ const addShowImage = asyncHandler(async (req, res) => {
 //route PUT /api/shows/:id/reviews
 //@access Private
 const addShowReview = asyncHandler(async (req, res) => {
-  const { performanceId, comment, rating } = req.body;
+  const { performanceId, comment, rating, privateReview } = req.body;
   const show = await Show.findById(req.params.id);
 
   if (show) {
@@ -151,6 +151,7 @@ const addShowReview = asyncHandler(async (req, res) => {
       comment: comment,
       rating: rating,
       user: req.user._id,
+      privateReview: privateReview,
     };
 
     show.reviews.push(newReview);

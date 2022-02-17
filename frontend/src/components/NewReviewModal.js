@@ -20,6 +20,7 @@ const NewReviewModal = ({
   const [performanceId, setPerformanceId] = useState("");
   const [showPerformanceModal, setShowPerformanceModal] = useState(false);
   const [performanceText, setPerformanceText] = useState("Not selected");
+  const [privateReview, setPrivateReview] = useState(false);
 
   const handleClose = () => {
     setRating(0);
@@ -31,49 +32,51 @@ const NewReviewModal = ({
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (comment !== "") {
+      switch (type) {
+        case "show":
+          dispatch(
+            addShowReview(id, {
+              performanceId: performanceId,
+              rating: rating,
+              comment: comment,
+              privateReview: privateReview,
+            })
+          );
+          break;
+        case "venue":
+          dispatch(
+            addVenueReview(id, {
+              rating: rating,
+              comment: comment,
+            })
+          );
+          break;
+        case "company":
+          dispatch(
+            addCompanyReview(id, {
+              rating: rating,
+              comment: comment,
+            })
+          );
+          break;
+        case "showreviewcomment":
+          dispatch(
+            addShowReviewComment(id, {
+              comment: comment,
+            })
+          );
+          break;
+        case "venuereviewcomment":
+          dispatch(
+            addVenueReviewComment(id, {
+              comment: comment,
+            })
+          );
+          break;
 
-    switch (type) {
-      case "show":
-        dispatch(
-          addShowReview(id, {
-            performanceId: performanceId,
-            rating: rating,
-            comment: comment,
-          })
-        );
-        break;
-      case "venue":
-        dispatch(
-          addVenueReview(id, {
-            rating: rating,
-            comment: comment,
-          })
-        );
-        break;
-      case "company":
-        dispatch(
-          addCompanyReview(id, {
-            rating: rating,
-            comment: comment,
-          })
-        );
-        break;
-      case "showreviewcomment":
-        dispatch(
-          addShowReviewComment(id, {
-            comment: comment,
-          })
-        );
-        break;
-      case "venuereviewcomment":
-        dispatch(
-          addVenueReviewComment(id, {
-            comment: comment,
-          })
-        );
-        break;
-
-      default:
+        default:
+      }
     }
 
     handleClose();

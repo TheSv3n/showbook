@@ -291,7 +291,7 @@ const ShowScreen = ({ match, history }) => {
                             review={review}
                             key={review._id}
                             performances={show.performances}
-                            type="show"
+                            type="showreview"
                           />
                         );
                       })

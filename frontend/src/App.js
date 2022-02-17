@@ -16,7 +16,7 @@ import NewCompanyScreen from "./screens/NewCompanyScreen";
 import CastScreen from "./screens/CastScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-import ReviewScreen from "./screens/ReviewScreen";
+import ShowReviewScreen from "./screens/ShowReviewScreen";
 import UserScreen from "./screens/UserScreen";
 import VenueReviewScreen from "./screens/VenueReviewScreen";
 
@@ -35,7 +35,7 @@ function App() {
         <Route path="/castmember/:id" component={CastMemberScreen} />
         <Route path="/company/:id" component={CompanyScreen} />
         <Route path="/user/:id" component={UserScreen} exact />
-        <Route path="/showreview/:id" component={ReviewScreen} />
+        <Route path="/showreview/:id" component={ShowReviewScreen} />
         <Route path="/venuereview/:id" component={VenueReviewScreen} />
         <Route path="/addshow" component={NewShowScreen} />
         <Route path="/addvenue" component={NewVenueScreen} />

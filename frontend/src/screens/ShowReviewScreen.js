@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getShowReviewInfo } from "../actions/showActions";
 import Loader from "../components/Loader";
 import { Image, Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import RatingWidget from "../components/RatingWidget";
 import NewReviewModal from "../components/NewReviewModal";
 import Review from "../components/Review";
-import { editShowReview, deleteShowReview } from "../actions/showActions";
+import {
+  getShowReviewInfo,
+  editShowReview,
+  deleteShowReview,
+} from "../actions/showActions";
 import {
   SHOW_DELETE_REVIEW_RESET,
   SHOW_UPDATE_REVIEW_RESET,
 } from "../constants/showConstants";
 import DeleteModal from "../components/DeleteModal";
 
-const ReviewScreen = ({ match, history }) => {
+const ShowReviewScreen = ({ match, history }) => {
   const dispatch = useDispatch();
   const reviewId = match.params.id;
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -267,4 +270,4 @@ const ReviewScreen = ({ match, history }) => {
   );
 };
 
-export default ReviewScreen;
+export default ShowReviewScreen;

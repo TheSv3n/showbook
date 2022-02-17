@@ -222,7 +222,7 @@ const VenueScreen = ({ match, history }) => {
                             review={review}
                             key={review._id}
                             performances={venue.performances}
-                            type="venue"
+                            type="venuereview"
                           />
                         );
                       })

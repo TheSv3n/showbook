@@ -37,6 +37,14 @@ import {
   VENUE_ADD_REVIEW_COMMENT_REQUEST,
   VENUE_ADD_REVIEW_COMMENT_SUCCESS,
   VENUE_ADD_REVIEW_COMMENT_FAIL,
+  VENUE_UPDATE_REVIEW_COMMENT_REQUEST,
+  VENUE_UPDATE_REVIEW_COMMENT_SUCCESS,
+  VENUE_UPDATE_REVIEW_COMMENT_FAIL,
+  VENUE_UPDATE_REVIEW_COMMENT_RESET,
+  VENUE_DELETE_REVIEW_COMMENT_REQUEST,
+  VENUE_DELETE_REVIEW_COMMENT_SUCCESS,
+  VENUE_DELETE_REVIEW_COMMENT_RESET,
+  VENUE_DELETE_REVIEW_COMMENT_FAIL,
 } from "../constants/venueConstants";
 
 export const venueListReducer = (state = { venues: [] }, action) => {
@@ -268,6 +276,49 @@ export const addVenueReviewCommentReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const updateVenueReviewCommentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case VENUE_UPDATE_REVIEW_COMMENT_REQUEST:
+      return {
+        loading: true,
+      };
+    case VENUE_UPDATE_REVIEW_COMMENT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        comment: action.payload,
+      };
+    case VENUE_UPDATE_REVIEW_COMMENT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case VENUE_UPDATE_REVIEW_COMMENT_RESET:
+      return {
+        state: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const venueReviewDeleteCommentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case VENUE_DELETE_REVIEW_COMMENT_REQUEST:
+      return { loading: true };
+    case VENUE_DELETE_REVIEW_COMMENT_SUCCESS:
+      return { loading: false, success: true };
+    case VENUE_DELETE_REVIEW_COMMENT_FAIL:
+      return { loading: false, error: action.payload };
+    case VENUE_DELETE_REVIEW_COMMENT_RESET:
+      return {
+        state: {},
       };
     default:
       return state;

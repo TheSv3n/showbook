@@ -15,6 +15,14 @@ import {
   SHOW_DELETE_REVIEW_COMMENT_RESET,
 } from "../constants/showConstants";
 import DeleteModal from "../components/DeleteModal";
+import {
+  VENUE_DELETE_REVIEW_COMMENT_RESET,
+  VENUE_UPDATE_REVIEW_COMMENT_RESET,
+} from "../constants/venueConstants";
+import {
+  deleteVenueReviewCommment,
+  editVenueReviewComment,
+} from "../actions/venueActions";
 
 const Review = ({ review, performances, type, reviewId }) => {
   const dispatch = useDispatch();
@@ -32,13 +40,26 @@ const Review = ({ review, performances, type, reviewId }) => {
   const updateShowReviewComment = useSelector(
     (state) => state.updateShowReviewComment
   );
-  const { loading, success } = updateShowReviewComment;
+  const { loading: loadingUpdateShow, success: successUpdateShow } =
+    updateShowReviewComment;
 
   const showReviewDeleteComment = useSelector(
     (state) => state.showReviewDeleteComment
   );
-  const { loading: loadingDeleteComment, success: successDelete } =
+  const { loading: loadingDeleteShowComment, success: successDeleteShow } =
     showReviewDeleteComment;
+
+  const updateVenueReviewComment = useSelector(
+    (state) => state.updateVenueReviewComment
+  );
+  const { loading: loadingUpdateVenue, success: successUpdateVenue } =
+    updateVenueReviewComment;
+
+  const venueReviewDeleteComment = useSelector(
+    (state) => state.venueReviewDeleteComment
+  );
+  const { loading: loadingDeleteVenueComment, success: successDeleteVenue } =
+    venueReviewDeleteComment;
 
   const getUserName = async (userId) => {
     const { data: userName } = await axios.get(`/api/users/${userId}/username`);
@@ -71,38 +92,67 @@ const Review = ({ review, performances, type, reviewId }) => {
   };
 
   const deleteHandler = () => {
-    dispatch(deleteShowReviewCommment(reviewId, review._id));
+    switch (type) {
+      case "showcomment":
+        dispatch(deleteShowReviewCommment(reviewId, review._id));
+        break;
+      case "venuecomment":
+        dispatch(deleteVenueReviewCommment(reviewId, review._id));
+        break;
+      default:
+    }
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (editedComment !== "") {
-      dispatch(
-        editShowReviewComment(reviewId, {
-          comment: editedComment,
-          commentId: review._id,
-        })
-      );
+      switch (type) {
+        case "showcomment":
+          dispatch(
+            editShowReviewComment(reviewId, {
+              comment: editedComment,
+              commentId: review._id,
+            })
+          );
+          break;
+        case "venuecomment":
+          dispatch(
+            editVenueReviewComment(reviewId, {
+              comment: editedComment,
+              commentId: review._id,
+            })
+          );
+          break;
+        default:
+      }
     }
   };
 
   useEffect(() => {
     getUserName(review.user);
-    if (type === "show") {
+    if (type === "showreview") {
       getPerformanceInfo();
     }
-    if (!success) {
+    if (!successUpdateShow && !successUpdateVenue) {
       setCommentText(review.comment);
     }
-    if (success) {
+    if (successUpdateShow || successUpdateVenue) {
       setShowEditFields(false);
       dispatch({ type: SHOW_UPDATE_REVIEW_COMMENT_RESET });
+      dispatch({ type: VENUE_UPDATE_REVIEW_COMMENT_RESET });
     }
-    if (successDelete) {
-      setShowDeleteModal(!showDeleteModal);
+    if (successDeleteShow || successDeleteVenue) {
+      setShowDeleteModal(false);
       dispatch({ type: SHOW_DELETE_REVIEW_COMMENT_RESET });
+      dispatch({ type: VENUE_DELETE_REVIEW_COMMENT_RESET });
     }
-  }, [review, success, successDelete]);
+  }, [
+    review,
+    successUpdateShow,
+    successDeleteShow,
+    successUpdateVenue,
+    successDeleteVenue,
+  ]);
 
   return (
     <>
@@ -119,9 +169,7 @@ const Review = ({ review, performances, type, reviewId }) => {
               <div className="user">{userName}</div>
             </Link>
           </Col>
-          {type === "showcomment" || "venuecomment" ? (
-            ""
-          ) : (
+          {review.rating && (
             <Col md={6}>
               <div className="align-right">
                 <RatingWidget
@@ -133,7 +181,7 @@ const Review = ({ review, performances, type, reviewId }) => {
             </Col>
           )}
         </div>
-        {type === "show" ? (
+        {type === "showreview" ? (
           <div className="performance">
             Seen at: {performanceVenue} on {performanceDate}
           </div>
@@ -152,7 +200,7 @@ const Review = ({ review, performances, type, reviewId }) => {
                 onChange={(e) => setEditedComment(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            {loading ? (
+            {loadingUpdateShow || loadingUpdateVenue ? (
               <Loader />
             ) : (
               <>
@@ -195,7 +243,7 @@ const Review = ({ review, performances, type, reviewId }) => {
               {type === "showcomment" || type === "venuecomment" ? (
                 ""
               ) : (
-                <Link to={`/showreview/${review._id}`} className="text-white">
+                <Link to={`/${type}/${review._id}`} className="text-white">
                   <span className="align-left">Show full review</span>
                 </Link>
               )}

@@ -14,6 +14,7 @@ import {
   deleteVenueReview,
   addVenueReviewComment,
   updateVenueReviewComment,
+  deleteVenueReviewComment,
 } from "../controllers/venueController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -34,5 +35,6 @@ router
 router
   .route("/reviews/:id/comments")
   .post(protect, addVenueReviewComment)
-  .put(protect, updateVenueReviewComment);
+  .put(protect, updateVenueReviewComment)
+  .delete(protect, deleteVenueReviewComment);
 export default router;
