@@ -5,7 +5,10 @@ import { addVenueReview, addVenueReviewComment } from "../actions/venueActions";
 import { useDispatch } from "react-redux";
 import RatingWidget from "./RatingWidget";
 import PerformanceModal from "./PerformanceModal";
-import { addCompanyReview } from "../actions/companyActions";
+import {
+  addCompanyReview,
+  addCompanyReviewComment,
+} from "../actions/companyActions";
 
 const NewReviewModal = ({
   showModal,
@@ -70,6 +73,13 @@ const NewReviewModal = ({
         case "venuereviewcomment":
           dispatch(
             addVenueReviewComment(id, {
+              comment: comment,
+            })
+          );
+          break;
+        case "companyreviewcomment":
+          dispatch(
+            addCompanyReviewComment(id, {
               comment: comment,
             })
           );

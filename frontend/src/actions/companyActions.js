@@ -21,6 +21,18 @@ import {
   COMPANY_USER_REVIEWS_REQUEST,
   COMPANY_USER_REVIEWS_SUCCESS,
   COMPANY_USER_REVIEWS_FAIL,
+  COMPANY_REVIEW_DETAILS_REQUEST,
+  COMPANY_REVIEW_DETAILS_SUCCESS,
+  COMPANY_REVIEW_DETAILS_FAIL,
+  COMPANY_UPDATE_REVIEW_REQUEST,
+  COMPANY_UPDATE_REVIEW_SUCCESS,
+  COMPANY_UPDATE_REVIEW_FAIL,
+  COMPANY_DELETE_REVIEW_REQUEST,
+  COMPANY_DELETE_REVIEW_SUCCESS,
+  COMPANY_DELETE_REVIEW_FAIL,
+  COMPANY_ADD_REVIEW_COMMENT_REQUEST,
+  COMPANY_ADD_REVIEW_COMMENT_SUCCESS,
+  COMPANY_ADD_REVIEW_COMMENT_FAIL,
 } from "../constants/companyConstants";
 import axios from "axios";
 
@@ -251,6 +263,146 @@ export const listUserCompanyReviews =
     } catch (error) {
       dispatch({
         type: COMPANY_USER_REVIEWS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const getCompanyReviewInfo =
+  (reviewId, update) => async (dispatch, getState) => {
+    try {
+      if (!update) {
+        dispatch({
+          type: COMPANY_REVIEW_DETAILS_REQUEST,
+        });
+      }
+
+      const { data } = await axios.get(`/api/companies/reviews/${reviewId}`);
+
+      dispatch({
+        type: COMPANY_REVIEW_DETAILS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: COMPANY_REVIEW_DETAILS_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const editCompanyReview =
+  (reviewId, review) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: COMPANY_UPDATE_REVIEW_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `/api/companies/reviews/${reviewId}`,
+        review,
+        config
+      );
+
+      dispatch({
+        type: COMPANY_UPDATE_REVIEW_SUCCESS,
+        payload: data,
+      });
+      dispatch(getCompanyReviewInfo(reviewId, true));
+    } catch (error) {
+      dispatch({
+        type: COMPANY_UPDATE_REVIEW_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const deleteCompanyReview =
+  (reviewId, companyId) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: COMPANY_DELETE_REVIEW_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.delete(`/api/companies/reviews/${reviewId}`, config);
+
+      dispatch({
+        type: COMPANY_DELETE_REVIEW_SUCCESS,
+      });
+      dispatch(getCompanyInfo(companyId, true));
+    } catch (error) {
+      dispatch({
+        type: COMPANY_DELETE_REVIEW_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const addCompanyReviewComment =
+  (reviewId, comment) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: COMPANY_ADD_REVIEW_COMMENT_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.post(
+        `/api/companies/reviews/${reviewId}/comments`,
+        comment,
+        config
+      );
+
+      dispatch({
+        type: COMPANY_ADD_REVIEW_COMMENT_SUCCESS,
+      });
+      dispatch(getCompanyReviewInfo(reviewId, true));
+    } catch (error) {
+      dispatch({
+        type: COMPANY_ADD_REVIEW_COMMENT_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

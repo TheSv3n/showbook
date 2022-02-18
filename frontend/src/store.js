@@ -52,6 +52,10 @@ import {
   companyCreateReducer,
   companyMyReviewsReducer,
   companyUserReviewsReducer,
+  companyReviewInfoReducer,
+  updateCompanyReviewReducer,
+  companyReviewDeleteReducer,
+  addCompanyReviewCommentReducer,
 } from "./reducers/companyReducers";
 
 import {
@@ -108,6 +112,10 @@ const reducer = combineReducers({
   companyCreate: companyCreateReducer,
   companyMyReviews: companyMyReviewsReducer,
   companyUserReviews: companyUserReviewsReducer,
+  companyReviewInfo: companyReviewInfoReducer,
+  updateCompanyReview: updateCompanyReviewReducer,
+  companyReviewDelete: companyReviewDeleteReducer,
+  addCompanyReviewComment: addCompanyReviewCommentReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

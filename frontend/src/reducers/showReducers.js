@@ -58,6 +58,7 @@ import {
   SHOW_MY_REVIEWS_REQUEST,
   SHOW_MY_REVIEWS_SUCCESS,
   SHOW_MY_REVIEWS_FAIL,
+  SHOW_UPDATE_REVIEW_RESET,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -341,6 +342,10 @@ export const updateShowReviewReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    case SHOW_UPDATE_REVIEW_RESET:
+      return {
+        state: {},
       };
     default:
       return state;

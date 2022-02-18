@@ -342,7 +342,7 @@ export const editVenueReview =
   };
 
 export const deleteVenueReview =
-  (reviewId, showId) => async (dispatch, getState) => {
+  (reviewId, venueId) => async (dispatch, getState) => {
     try {
       dispatch({
         type: VENUE_DELETE_REVIEW_REQUEST,
@@ -364,7 +364,7 @@ export const deleteVenueReview =
       dispatch({
         type: VENUE_DELETE_REVIEW_SUCCESS,
       });
-      dispatch(getVenueInfo(showId, true));
+      dispatch(getVenueInfo(venueId, true));
     } catch (error) {
       dispatch({
         type: VENUE_DELETE_REVIEW_FAIL,

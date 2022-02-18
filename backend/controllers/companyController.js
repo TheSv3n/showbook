@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Company from "../models/companyModel.js";
+import User from "../models/userModel.js";
 
 //@desc Create new company
 //@route POST /api/companies
@@ -162,7 +163,7 @@ const getUserReviewsById = async (userId, page) => {
 };
 
 //@desc Fetch Logged-in User's Reviews
-//@route GET /api/venues/myreviews
+//@route GET /api/companies/myreviews
 //@access Private
 const getMyCompanyReviews = asyncHandler(async (req, res) => {
   const page = Number(req.query.pageNumber) || 1;
@@ -190,6 +191,158 @@ const getUserCompanyReviews = asyncHandler(async (req, res) => {
   res.json({ reviews });
 });
 
+//@desc Fetch Company Review
+//route GET /api/company/reviews/:id
+//@access Public
+const getCompanyReview = asyncHandler(async (req, res) => {
+  const companies = await Company.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (companies) {
+    let review;
+
+    for (let i = 0; i < companies[0].reviews.length; i++) {
+      if (companies[0].reviews[i]._id.toString() === req.params.id) {
+        let user = await User.findById(companies[0].reviews[i].user);
+        let userName = user.userName;
+
+        review = {
+          _id: companies[0].reviews[i]._id,
+          comment: companies[0].reviews[i].comment,
+          rating: companies[0].reviews[i].rating,
+          user: companies[0].reviews[i].user,
+          userName: userName,
+          createdAt: companies[0].reviews[i].createdAt,
+          updatedAt: companies[0].reviews[i].updatedAt,
+          reviewComments: companies[0].reviews[i].reviewComments,
+          companyId: companies[0]._id,
+          companyName: companies[0].name,
+          companyCoverImage: companies[0].coverImage,
+        };
+      }
+    }
+
+    res.json(review);
+  } else {
+    res.status(404);
+    throw new Error("Company not Found");
+  }
+});
+
+//@desc Update Company Review
+//route PUT /api/companies/reviews/:id
+//@access Private
+const updateCompanyReview = asyncHandler(async (req, res) => {
+  const { comment, rating } = req.body;
+  const companies = await Company.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (companies) {
+    for (let i = 0; i < companies[0].reviews.length; i++) {
+      if (companies[0].reviews[i]._id.toString() === req.params.id) {
+        companies[0].reviews[i].comment = comment;
+        companies[0].reviews[i].rating = rating;
+      }
+    }
+
+    await companies[0].save();
+    companies[0].numReviews = companies[0].reviews.length;
+
+    companies[0].rating =
+      companies[0].reviews.reduce((acc, review) => review.rating + acc, 0) /
+      companies[0].reviews.length;
+    await companies[0].save();
+    res.status(200).json({ message: "Review updated" });
+  } else {
+    res.status(404);
+    throw new Error("Company not Found");
+  }
+});
+
+//@desc Delete Company Review
+//route DELETE /api/companies/reviews/:id
+//@access Private
+const deleteCompanyReview = asyncHandler(async (req, res) => {
+  const companies = await Company.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (companies) {
+    let tempReviews = [...companies[0].reviews];
+
+    let index = -1;
+
+    for (let i = 0; i < tempReviews.length; i++) {
+      if (tempReviews[i]._id.toString() === req.params.id) {
+        index = i;
+      }
+    }
+
+    tempReviews.splice(index, 1);
+    companies[0].reviews = tempReviews;
+
+    await companies[0].save();
+    companies[0].numReviews = companies[0].reviews.length;
+
+    companies[0].rating =
+      companies[0].reviews.reduce((acc, review) => review.rating + acc, 0) /
+      companies[0].reviews.length;
+
+    await companies[0].save();
+    res.status(200).json({ message: "Review deleted" });
+  } else {
+    res.status(404);
+    throw new Error("Company not Found");
+  }
+});
+
+//@desc Add Company Review Comment
+//route POST /api/companies/reviews/:id/comments
+//@access Private
+const addCompanyReviewComment = asyncHandler(async (req, res) => {
+  const { comment } = req.body;
+  const companies = await Company.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (companies) {
+    const newComment = {
+      comment: comment,
+      user: req.user._id,
+    };
+
+    for (let i = 0; i < companies[0].reviews.length; i++) {
+      if (companies[0].reviews[i]._id.toString() === req.params.id) {
+        companies[0].reviews[i].reviewComments.push(newComment);
+      }
+    }
+
+    await companies[0].save();
+    res.status(201).json({ message: "Comment Added" });
+  } else {
+    res.status(404);
+    throw new Error("Company not Found");
+  }
+});
+
 export {
   createCompany,
   getCompany,
@@ -199,4 +352,8 @@ export {
   addCompanyImage,
   getMyCompanyReviews,
   getUserCompanyReviews,
+  getCompanyReview,
+  updateCompanyReview,
+  deleteCompanyReview,
+  addCompanyReviewComment,
 };

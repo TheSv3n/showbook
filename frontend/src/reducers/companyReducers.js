@@ -24,6 +24,20 @@ import {
   COMPANY_USER_REVIEWS_REQUEST,
   COMPANY_USER_REVIEWS_SUCCESS,
   COMPANY_USER_REVIEWS_FAIL,
+  COMPANY_REVIEW_DETAILS_REQUEST,
+  COMPANY_REVIEW_DETAILS_SUCCESS,
+  COMPANY_REVIEW_DETAILS_FAIL,
+  COMPANY_UPDATE_REVIEW_REQUEST,
+  COMPANY_UPDATE_REVIEW_SUCCESS,
+  COMPANY_UPDATE_REVIEW_FAIL,
+  COMPANY_DELETE_REVIEW_REQUEST,
+  COMPANY_DELETE_REVIEW_SUCCESS,
+  COMPANY_DELETE_REVIEW_FAIL,
+  COMPANY_DELETE_REVIEW_RESET,
+  COMPANY_UPDATE_REVIEW_RESET,
+  COMPANY_ADD_REVIEW_COMMENT_REQUEST,
+  COMPANY_ADD_REVIEW_COMMENT_SUCCESS,
+  COMPANY_ADD_REVIEW_COMMENT_FAIL,
 } from "../constants/companyConstants";
 
 export const companyListReducer = (state = { companies: [] }, action) => {
@@ -173,6 +187,93 @@ export const companyUserReviewsReducer = (state = { reviews: [] }, action) => {
       };
     case COMPANY_USER_REVIEWS_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const companyReviewInfoReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COMPANY_REVIEW_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case COMPANY_REVIEW_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        review: action.payload,
+      };
+    case COMPANY_REVIEW_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const updateCompanyReviewReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COMPANY_UPDATE_REVIEW_REQUEST:
+      return {
+        loading: true,
+      };
+    case COMPANY_UPDATE_REVIEW_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        review: action.payload,
+      };
+    case COMPANY_UPDATE_REVIEW_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case COMPANY_UPDATE_REVIEW_RESET:
+      return {
+        state: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const companyReviewDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COMPANY_DELETE_REVIEW_REQUEST:
+      return { loading: true };
+    case COMPANY_DELETE_REVIEW_SUCCESS:
+      return { loading: false, success: true };
+    case COMPANY_DELETE_REVIEW_FAIL:
+      return { loading: false, error: action.payload };
+    case COMPANY_DELETE_REVIEW_RESET:
+      return {
+        state: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const addCompanyReviewCommentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COMPANY_ADD_REVIEW_COMMENT_REQUEST:
+      return {
+        loading: true,
+      };
+    case COMPANY_ADD_REVIEW_COMMENT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        comment: action.payload,
+      };
+    case COMPANY_ADD_REVIEW_COMMENT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

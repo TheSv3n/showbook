@@ -45,6 +45,7 @@ import {
   VENUE_DELETE_REVIEW_COMMENT_SUCCESS,
   VENUE_DELETE_REVIEW_COMMENT_RESET,
   VENUE_DELETE_REVIEW_COMMENT_FAIL,
+  VENUE_UPDATE_REVIEW_RESET,
 } from "../constants/venueConstants";
 
 export const venueListReducer = (state = { venues: [] }, action) => {
@@ -239,6 +240,10 @@ export const updateVenueReviewReducer = (state = {}, action) => {
         error: action.payload,
       };
     default:
+    case VENUE_UPDATE_REVIEW_RESET:
+      return {
+        state: {},
+      };
       return state;
   }
 };
