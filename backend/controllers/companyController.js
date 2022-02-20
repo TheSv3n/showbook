@@ -343,6 +343,88 @@ const addCompanyReviewComment = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Update Company Review Comment
+//route PUT /api/companies/reviews/:id/comments
+//@access Private
+const updateCompanyReviewComment = asyncHandler(async (req, res) => {
+  const { comment, commentId } = req.body;
+  const companies = await Company.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (companies) {
+    for (let i = 0; i < companies[0].reviews.length; i++) {
+      if (companies[0].reviews[i]._id.toString() === req.params.id) {
+        for (
+          let j = 0;
+          j < companies[0].reviews[i].reviewComments.length;
+          j++
+        ) {
+          if (
+            companies[0].reviews[i].reviewComments[j]._id.toString() ===
+            commentId
+          ) {
+            companies[0].reviews[i].reviewComments[j].comment = comment;
+          }
+        }
+      }
+    }
+
+    await companies[0].save();
+    res.status(200).json({ message: "Comment Updated" });
+  } else {
+    res.status(404);
+    throw new Error("Company not Found");
+  }
+});
+
+//@desc Delete Company Review Comment
+//route DELETE /api/companies/reviews/:id/comments
+//@access Private
+const deleteCompanyReviewComment = asyncHandler(async (req, res) => {
+  const commentId = req.query.commentId;
+  const companies = await Company.find({
+    $or: [
+      {
+        "reviews._id": req.params.id,
+      },
+    ],
+  });
+
+  if (companies) {
+    let tempReviews = [...companies[0].reviews];
+    let tempComments;
+
+    let reviewIndex = -1;
+    let commentIndex = -1;
+
+    for (let i = 0; i < tempReviews.length; i++) {
+      if (tempReviews[i]._id.toString() === req.params.id) {
+        tempComments = [...tempReviews[i].reviewComments];
+        reviewIndex = i;
+        for (let j = 0; j < tempComments.length; j++) {
+          if (tempComments[j]._id.toString() === commentId) {
+            commentIndex = j;
+          }
+        }
+      }
+    }
+
+    tempComments.splice(commentIndex, 1);
+    companies[0].reviews[reviewIndex].reviewComments = tempComments;
+
+    await companies[0].save();
+    res.status(200).json({ message: "Comment deleted" });
+  } else {
+    res.status(404);
+    throw new Error("Company not Found");
+  }
+});
+
 export {
   createCompany,
   getCompany,
@@ -356,4 +438,6 @@ export {
   updateCompanyReview,
   deleteCompanyReview,
   addCompanyReviewComment,
+  updateCompanyReviewComment,
+  deleteCompanyReviewComment,
 };

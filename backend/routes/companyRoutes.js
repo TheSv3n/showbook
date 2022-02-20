@@ -13,6 +13,8 @@ import {
   updateCompanyReview,
   deleteCompanyReview,
   addCompanyReviewComment,
+  updateCompanyReviewComment,
+  deleteCompanyReviewComment,
 } from "../controllers/companyController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -29,6 +31,10 @@ router
   .get(getCompanyReview)
   .put(protect, updateCompanyReview)
   .delete(protect, deleteCompanyReview);
-router.route("/reviews/:id/comments").post(protect, addCompanyReviewComment);
+router
+  .route("/reviews/:id/comments")
+  .post(protect, addCompanyReviewComment)
+  .put(protect, updateCompanyReviewComment)
+  .delete(protect, deleteCompanyReviewComment);
 
 export default router;

@@ -23,6 +23,14 @@ import {
   deleteVenueReviewCommment,
   editVenueReviewComment,
 } from "../actions/venueActions";
+import {
+  COMPANY_DELETE_REVIEW_COMMENT_RESET,
+  COMPANY_UPDATE_REVIEW_COMMENT_RESET,
+} from "../constants/companyConstants";
+import {
+  deleteCompanyReviewCommment,
+  editCompanyReviewComment,
+} from "../actions/companyActions";
 
 const Review = ({ review, performances, type, reviewId }) => {
   const dispatch = useDispatch();
@@ -60,6 +68,20 @@ const Review = ({ review, performances, type, reviewId }) => {
   );
   const { loading: loadingDeleteVenueComment, success: successDeleteVenue } =
     venueReviewDeleteComment;
+
+  const updateCompanyReviewComment = useSelector(
+    (state) => state.updateCompanyReviewComment
+  );
+  const { loading: loadingUpdateCompany, success: successUpdateCompany } =
+    updateCompanyReviewComment;
+
+  const companyReviewDeleteComment = useSelector(
+    (state) => state.companyReviewDeleteComment
+  );
+  const {
+    loading: loadingDeleteCompanyComment,
+    success: successDeleteCompany,
+  } = companyReviewDeleteComment;
 
   const getUserName = async (userId) => {
     const { data: userName } = await axios.get(`/api/users/${userId}/username`);
@@ -99,6 +121,9 @@ const Review = ({ review, performances, type, reviewId }) => {
       case "venuecomment":
         dispatch(deleteVenueReviewCommment(reviewId, review._id));
         break;
+      case "companycomment":
+        dispatch(deleteCompanyReviewCommment(reviewId, review._id));
+        break;
       default:
     }
   };
@@ -123,6 +148,14 @@ const Review = ({ review, performances, type, reviewId }) => {
             })
           );
           break;
+        case "companycomment":
+          dispatch(
+            editCompanyReviewComment(reviewId, {
+              comment: editedComment,
+              commentId: review._id,
+            })
+          );
+          break;
         default:
       }
     }
@@ -136,15 +169,17 @@ const Review = ({ review, performances, type, reviewId }) => {
     if (!successUpdateShow && !successUpdateVenue) {
       setCommentText(review.comment);
     }
-    if (successUpdateShow || successUpdateVenue) {
+    if (successUpdateShow || successUpdateVenue || successUpdateCompany) {
       setShowEditFields(false);
       dispatch({ type: SHOW_UPDATE_REVIEW_COMMENT_RESET });
       dispatch({ type: VENUE_UPDATE_REVIEW_COMMENT_RESET });
+      dispatch({ type: COMPANY_UPDATE_REVIEW_COMMENT_RESET });
     }
-    if (successDeleteShow || successDeleteVenue) {
+    if (successDeleteShow || successDeleteVenue || successDeleteCompany) {
       setShowDeleteModal(false);
       dispatch({ type: SHOW_DELETE_REVIEW_COMMENT_RESET });
       dispatch({ type: VENUE_DELETE_REVIEW_COMMENT_RESET });
+      dispatch({ type: COMPANY_DELETE_REVIEW_COMMENT_RESET });
     }
   }, [
     review,
@@ -152,6 +187,8 @@ const Review = ({ review, performances, type, reviewId }) => {
     successDeleteShow,
     successUpdateVenue,
     successDeleteVenue,
+    successUpdateCompany,
+    successDeleteCompany,
   ]);
 
   return (
@@ -200,7 +237,7 @@ const Review = ({ review, performances, type, reviewId }) => {
                 onChange={(e) => setEditedComment(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            {loadingUpdateShow || loadingUpdateVenue ? (
+            {loadingUpdateShow || loadingUpdateVenue || loadingUpdateCompany ? (
               <Loader />
             ) : (
               <>
@@ -222,10 +259,11 @@ const Review = ({ review, performances, type, reviewId }) => {
             <div className="text-light">{commentText} </div>
             <div className="d-flex justify-content-between">
               <span className="align-right">
-                {(userInfo &&
-                  userInfo._id === review.user &&
-                  type === "showcomment") ||
-                type === "venuecomment" ? (
+                {userInfo &&
+                userInfo._id === review.user &&
+                (type === "showcomment" ||
+                  type === "venuecomment" ||
+                  type === "companycomment") ? (
                   <>
                     <i
                       className="bi bi-pencil-square text-light review-icon mx-1"
@@ -240,7 +278,9 @@ const Review = ({ review, performances, type, reviewId }) => {
                   ""
                 )}
               </span>
-              {type === "showcomment" || type === "venuecomment" ? (
+              {type === "showcomment" ||
+              type === "venuecomment" ||
+              type === "companycomment" ? (
                 ""
               ) : (
                 <Link to={`/${type}/${review._id}`} className="text-white">

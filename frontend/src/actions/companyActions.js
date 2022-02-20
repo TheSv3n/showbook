@@ -33,6 +33,12 @@ import {
   COMPANY_ADD_REVIEW_COMMENT_REQUEST,
   COMPANY_ADD_REVIEW_COMMENT_SUCCESS,
   COMPANY_ADD_REVIEW_COMMENT_FAIL,
+  COMPANY_UPDATE_REVIEW_COMMENT_REQUEST,
+  COMPANY_UPDATE_REVIEW_COMMENT_SUCCESS,
+  COMPANY_UPDATE_REVIEW_COMMENT_FAIL,
+  COMPANY_DELETE_REVIEW_COMMENT_REQUEST,
+  COMPANY_DELETE_REVIEW_COMMENT_SUCCESS,
+  COMPANY_DELETE_REVIEW_COMMENT_FAIL,
 } from "../constants/companyConstants";
 import axios from "axios";
 
@@ -403,6 +409,83 @@ export const addCompanyReviewComment =
     } catch (error) {
       dispatch({
         type: COMPANY_ADD_REVIEW_COMMENT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const editCompanyReviewComment =
+  (reviewId, comment) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: COMPANY_UPDATE_REVIEW_COMMENT_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `/api/companies/reviews/${reviewId}/comments`,
+        comment,
+        config
+      );
+
+      dispatch({
+        type: COMPANY_UPDATE_REVIEW_COMMENT_SUCCESS,
+        payload: data,
+      });
+      dispatch(getCompanyReviewInfo(reviewId, true));
+    } catch (error) {
+      dispatch({
+        type: COMPANY_UPDATE_REVIEW_COMMENT_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+
+export const deleteCompanyReviewCommment =
+  (reviewId, commentId) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: COMPANY_DELETE_REVIEW_COMMENT_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      await axios.delete(
+        `/api/companies/reviews/${reviewId}/comments?commentId=${commentId}`,
+        config
+      );
+
+      dispatch({
+        type: COMPANY_DELETE_REVIEW_COMMENT_SUCCESS,
+      });
+      dispatch(getCompanyReviewInfo(reviewId, true));
+    } catch (error) {
+      dispatch({
+        type: COMPANY_DELETE_REVIEW_COMMENT_FAIL,
         payload:
           error.response && error.response.data.message
             ? error.response.data.message

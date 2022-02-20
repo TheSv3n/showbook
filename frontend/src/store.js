@@ -56,6 +56,8 @@ import {
   updateCompanyReviewReducer,
   companyReviewDeleteReducer,
   addCompanyReviewCommentReducer,
+  updateCompanyReviewCommentReducer,
+  companyReviewDeleteCommentReducer,
 } from "./reducers/companyReducers";
 
 import {
@@ -116,6 +118,8 @@ const reducer = combineReducers({
   updateCompanyReview: updateCompanyReviewReducer,
   companyReviewDelete: companyReviewDeleteReducer,
   addCompanyReviewComment: addCompanyReviewCommentReducer,
+  updateCompanyReviewComment: updateCompanyReviewCommentReducer,
+  companyReviewDeleteComment: companyReviewDeleteCommentReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

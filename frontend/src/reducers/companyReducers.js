@@ -38,6 +38,14 @@ import {
   COMPANY_ADD_REVIEW_COMMENT_REQUEST,
   COMPANY_ADD_REVIEW_COMMENT_SUCCESS,
   COMPANY_ADD_REVIEW_COMMENT_FAIL,
+  COMPANY_UPDATE_REVIEW_COMMENT_REQUEST,
+  COMPANY_UPDATE_REVIEW_COMMENT_SUCCESS,
+  COMPANY_UPDATE_REVIEW_COMMENT_FAIL,
+  COMPANY_UPDATE_REVIEW_COMMENT_RESET,
+  COMPANY_DELETE_REVIEW_COMMENT_REQUEST,
+  COMPANY_DELETE_REVIEW_COMMENT_SUCCESS,
+  COMPANY_DELETE_REVIEW_COMMENT_FAIL,
+  COMPANY_DELETE_REVIEW_COMMENT_RESET,
 } from "../constants/companyConstants";
 
 export const companyListReducer = (state = { companies: [] }, action) => {
@@ -273,6 +281,49 @@ export const addCompanyReviewCommentReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const updateCompanyReviewCommentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COMPANY_UPDATE_REVIEW_COMMENT_REQUEST:
+      return {
+        loading: true,
+      };
+    case COMPANY_UPDATE_REVIEW_COMMENT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        comment: action.payload,
+      };
+    case COMPANY_UPDATE_REVIEW_COMMENT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case COMPANY_UPDATE_REVIEW_COMMENT_RESET:
+      return {
+        state: {},
+      };
+    default:
+      return state;
+  }
+};
+
+export const companyReviewDeleteCommentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COMPANY_DELETE_REVIEW_COMMENT_REQUEST:
+      return { loading: true };
+    case COMPANY_DELETE_REVIEW_COMMENT_SUCCESS:
+      return { loading: false, success: true };
+    case COMPANY_DELETE_REVIEW_COMMENT_FAIL:
+      return { loading: false, error: action.payload };
+    case COMPANY_DELETE_REVIEW_COMMENT_RESET:
+      return {
+        state: {},
       };
     default:
       return state;

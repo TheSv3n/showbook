@@ -223,7 +223,7 @@ const CompanyScreen = ({ match, history }) => {
                             review={review}
                             key={review._id}
                             performances={company.performances}
-                            type="company"
+                            type="companyreview"
                           />
                         );
                       })
