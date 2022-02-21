@@ -52,6 +52,9 @@ import {
   SHOW_MY_REVIEWS_REQUEST,
   SHOW_MY_REVIEWS_SUCCESS,
   SHOW_MY_REVIEWS_FAIL,
+  SHOW_UPDATE_REQUEST,
+  SHOW_UPDATE_SUCCESS,
+  SHOW_UPDATE_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -156,6 +159,41 @@ export const createShow = (show) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: SHOW_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const editShow = (showId, show) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: SHOW_UPDATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/shows/${showId}`, show, config);
+
+    dispatch({
+      type: SHOW_UPDATE_SUCCESS,
+      payload: data,
+    });
+    dispatch(getShowInfo(showId, true));
+  } catch (error) {
+    dispatch({
+      type: SHOW_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

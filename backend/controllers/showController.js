@@ -92,6 +92,27 @@ const getShow = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Update Show
+//route PUT /api/shows/:id/
+//@access Private
+const updateShowInfo = asyncHandler(async (req, res) => {
+  const { title, synopsis, company, director } = req.body;
+  const show = await Show.findById(req.params.id);
+
+  if (show) {
+    show.title = title;
+    show.synopsis = synopsis;
+    show.company = company;
+    show.director = director;
+
+    await show.save();
+    res.status(201).json({ message: "Show Updated" });
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
+});
+
 //@desc Add Performance
 //route PUT /api/shows/:id/performances
 //@access Private
@@ -594,6 +615,7 @@ export {
   createShow,
   getAllShows,
   getShow,
+  updateShowInfo,
   addPerformance,
   addShowImage,
   addShowReview,

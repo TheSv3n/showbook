@@ -4,6 +4,7 @@ import {
   createShow,
   getAllShows,
   getShow,
+  updateShowInfo,
   addPerformance,
   addShowImage,
   addShowReview,
@@ -25,7 +26,7 @@ import { protect, admin } from "../middleware/authMiddleware.js";
 
 router.route("/").post(protect, createShow).get(getAllShows);
 router.route("/myreviews").get(protect, getMyShowReviews);
-router.route("/:id").get(getShow);
+router.route("/:id").get(getShow).put(protect, updateShowInfo);
 router.route("/:id/performances").put(protect, addPerformance);
 router.route("/:id/images").put(protect, addShowImage);
 router.route("/:id/reviews").post(protect, addShowReview);

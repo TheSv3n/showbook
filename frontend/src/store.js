@@ -5,6 +5,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import {
   showListReducer,
   showInfoReducer,
+  updateShowReducer,
   addShowReviewReducer,
   showVenuePerformancesReducer,
   showCreateReducer,
@@ -77,6 +78,7 @@ const reducer = combineReducers({
   showList: showListReducer,
   showInfo: showInfoReducer,
   showCreate: showCreateReducer,
+  updateShow: updateShowReducer,
   addShowReview: addShowReviewReducer,
   addShowReviewComment: addShowReviewCommentReducer,
   showVenuePerformances: showVenuePerformancesReducer,
