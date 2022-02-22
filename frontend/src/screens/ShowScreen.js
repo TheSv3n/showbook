@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getShowInfo } from "../actions/showActions";
-import { Image, Container, Row, Col } from "react-bootstrap";
+import { getShowInfo, editShow } from "../actions/showActions";
+import { Image, Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Loader from "../components/Loader";
@@ -14,6 +14,7 @@ import PerformanceModal from "../components/PerformanceModal";
 import NewPerformanceModal from "../components/NewPerformanceModal";
 import NewImageModal from "../components/NewImageModal";
 import { VENUE_LIST_RESET } from "../constants/venueConstants";
+import { SHOW_UPDATE_RESET } from "../constants/showConstants";
 import CastMemberCard from "../components/CastMemberCard";
 
 const ShowScreen = ({ match, history }) => {
@@ -29,6 +30,11 @@ const ShowScreen = ({ match, history }) => {
   const [startIndex, setStartIndex] = useState(0);
   const [showNewPerformanceModal, setShowNewPerformanceModal] = useState(false);
   const [showNewImageModal, setShowNewImageModal] = useState(false);
+  const [titleText, setTitleText] = useState("");
+  const [showEditFields, setShowEditFields] = useState(false);
+  const [synopsisText, setSynopsisText] = useState("");
+  const [editedSynopsis, setEditedSynopsis] = useState("");
+  const [editedTitle, setEditedTitle] = useState("");
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -38,6 +44,9 @@ const ShowScreen = ({ match, history }) => {
 
   const addShowImage = useSelector((state) => state.addShowImage);
   const { loading: loadingAddImage } = addShowImage;
+
+  const updateShow = useSelector((state) => state.updateShow);
+  const { loading: loadingUpdate, success } = updateShow;
 
   const getCompanyName = async (companyId) => {
     const { data: name } = await axios.get(`/api/companies/${companyId}/name`);
@@ -95,14 +104,37 @@ const ShowScreen = ({ match, history }) => {
     setShowNewPerformanceModal(!showNewPerformanceModal);
   };
 
+  const editHandler = () => {
+    setShowEditFields(!showEditFields);
+    setEditedSynopsis(show.synopsis);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (editedSynopsis !== "") {
+      dispatch(
+        editShow(showId, {
+          synopsis: editedSynopsis,
+        })
+      );
+    }
+  };
+
   useEffect(() => {
     if (!show || show._id !== showId) {
       dispatch(getShowInfo(showId, false));
     } else {
+      setSynopsisText(show.synopsis);
+      setTitleText(show.title);
       getCompanyName(show.company);
       getDirectorName(show.director);
     }
-  }, [dispatch, showId, show]);
+    if (success) {
+      setSynopsisText(show.synopsis);
+      setShowEditFields(false);
+      dispatch({ type: SHOW_UPDATE_RESET });
+    }
+  }, [dispatch, showId, show, success]);
 
   return (
     <section className="p-5 ">
@@ -146,7 +178,17 @@ const ShowScreen = ({ match, history }) => {
             />
             <Container>
               <Row>
-                <h2 className="text-white">{show.title}</h2>
+                <h2 className="text-white">
+                  {titleText}{" "}
+                  {userInfo && (
+                    <>
+                      <i
+                        className="bi bi-pencil-square text-light review-icon mx-1"
+                        onClick={editHandler}
+                      ></i>
+                    </>
+                  )}
+                </h2>
                 <h5 className="text-secondary">
                   By{" "}
                   <Link
@@ -172,8 +214,52 @@ const ShowScreen = ({ match, history }) => {
                     </Link>
                   </Row>
                   <Row>
-                    <h5 className="text-secondary mt-1">About </h5>
-                    <div>{show.synopsis}</div>
+                    <h5 className="text-secondary mt-1">
+                      About{" "}
+                      {userInfo && (
+                        <>
+                          <i
+                            className="bi bi-pencil-square text-light review-icon mx-1"
+                            onClick={editHandler}
+                          ></i>
+                        </>
+                      )}
+                    </h5>
+                    {showEditFields ? (
+                      <Form onSubmit={submitHandler}>
+                        <Form.Group controlId="synopsis">
+                          <Form.Control
+                            as="textarea"
+                            rows={5}
+                            placeholder="Enter synopsis"
+                            value={editedSynopsis}
+                            onChange={(e) => setEditedSynopsis(e.target.value)}
+                          ></Form.Control>
+                        </Form.Group>
+                        {loadingUpdate ? (
+                          <Loader />
+                        ) : (
+                          <>
+                            <Button
+                              type="submit"
+                              variant="primary"
+                              className="my-2"
+                            >
+                              Submit
+                            </Button>
+                            <Button
+                              variant="danger"
+                              className="my-2 mx-2"
+                              onClick={editHandler}
+                            >
+                              Cancel
+                            </Button>
+                          </>
+                        )}
+                      </Form>
+                    ) : (
+                      <div>{synopsisText}</div>
+                    )}
                   </Row>
                   <Row>
                     <h5 className="text-secondary mt-1">Rating </h5>

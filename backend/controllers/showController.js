@@ -100,10 +100,10 @@ const updateShowInfo = asyncHandler(async (req, res) => {
   const show = await Show.findById(req.params.id);
 
   if (show) {
-    show.title = title;
-    show.synopsis = synopsis;
-    show.company = company;
-    show.director = director;
+    show.title = title || show.title;
+    show.synopsis = synopsis || show.synopsis;
+    show.company = company || show.company;
+    show.director = director || show.director;
 
     await show.save();
     res.status(201).json({ message: "Show Updated" });

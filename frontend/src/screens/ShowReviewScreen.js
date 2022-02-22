@@ -21,7 +21,7 @@ const ShowReviewScreen = ({ match, history }) => {
   const dispatch = useDispatch();
   const reviewId = match.params.id;
   const [showReviewModal, setShowReviewModal] = useState(false);
-  const [showEditFields, setShowEditFields] = useState("");
+  const [showEditFields, setShowEditFields] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [rating, setRating] = useState(0);
   const [editedComment, setEditedComment] = useState("");
