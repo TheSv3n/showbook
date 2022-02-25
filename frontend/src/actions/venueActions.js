@@ -40,6 +40,9 @@ import {
   VENUE_DELETE_REVIEW_COMMENT_REQUEST,
   VENUE_DELETE_REVIEW_COMMENT_SUCCESS,
   VENUE_DELETE_REVIEW_COMMENT_FAIL,
+  VENUE_UPDATE_REQUEST,
+  VENUE_UPDATE_SUCCESS,
+  VENUE_UPDATE_FAIL,
 } from "../constants/venueConstants";
 
 export const listVenues =
@@ -111,6 +114,41 @@ export const getVenueInfo = (venueId, update) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: VENUE_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const editVenue = (venueId, venue) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: VENUE_UPDATE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/venues/${venueId}`, venue, config);
+
+    dispatch({
+      type: VENUE_UPDATE_SUCCESS,
+      payload: data,
+    });
+    dispatch(getVenueInfo(venueId, true));
+  } catch (error) {
+    dispatch({
+      type: VENUE_UPDATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

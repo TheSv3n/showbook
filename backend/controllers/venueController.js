@@ -39,6 +39,26 @@ const getVenue = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Update Venue
+//route PUT /api/venues/:id/
+//@access Private
+const updateVenueInfo = asyncHandler(async (req, res) => {
+  const { name, about, address } = req.body;
+  const venue = await Venue.findById(req.params.id);
+
+  if (venue) {
+    venue.name = name || venue.name;
+    venue.about = about || venue.about;
+    venue.address = address || venue.address;
+
+    await venue.save();
+    res.status(201).json({ message: "Venue Updated" });
+  } else {
+    res.status(404);
+    throw new Error("Venue not Found");
+  }
+});
+
 //@desc Get Venue name
 //@route GET /api/venues/:id/name
 //@access Public
@@ -426,6 +446,7 @@ const deleteVenueReviewComment = asyncHandler(async (req, res) => {
 export {
   createVenue,
   getVenue,
+  updateVenueInfo,
   getVenueName,
   getAllVenues,
   addVenueReview,

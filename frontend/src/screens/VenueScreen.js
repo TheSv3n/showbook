@@ -6,7 +6,7 @@ import ImageCarousel from "../components/ImageCarousel";
 import ImageModal from "../components/ImageModal";
 import Loader from "../components/Loader";
 import Review from "../components/Review";
-import { getVenueInfo } from "../actions/venueActions";
+import { getVenueInfo, editVenue } from "../actions/venueActions";
 import { listVenuePerformances } from "../actions/showActions";
 import NewReviewModal from "../components/NewReviewModal";
 import PerformanceModal from "../components/PerformanceModal";
@@ -21,6 +21,15 @@ const VenueScreen = ({ match, history }) => {
   const [showPerformanceModal, setShowPerformanceModal] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
   const [showNewImageModal, setShowNewImageModal] = useState(false);
+  const [nameText, setNameText] = useState("");
+  const [aboutText, setAboutText] = useState("");
+  const [addressText, setAddressText] = useState("");
+  const [showEditNameField, setShowEditNameField] = useState(false);
+  const [showEditAboutField, setShowEditAboutField] = useState(false);
+  const [showEditAddressField, setShowEditAddressField] = useState(false);
+  const [editedName, setEditedName] = useState("");
+  const [editedAbout, setEditedAbout] = useState("");
+  const [editedAddress, setEditedAddress] = useState("");
 
   const venueInfo = useSelector((state) => state.venueInfo);
   const { venue, loading } = venueInfo;
@@ -38,6 +47,9 @@ const VenueScreen = ({ match, history }) => {
     (state) => state.showVenuePerformances
   );
   const { performances } = showVenuePerformances;
+
+  const updateVenue = useSelector((state) => state.updateVenue);
+  const { loading: loadingUpdate, success } = updateVenue;
 
   const updateShowImageModal = () => {
     setShowImageModal(!showImageModal);

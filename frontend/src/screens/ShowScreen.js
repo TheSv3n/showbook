@@ -31,7 +31,8 @@ const ShowScreen = ({ match, history }) => {
   const [showNewPerformanceModal, setShowNewPerformanceModal] = useState(false);
   const [showNewImageModal, setShowNewImageModal] = useState(false);
   const [titleText, setTitleText] = useState("");
-  const [showEditFields, setShowEditFields] = useState(false);
+  const [showEditTitleField, setShowEditTitleField] = useState(false);
+  const [showEditSynopsisField, setShowEditSynopsisField] = useState(false);
   const [synopsisText, setSynopsisText] = useState("");
   const [editedSynopsis, setEditedSynopsis] = useState("");
   const [editedTitle, setEditedTitle] = useState("");
@@ -104,19 +105,42 @@ const ShowScreen = ({ match, history }) => {
     setShowNewPerformanceModal(!showNewPerformanceModal);
   };
 
-  const editHandler = () => {
-    setShowEditFields(!showEditFields);
-    setEditedSynopsis(show.synopsis);
+  const editHandler = (type) => {
+    switch (type) {
+      case "title":
+        setShowEditTitleField(!showEditTitleField);
+        setEditedTitle(show.title);
+        break;
+      case "synopsis":
+        setShowEditSynopsisField(!showEditSynopsisField);
+        setEditedSynopsis(show.synopsis);
+        break;
+      case "cancel":
+        setShowEditTitleField(false);
+        setShowEditSynopsisField(false);
+        break;
+      default:
+    }
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = (e, type) => {
     e.preventDefault();
-    if (editedSynopsis !== "") {
-      dispatch(
-        editShow(showId, {
-          synopsis: editedSynopsis,
-        })
-      );
+    switch (type) {
+      case "title":
+        dispatch(
+          editShow(showId, {
+            title: editedTitle,
+          })
+        );
+        break;
+      case "synopsis":
+        dispatch(
+          editShow(showId, {
+            synopsis: editedSynopsis,
+          })
+        );
+        break;
+      default:
     }
   };
 
@@ -131,7 +155,8 @@ const ShowScreen = ({ match, history }) => {
     }
     if (success) {
       setSynopsisText(show.synopsis);
-      setShowEditFields(false);
+      setShowEditTitleField(false);
+      setShowEditSynopsisField(false);
       dispatch({ type: SHOW_UPDATE_RESET });
     }
   }, [dispatch, showId, show, success]);
@@ -179,14 +204,51 @@ const ShowScreen = ({ match, history }) => {
             <Container>
               <Row>
                 <h2 className="text-white">
-                  {titleText}{" "}
-                  {userInfo && (
+                  {showEditTitleField ? (
+                    <>
+                      <Form onSubmit={(e) => submitHandler(e, "title")}>
+                        <Row className="align-items-center">
+                          <Col sm={6}>
+                            <Form.Group controlId="name">
+                              <Form.Control
+                                type="name"
+                                placeholder="Enter title"
+                                value={editedTitle}
+                                onChange={(e) => setEditedTitle(e.target.value)}
+                              ></Form.Control>
+                            </Form.Group>
+                          </Col>
+                          <Col sm={3}>
+                            <Button
+                              type="submit"
+                              variant="primary"
+                              className="my-2"
+                            >
+                              Submit
+                            </Button>
+                            <Button
+                              variant="danger"
+                              className="my-2 mx-2"
+                              onClick={() => editHandler("cancel")}
+                            >
+                              Cancel
+                            </Button>
+                          </Col>
+                        </Row>
+                      </Form>
+                    </>
+                  ) : (
+                    <span>{titleText}</span>
+                  )}{" "}
+                  {userInfo && !showEditTitleField ? (
                     <>
                       <i
                         className="bi bi-pencil-square text-light review-icon mx-1"
-                        onClick={editHandler}
+                        onClick={() => editHandler("title")}
                       ></i>
                     </>
+                  ) : (
+                    ""
                   )}
                 </h2>
                 <h5 className="text-secondary">
@@ -216,17 +278,19 @@ const ShowScreen = ({ match, history }) => {
                   <Row>
                     <h5 className="text-secondary mt-1">
                       About{" "}
-                      {userInfo && (
+                      {userInfo && !showEditSynopsisField ? (
                         <>
                           <i
                             className="bi bi-pencil-square text-light review-icon mx-1"
-                            onClick={editHandler}
+                            onClick={() => editHandler("synopsis")}
                           ></i>
                         </>
+                      ) : (
+                        ""
                       )}
                     </h5>
-                    {showEditFields ? (
-                      <Form onSubmit={submitHandler}>
+                    {showEditSynopsisField ? (
+                      <Form onSubmit={(e) => submitHandler(e, "synopsis")}>
                         <Form.Group controlId="synopsis">
                           <Form.Control
                             as="textarea"
@@ -250,7 +314,7 @@ const ShowScreen = ({ match, history }) => {
                             <Button
                               variant="danger"
                               className="my-2 mx-2"
-                              onClick={editHandler}
+                              onClick={() => editHandler("cancel")}
                             >
                               Cancel
                             </Button>

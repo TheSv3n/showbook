@@ -3,6 +3,7 @@ const router = express.Router();
 import {
   createVenue,
   getVenue,
+  updateVenueInfo,
   getVenueName,
   getAllVenues,
   addVenueReview,
@@ -21,7 +22,7 @@ import { protect, admin } from "../middleware/authMiddleware.js";
 
 router.route("/").get(getAllVenues).post(protect, createVenue);
 router.route("/myreviews").get(protect, getMyVenueReviews);
-router.route("/:id").get(getVenue);
+router.route("/:id").get(getVenue).put(protect, updateVenueInfo);
 router.route("/:id/name").get(getVenueName);
 router.route("/:id/reviews").put(protect, addVenueReview);
 router.route("/:id/images").put(protect, addVenueImage);

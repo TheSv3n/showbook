@@ -46,6 +46,10 @@ import {
   VENUE_DELETE_REVIEW_COMMENT_RESET,
   VENUE_DELETE_REVIEW_COMMENT_FAIL,
   VENUE_UPDATE_REVIEW_RESET,
+  VENUE_UPDATE_REQUEST,
+  VENUE_UPDATE_SUCCESS,
+  VENUE_UPDATE_FAIL,
+  VENUE_UPDATE_RESET,
 } from "../constants/venueConstants";
 
 export const venueListReducer = (state = { venues: [] }, action) => {
@@ -88,6 +92,32 @@ export const venueInfoReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const updateVenueReducer = (state = {}, action) => {
+  switch (action.type) {
+    case VENUE_UPDATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case VENUE_UPDATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        venue: action.payload,
+      };
+    case VENUE_UPDATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case VENUE_UPDATE_RESET:
+      return {
+        state: {},
       };
     default:
       return state;
@@ -239,11 +269,11 @@ export const updateVenueReviewReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
-    default:
     case VENUE_UPDATE_REVIEW_RESET:
       return {
         state: {},
       };
+    default:
       return state;
   }
 };

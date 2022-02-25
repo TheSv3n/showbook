@@ -26,6 +26,7 @@ import {
 import {
   venueListReducer,
   venueInfoReducer,
+  updateVenueReducer,
   addVenueReviewReducer,
   addVenueImageReducer,
   venueCreateReducer,
@@ -94,6 +95,7 @@ const reducer = combineReducers({
   showUserReviews: showUserReviewsReducer,
   venueList: venueListReducer,
   venueInfo: venueInfoReducer,
+  updateVenue: updateVenueReducer,
   addVenueReview: addVenueReviewReducer,
   addVenueImage: addVenueImageReducer,
   venueCreate: venueCreateReducer,
