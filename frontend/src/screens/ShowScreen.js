@@ -154,6 +154,7 @@ const ShowScreen = ({ match, history }) => {
       getDirectorName(show.director);
     }
     if (success) {
+      setTitleText(show.title);
       setSynopsisText(show.synopsis);
       setShowEditTitleField(false);
       setShowEditSynopsisField(false);

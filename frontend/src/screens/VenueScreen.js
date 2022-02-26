@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Image, Container, Row, Col } from "react-bootstrap";
+import { Image, Container, Row, Col, Form, Button } from "react-bootstrap";
 import RatingWidget from "../components/RatingWidget";
 import ImageCarousel from "../components/ImageCarousel";
 import ImageModal from "../components/ImageModal";
@@ -22,13 +22,14 @@ const VenueScreen = ({ match, history }) => {
   const [startIndex, setStartIndex] = useState(0);
   const [showNewImageModal, setShowNewImageModal] = useState(false);
   const [nameText, setNameText] = useState("");
-  const [aboutText, setAboutText] = useState("");
+  const [descriptionText, setDescriptionText] = useState("");
   const [addressText, setAddressText] = useState("");
   const [showEditNameField, setShowEditNameField] = useState(false);
-  const [showEditAboutField, setShowEditAboutField] = useState(false);
+  const [showEditDescriptionField, setShowEditDescriptionField] =
+    useState(false);
   const [showEditAddressField, setShowEditAddressField] = useState(false);
   const [editedName, setEditedName] = useState("");
-  const [editedAbout, setEditedAbout] = useState("");
+  const [editedDescription, setEditedDescription] = useState("");
   const [editedAddress, setEditedAddress] = useState("");
 
   const venueInfo = useSelector((state) => state.venueInfo);
@@ -87,12 +88,75 @@ const VenueScreen = ({ match, history }) => {
     }
   };
 
+  const editHandler = (type) => {
+    switch (type) {
+      case "name":
+        setShowEditNameField(!showEditNameField);
+        setEditedName(venue.name);
+        break;
+      case "about":
+        setShowEditDescriptionField(!showEditDescriptionField);
+        setEditedDescription(venue.description);
+        break;
+      case "address":
+        setShowEditAddressField(!showEditAddressField);
+        setEditedAddress(venue.address);
+        break;
+      case "cancel":
+        setShowEditNameField(false);
+        setShowEditDescriptionField(false);
+        setShowEditAddressField(false);
+        break;
+      default:
+    }
+  };
+
+  const submitHandler = (e, type) => {
+    e.preventDefault();
+    switch (type) {
+      case "name":
+        dispatch(
+          editVenue(venueId, {
+            name: editedName,
+          })
+        );
+        break;
+      case "about":
+        dispatch(
+          editVenue(venueId, {
+            about: editedDescription,
+          })
+        );
+        break;
+      case "address":
+        dispatch(
+          editVenue(venueId, {
+            address: editedAddress,
+          })
+        );
+        break;
+      default:
+    }
+  };
+
   useEffect(() => {
     if (!venue || venue._id !== venueId) {
       dispatch(getVenueInfo(venueId, false));
       dispatch(listVenuePerformances(venueId));
+    } else {
+      setNameText(venue.name);
+      setDescriptionText(venue.description);
+      setAddressText(venue.address);
     }
-  }, [dispatch, venue, venueId]);
+    if (success) {
+      setNameText(venue.name);
+      setDescriptionText(venue.description);
+      setAddressText(venue.address);
+      setShowEditNameField(false);
+      setShowEditDescriptionField(false);
+      setShowEditAddressField(false);
+    }
+  }, [dispatch, venue, venueId, success]);
 
   return (
     <section className="p-5 ">
@@ -128,7 +192,54 @@ const VenueScreen = ({ match, history }) => {
             />
             <Container>
               <Row>
-                <h2 className="text-white">{venue.name}</h2>
+                <h2 className="text-white">
+                  {showEditNameField ? (
+                    <>
+                      <Form onSubmit={(e) => submitHandler(e, "name")}>
+                        <Row className="align-items-center">
+                          <Col sm={6}>
+                            <Form.Group controlId="name">
+                              <Form.Control
+                                type="name"
+                                placeholder="Enter name"
+                                value={editedName}
+                                onChange={(e) => setEditedName(e.target.value)}
+                              ></Form.Control>
+                            </Form.Group>
+                          </Col>
+                          <Col sm={3}>
+                            <Button
+                              type="submit"
+                              variant="primary"
+                              className="my-2"
+                            >
+                              Submit
+                            </Button>
+                            <Button
+                              variant="danger"
+                              className="my-2 mx-2"
+                              onClick={() => editHandler("cancel")}
+                            >
+                              Cancel
+                            </Button>
+                          </Col>
+                        </Row>
+                      </Form>
+                    </>
+                  ) : (
+                    <span>{nameText}</span>
+                  )}{" "}
+                  {userInfo && !showEditNameField ? (
+                    <>
+                      <i
+                        className="bi bi-pencil-square text-light review-icon mx-1"
+                        onClick={() => editHandler("name")}
+                      ></i>
+                    </>
+                  ) : (
+                    ""
+                  )}{" "}
+                </h2>
               </Row>
               <Row className="mb-4">
                 <Col md={9}>

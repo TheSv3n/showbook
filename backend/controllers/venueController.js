@@ -48,7 +48,7 @@ const updateVenueInfo = asyncHandler(async (req, res) => {
 
   if (venue) {
     venue.name = name || venue.name;
-    venue.about = about || venue.about;
+    venue.description = description || venue.description;
     venue.address = address || venue.address;
 
     await venue.save();
