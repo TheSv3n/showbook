@@ -46,6 +46,10 @@ import {
   COMPANY_DELETE_REVIEW_COMMENT_SUCCESS,
   COMPANY_DELETE_REVIEW_COMMENT_FAIL,
   COMPANY_DELETE_REVIEW_COMMENT_RESET,
+  COMPANY_UPDATE_REQUEST,
+  COMPANY_UPDATE_SUCCESS,
+  COMPANY_UPDATE_FAIL,
+  COMPANY_UPDATE_RESET,
 } from "../constants/companyConstants";
 
 export const companyListReducer = (state = { companies: [] }, action) => {
@@ -88,6 +92,32 @@ export const companyInfoReducer = (state = {}, action) => {
       return {
         loading: false,
         error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const updateCompanyReducer = (state = {}, action) => {
+  switch (action.type) {
+    case COMPANY_UPDATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case COMPANY_UPDATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        venue: action.payload,
+      };
+    case COMPANY_UPDATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case COMPANY_UPDATE_RESET:
+      return {
+        state: {},
       };
     default:
       return state;

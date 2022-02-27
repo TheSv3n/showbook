@@ -36,6 +36,26 @@ const getCompany = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc Update Company
+//route PUT /api/companies/:id/
+//@access Private
+const updateCompanyInfo = asyncHandler(async (req, res) => {
+  const { name, description, headquarters } = req.body;
+  const company = await Company.findById(req.params.id);
+
+  if (company) {
+    company.name = name || company.name;
+    company.description = description || company.description;
+    company.headquarters = headquarters || company.headquarters;
+
+    await company.save();
+    res.status(201).json({ message: "Company Updated" });
+  } else {
+    res.status(404);
+    throw new Error("Company not Found");
+  }
+});
+
 //@desc Get Company name
 //@route GET /api/companies/:id/name
 //@access Public
@@ -428,6 +448,7 @@ const deleteCompanyReviewComment = asyncHandler(async (req, res) => {
 export {
   createCompany,
   getCompany,
+  updateCompanyInfo,
   getCompanyName,
   getAllCompanies,
   addCompanyReview,

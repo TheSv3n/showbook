@@ -49,6 +49,7 @@ import {
 import {
   companyListReducer,
   companyInfoReducer,
+  updateCompanyReducer,
   addCompanyReviewReducer,
   addCompanyImageReducer,
   companyCreateReducer,
@@ -112,6 +113,7 @@ const reducer = combineReducers({
   castMemberCreate: castMemberCreateReducer,
   companyList: companyListReducer,
   companyInfo: companyInfoReducer,
+  updateCompany: updateCompanyReducer,
   addCompanyReview: addCompanyReviewReducer,
   addCompanyImage: addCompanyImageReducer,
   companyShowList: companyShowListReducer,

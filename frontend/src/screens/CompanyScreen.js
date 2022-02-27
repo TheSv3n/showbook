@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Image, Container, Row, Col } from "react-bootstrap";
+import { Image, Container, Row, Col, Form, Button } from "react-bootstrap";
 import RatingWidget from "../components/RatingWidget";
 import ImageCarousel from "../components/ImageCarousel";
 import ImageModal from "../components/ImageModal";
@@ -9,8 +9,9 @@ import Review from "../components/Review";
 import NewReviewModal from "../components/NewReviewModal";
 import NewImageModal from "../components/NewImageModal";
 import ShowModal from "../components/ShowModal";
-import { getCompanyInfo } from "../actions/companyActions";
+import { getCompanyInfo, editCompany } from "../actions/companyActions";
 import { listCompanyShows } from "../actions/showActions";
+import { COMPANY_UPDATE_RESET } from "../constants/companyConstants";
 
 const CompanyScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -21,6 +22,17 @@ const CompanyScreen = ({ match, history }) => {
   const [startIndex, setStartIndex] = useState(0);
   const [showNewImageModal, setShowNewImageModal] = useState(false);
   const [showShowsModal, setShowShowsModal] = useState(false);
+  const [nameText, setNameText] = useState("");
+  const [descriptionText, setDescriptionText] = useState("");
+  const [headquartersText, setHeadquartersText] = useState("");
+  const [showEditNameField, setShowEditNameField] = useState(false);
+  const [showEditDescriptionField, setShowEditDescriptionField] =
+    useState(false);
+  const [showEditHeadquartersField, setShowEditHeadquartersField] =
+    useState(false);
+  const [editedName, setEditedName] = useState("");
+  const [editedDescription, setEditedDescription] = useState("");
+  const [editedHeadquarters, setEditedHeadquarters] = useState("");
 
   const companyInfo = useSelector((state) => state.companyInfo);
   const { company, loading } = companyInfo;
@@ -36,6 +48,9 @@ const CompanyScreen = ({ match, history }) => {
 
   const companyShowList = useSelector((state) => state.companyShowList);
   const { shows } = companyShowList;
+
+  const updateCompany = useSelector((state) => state.updateCompany);
+  const { loading: loadingUpdate, success } = updateCompany;
 
   const updateShowImageModal = () => {
     setShowImageModal(!showImageModal);
@@ -73,12 +88,76 @@ const CompanyScreen = ({ match, history }) => {
     setShowNewImageModal(!showNewImageModal);
   };
 
+  const editHandler = (type) => {
+    switch (type) {
+      case "name":
+        setShowEditNameField(!showEditNameField);
+        setEditedName(company.name);
+        break;
+      case "description":
+        setShowEditDescriptionField(!showEditDescriptionField);
+        setEditedDescription(company.description);
+        break;
+      case "headquarters":
+        setShowEditHeadquartersField(!showEditHeadquartersField);
+        setEditedHeadquarters(company.headquarters);
+        break;
+      case "cancel":
+        setShowEditNameField(false);
+        setShowEditDescriptionField(false);
+        setShowEditHeadquartersField(false);
+        break;
+      default:
+    }
+  };
+
+  const submitHandler = (e, type) => {
+    e.preventDefault();
+    switch (type) {
+      case "name":
+        dispatch(
+          editCompany(companyId, {
+            name: editedName,
+          })
+        );
+        break;
+      case "description":
+        dispatch(
+          editCompany(companyId, {
+            description: editedDescription,
+          })
+        );
+        break;
+      case "headquarters":
+        dispatch(
+          editCompany(companyId, {
+            headquarters: editedHeadquarters,
+          })
+        );
+        break;
+      default:
+    }
+  };
+
   useEffect(() => {
     if (!company || company._id !== companyId) {
       dispatch(getCompanyInfo(companyId, false));
       dispatch(listCompanyShows(companyId));
+    } else {
+      setNameText(company.name);
+      setDescriptionText(company.description);
+      setHeadquartersText(company.headquarters);
     }
-  }, [dispatch, company, companyId]);
+    if (success) {
+      setNameText(company.name);
+      setDescriptionText(company.description);
+      setHeadquartersText(company.headquarters);
+      setShowEditNameField(false);
+      setShowEditDescriptionField(false);
+      setShowEditHeadquartersField(false);
+      dispatch({ type: COMPANY_UPDATE_RESET });
+    }
+  }, [dispatch, company, companyId, success]);
 
   return (
     <section className="p-5 ">
@@ -113,7 +192,54 @@ const CompanyScreen = ({ match, history }) => {
             />
             <Container>
               <Row>
-                <h2 className="text-white">{company.name}</h2>
+                <h2 className="text-white">
+                  {showEditNameField ? (
+                    <>
+                      <Form onSubmit={(e) => submitHandler(e, "name")}>
+                        <Row className="align-items-center">
+                          <Col sm={6}>
+                            <Form.Group controlId="name">
+                              <Form.Control
+                                type="name"
+                                placeholder="Enter name"
+                                value={editedName}
+                                onChange={(e) => setEditedName(e.target.value)}
+                              ></Form.Control>
+                            </Form.Group>
+                          </Col>
+                          <Col sm={3}>
+                            <Button
+                              type="submit"
+                              variant="primary"
+                              className="my-2"
+                            >
+                              Submit
+                            </Button>
+                            <Button
+                              variant="danger"
+                              className="my-2 mx-2"
+                              onClick={() => editHandler("cancel")}
+                            >
+                              Cancel
+                            </Button>
+                          </Col>
+                        </Row>
+                      </Form>
+                    </>
+                  ) : (
+                    <span>{nameText}</span>
+                  )}{" "}
+                  {userInfo && !showEditNameField ? (
+                    <>
+                      <i
+                        className="bi bi-pencil-square text-light review-icon mx-1"
+                        onClick={() => editHandler("name")}
+                      ></i>
+                    </>
+                  ) : (
+                    ""
+                  )}{" "}
+                </h2>
               </Row>
               <Row className="mb-4">
                 <Col md={9}>
@@ -125,12 +251,108 @@ const CompanyScreen = ({ match, history }) => {
                 </Col>
                 <Col md={3} className="text-white">
                   <Row>
-                    <h5 className="text-secondary mt-1">About </h5>
-                    <div>{company.description}</div>
+                    <h5 className="text-secondary mt-1">
+                      About{" "}
+                      {userInfo && !showEditDescriptionField ? (
+                        <>
+                          <i
+                            className="bi bi-pencil-square text-light review-icon mx-1"
+                            onClick={() => editHandler("description")}
+                          ></i>
+                        </>
+                      ) : (
+                        ""
+                      )}{" "}
+                    </h5>
+                    {showEditDescriptionField ? (
+                      <Form onSubmit={(e) => submitHandler(e, "description")}>
+                        <Form.Group controlId="description">
+                          <Form.Control
+                            as="textarea"
+                            rows={5}
+                            placeholder="Enter description"
+                            value={editedDescription}
+                            onChange={(e) =>
+                              setEditedDescription(e.target.value)
+                            }
+                          ></Form.Control>
+                        </Form.Group>
+                        {loadingUpdate ? (
+                          <Loader />
+                        ) : (
+                          <>
+                            <Button
+                              type="submit"
+                              variant="primary"
+                              className="my-2"
+                            >
+                              Submit
+                            </Button>
+                            <Button
+                              variant="danger"
+                              className="my-2 mx-2"
+                              onClick={() => editHandler("cancel")}
+                            >
+                              Cancel
+                            </Button>
+                          </>
+                        )}
+                      </Form>
+                    ) : (
+                      <div>{descriptionText}</div>
+                    )}
                   </Row>
                   <Row>
-                    <h5 className="text-secondary mt-1">Headquarters </h5>
-                    <div>{company.headquarters}</div>
+                    <h5 className="text-secondary mt-1">
+                      Headquarters{" "}
+                      {userInfo && !showEditHeadquartersField ? (
+                        <>
+                          <i
+                            className="bi bi-pencil-square text-light review-icon mx-1"
+                            onClick={() => editHandler("headquarters")}
+                          ></i>
+                        </>
+                      ) : (
+                        ""
+                      )}{" "}
+                    </h5>
+                    {showEditHeadquartersField ? (
+                      <Form onSubmit={(e) => submitHandler(e, "headquarters")}>
+                        <Form.Group controlId="headquarters">
+                          <Form.Control
+                            as="textarea"
+                            rows={5}
+                            placeholder="Enter address for headquarters"
+                            value={editedHeadquarters}
+                            onChange={(e) =>
+                              setEditedHeadquarters(e.target.value)
+                            }
+                          ></Form.Control>
+                        </Form.Group>
+                        {loadingUpdate ? (
+                          <Loader />
+                        ) : (
+                          <>
+                            <Button
+                              type="submit"
+                              variant="primary"
+                              className="my-2"
+                            >
+                              Submit
+                            </Button>
+                            <Button
+                              variant="danger"
+                              className="my-2 mx-2"
+                              onClick={() => editHandler("cancel")}
+                            >
+                              Cancel
+                            </Button>
+                          </>
+                        )}
+                      </Form>
+                    ) : (
+                      <div>{headquartersText}</div>
+                    )}
                   </Row>
                   <Row>
                     <h5 className="text-secondary mt-1">Shows </h5>

@@ -11,6 +11,7 @@ import { listVenuePerformances } from "../actions/showActions";
 import NewReviewModal from "../components/NewReviewModal";
 import PerformanceModal from "../components/PerformanceModal";
 import NewImageModal from "../components/NewImageModal";
+import { VENUE_UPDATE_RESET } from "../constants/venueConstants";
 
 const VenueScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -94,7 +95,7 @@ const VenueScreen = ({ match, history }) => {
         setShowEditNameField(!showEditNameField);
         setEditedName(venue.name);
         break;
-      case "about":
+      case "description":
         setShowEditDescriptionField(!showEditDescriptionField);
         setEditedDescription(venue.description);
         break;
@@ -121,10 +122,10 @@ const VenueScreen = ({ match, history }) => {
           })
         );
         break;
-      case "about":
+      case "description":
         dispatch(
           editVenue(venueId, {
-            about: editedDescription,
+            description: editedDescription,
           })
         );
         break;
@@ -155,6 +156,7 @@ const VenueScreen = ({ match, history }) => {
       setShowEditNameField(false);
       setShowEditDescriptionField(false);
       setShowEditAddressField(false);
+      dispatch({ type: VENUE_UPDATE_RESET });
     }
   }, [dispatch, venue, venueId, success]);
 
@@ -247,12 +249,106 @@ const VenueScreen = ({ match, history }) => {
                 </Col>
                 <Col md={3} className="text-white">
                   <Row>
-                    <h5 className="text-secondary mt-1">About </h5>
-                    <div>{venue.description}</div>
+                    <h5 className="text-secondary mt-1">
+                      About{" "}
+                      {userInfo && !showEditDescriptionField ? (
+                        <>
+                          <i
+                            className="bi bi-pencil-square text-light review-icon mx-1"
+                            onClick={() => editHandler("description")}
+                          ></i>
+                        </>
+                      ) : (
+                        ""
+                      )}{" "}
+                    </h5>
+                    {showEditDescriptionField ? (
+                      <Form onSubmit={(e) => submitHandler(e, "description")}>
+                        <Form.Group controlId="description">
+                          <Form.Control
+                            as="textarea"
+                            rows={5}
+                            placeholder="Enter description"
+                            value={editedDescription}
+                            onChange={(e) =>
+                              setEditedDescription(e.target.value)
+                            }
+                          ></Form.Control>
+                        </Form.Group>
+                        {loadingUpdate ? (
+                          <Loader />
+                        ) : (
+                          <>
+                            <Button
+                              type="submit"
+                              variant="primary"
+                              className="my-2"
+                            >
+                              Submit
+                            </Button>
+                            <Button
+                              variant="danger"
+                              className="my-2 mx-2"
+                              onClick={() => editHandler("cancel")}
+                            >
+                              Cancel
+                            </Button>
+                          </>
+                        )}
+                      </Form>
+                    ) : (
+                      <div>{descriptionText}</div>
+                    )}
                   </Row>
                   <Row>
-                    <h5 className="text-secondary mt-1">Address </h5>
-                    <div>{venue.address}</div>
+                    <h5 className="text-secondary mt-1">
+                      Address
+                      {userInfo && !showEditAddressField ? (
+                        <>
+                          <i
+                            className="bi bi-pencil-square text-light review-icon mx-1"
+                            onClick={() => editHandler("address")}
+                          ></i>
+                        </>
+                      ) : (
+                        ""
+                      )}{" "}
+                    </h5>
+                    {showEditAddressField ? (
+                      <Form onSubmit={(e) => submitHandler(e, "address")}>
+                        <Form.Group controlId="address">
+                          <Form.Control
+                            as="textarea"
+                            rows={5}
+                            placeholder="Enter address"
+                            value={editedAddress}
+                            onChange={(e) => setEditedAddress(e.target.value)}
+                          ></Form.Control>
+                        </Form.Group>
+                        {loadingUpdate ? (
+                          <Loader />
+                        ) : (
+                          <>
+                            <Button
+                              type="submit"
+                              variant="primary"
+                              className="my-2"
+                            >
+                              Submit
+                            </Button>
+                            <Button
+                              variant="danger"
+                              className="my-2 mx-2"
+                              onClick={() => editHandler("cancel")}
+                            >
+                              Cancel
+                            </Button>
+                          </>
+                        )}
+                      </Form>
+                    ) : (
+                      <div>{addressText}</div>
+                    )}
                   </Row>
                   <Row>
                     <h5 className="text-secondary mt-1">Rating </h5>

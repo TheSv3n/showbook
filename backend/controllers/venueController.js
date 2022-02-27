@@ -43,7 +43,7 @@ const getVenue = asyncHandler(async (req, res) => {
 //route PUT /api/venues/:id/
 //@access Private
 const updateVenueInfo = asyncHandler(async (req, res) => {
-  const { name, about, address } = req.body;
+  const { name, description, address } = req.body;
   const venue = await Venue.findById(req.params.id);
 
   if (venue) {

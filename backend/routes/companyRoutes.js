@@ -3,6 +3,7 @@ const router = express.Router();
 import {
   createCompany,
   getCompany,
+  updateCompanyInfo,
   getCompanyName,
   getAllCompanies,
   addCompanyReview,
@@ -21,7 +22,7 @@ import { protect, admin } from "../middleware/authMiddleware.js";
 
 router.route("/").post(protect, createCompany).get(getAllCompanies);
 router.route("/myreviews").get(protect, getMyCompanyReviews);
-router.route("/:id").get(getCompany);
+router.route("/:id").get(getCompany).put(protect, updateCompanyInfo);
 router.route("/:id/name").get(getCompanyName);
 router.route("/:id/reviews").put(protect, addCompanyReview);
 router.route("/:id/images").put(protect, addCompanyImage);
