@@ -1,5 +1,25 @@
 import mongoose from "mongoose";
 
+const viewerSchema = mongoose.Schema(
+  {
+    user: {
+      type: String,
+      require: true,
+    },
+    seen: {
+      type: Boolean,
+      require: true,
+    },
+    performanceId: {
+      type: String,
+      require: false,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const reviewCommentSchema = mongoose.Schema(
   {
     user: {
@@ -130,6 +150,7 @@ const showSchema = mongoose.Schema(
     roles: [roleSchema],
     performances: [performanceSchema],
     reviews: [reviewSchema],
+    viewers: [viewerSchema],
     rating: {
       type: Number,
       required: true,
