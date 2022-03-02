@@ -611,6 +611,40 @@ const getUserShowReviews = asyncHandler(async (req, res) => {
   res.json({ reviews });
 });
 
+//@desc Fetch Show Cast Member Roles
+//@route GET /api/shows/castmember/:id/roles
+//@access Public
+const getCastMemberRoles = asyncHandler(async (req, res) => {
+  const page = Number(req.query.pageNumber) || 1;
+
+  const keyword = {
+    $or: [
+      {
+        "roles.castMemberId": req.params.id,
+      },
+    ],
+  };
+
+  const shows = await Show.find({ ...keyword });
+
+  let roles = [];
+
+  for (let i = 0; i < shows.length; i++) {
+    for (let j = 0; j < shows[i].roles.length; j++) {
+      if (shows[i].roles[j].castMemberId === req.params.id) {
+        let tempRole = {
+          showId: shows[i]._id,
+          showPoster: shows[i].coverImage,
+          role: shows[i].roles[j],
+        };
+        roles = [...roles, tempRole];
+      }
+    }
+  }
+
+  res.json({ roles });
+});
+
 export {
   createShow,
   getAllShows,
@@ -631,4 +665,5 @@ export {
   deleteShowReview,
   deleteShowReviewComment,
   getUserShowReviews,
+  getCastMemberRoles,
 };

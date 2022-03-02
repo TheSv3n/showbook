@@ -63,6 +63,9 @@ import {
   SHOW_UPDATE_SUCCESS,
   SHOW_UPDATE_FAIL,
   SHOW_UPDATE_RESET,
+  SHOW_CASTMEMBER_ROLES_REQUEST,
+  SHOW_CASTMEMBER_ROLES_SUCCESS,
+  SHOW_CASTMEMBER_ROLES_FAIL,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -452,6 +455,22 @@ export const showUserReviewsReducer = (state = { reviews: [] }, action) => {
         reviews: action.payload.reviews,
       };
     case SHOW_USER_REVIEWS_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const showCastMemberRolesReducer = (state = { roles: [] }, action) => {
+  switch (action.type) {
+    case SHOW_CASTMEMBER_ROLES_REQUEST:
+      return { loading: true, roles: [] };
+    case SHOW_CASTMEMBER_ROLES_SUCCESS:
+      return {
+        loading: false,
+        roles: action.payload.roles,
+      };
+    case SHOW_CASTMEMBER_ROLES_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

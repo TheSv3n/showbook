@@ -55,6 +55,9 @@ import {
   SHOW_UPDATE_REQUEST,
   SHOW_UPDATE_SUCCESS,
   SHOW_UPDATE_FAIL,
+  SHOW_CASTMEMBER_ROLES_REQUEST,
+  SHOW_CASTMEMBER_ROLES_SUCCESS,
+  SHOW_CASTMEMBER_ROLES_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -654,3 +657,27 @@ export const listUserShowReviews = (userId) => async (dispatch, getState) => {
     });
   }
 };
+
+export const listCastMemberRoles =
+  (castMemberId) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: SHOW_CASTMEMBER_ROLES_REQUEST });
+
+      const { data } = await axios.get(
+        `/api/shows/castmember/${castMemberId}/roles`
+      );
+
+      dispatch({
+        type: SHOW_CASTMEMBER_ROLES_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: SHOW_CASTMEMBER_ROLES_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

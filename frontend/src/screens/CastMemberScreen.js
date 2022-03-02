@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Image, Container, Row, Col } from "react-bootstrap";
+import { Image, Container, Row, Col, Table } from "react-bootstrap";
 import RatingWidget from "../components/RatingWidget";
 import ImageCarousel from "../components/ImageCarousel";
 import ImageModal from "../components/ImageModal";
@@ -8,6 +8,8 @@ import Loader from "../components/Loader";
 import Review from "../components/Review";
 import { getCastMemberInfo } from "../actions/castMemberActions";
 import NewReviewModal from "../components/NewReviewModal";
+import { listCastMemberRoles } from "../actions/showActions";
+import CastMemberRoleTableRow from "../components/CastMemberRoleTableRow";
 
 const CastMemberScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -27,6 +29,13 @@ const CastMemberScreen = ({ match, history }) => {
   const addVenueReview = useSelector((state) => state.addVenueReview);
   const { loading: loadingAddReview } = addVenueReview;
 
+  const showCastMemberRoles = useSelector((state) => state.showCastMemberRoles);
+  const {
+    loading: loadingRoles,
+    error: errorRoles,
+    roles,
+  } = showCastMemberRoles;
+
   const updateShowReviewModal = () => {
     setShowReviewModal(!showReviewModal);
   };
@@ -42,6 +51,8 @@ const CastMemberScreen = ({ match, history }) => {
   useEffect(() => {
     if (!castMember || castMember._id !== castMemberId) {
       dispatch(getCastMemberInfo(castMemberId, false));
+    } else {
+      dispatch(listCastMemberRoles(castMemberId));
     }
   }, [dispatch, castMember, castMemberId]);
 
@@ -93,6 +104,34 @@ const CastMemberScreen = ({ match, history }) => {
                     )}
                   </Row>
                 </Col>
+              </Row>
+              <Row>
+                <h5 className="text-secondary">Shows</h5>
+                {loadingRoles ? (
+                  <Loader />
+                ) : errorRoles ? (
+                  <div>{errorRoles}</div>
+                ) : (
+                  <Table
+                    striped
+                    hover
+                    responsive
+                    className="table-sm text-light"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Poster</th>
+                        <th>Show</th>
+                        <th>Role</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {roles.map((role) => (
+                        <CastMemberRoleTableRow key={role._id} review={role} />
+                      ))}
+                    </tbody>
+                  </Table>
+                )}
               </Row>
 
               <Row>

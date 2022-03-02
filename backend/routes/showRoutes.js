@@ -20,6 +20,7 @@ import {
   deleteShowReview,
   deleteShowReviewComment,
   getUserShowReviews,
+  getCastMemberRoles,
 } from "../controllers/showController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -44,6 +45,7 @@ router
   .post(protect, addShowReviewComment)
   .put(protect, updateShowReviewComment)
   .delete(protect, deleteShowReviewComment);
+router.route("/castmember/:id/roles").get(getCastMemberRoles);
 
 router.route("/userreviews/:id").get(getUserShowReviews);
 
