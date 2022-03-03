@@ -316,7 +316,7 @@ export const createShowImage =
         },
       };
 
-      await axios.put(`/api/shows/${showId}/images`, image, config);
+      await axios.post(`/api/shows/${showId}/images`, image, config);
 
       dispatch({
         type: SHOW_ADD_IMAGE_SUCCESS,

@@ -127,7 +127,7 @@ const CastMemberScreen = ({ match, history }) => {
                     </thead>
                     <tbody>
                       {roles.map((role) => (
-                        <CastMemberRoleTableRow key={role._id} review={role} />
+                        <CastMemberRoleTableRow key={role._id} role={role} />
                       ))}
                     </tbody>
                   </Table>

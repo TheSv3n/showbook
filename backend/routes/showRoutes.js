@@ -21,6 +21,7 @@ import {
   deleteShowReviewComment,
   getUserShowReviews,
   getCastMemberRoles,
+  addShowViewer,
 } from "../controllers/showController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -29,8 +30,9 @@ router.route("/").post(protect, createShow).get(getAllShows);
 router.route("/myreviews").get(protect, getMyShowReviews);
 router.route("/:id").get(getShow).put(protect, updateShowInfo);
 router.route("/:id/performances").put(protect, addPerformance);
-router.route("/:id/images").put(protect, addShowImage);
+router.route("/:id/images").post(protect, addShowImage);
 router.route("/:id/reviews").post(protect, addShowReview);
+router.route("/:id/viewers").post(protect, addShowViewer);
 router.route("/:id/roles").put(protect, addShowRole);
 router.route("/:id/name").get(getShowName);
 router.route("/venue/:id/performances").get(getVenuePerformances);

@@ -114,7 +114,7 @@ const updateShowInfo = asyncHandler(async (req, res) => {
 });
 
 //@desc Add Performance
-//route PUT /api/shows/:id/performances
+//route POST /api/shows/:id/performances
 //@access Private
 const addPerformance = asyncHandler(async (req, res) => {
   const { venueId, date } = req.body;
@@ -136,7 +136,7 @@ const addPerformance = asyncHandler(async (req, res) => {
 });
 
 //@desc Add Image
-//route PUT /api/shows/:id/images
+//route POST /api/shows/:id/images
 //@access Private
 const addShowImage = asyncHandler(async (req, res) => {
   const { image, performance, comment } = req.body;
@@ -160,7 +160,7 @@ const addShowImage = asyncHandler(async (req, res) => {
 });
 
 //@desc Add Show Review
-//route PUT /api/shows/:id/reviews
+//route POST /api/shows/:id/reviews
 //@access Private
 const addShowReview = asyncHandler(async (req, res) => {
   const { performanceId, comment, rating, privateReview } = req.body;
@@ -634,8 +634,9 @@ const getCastMemberRoles = asyncHandler(async (req, res) => {
       if (shows[i].roles[j].castMemberId === req.params.id) {
         let tempRole = {
           showId: shows[i]._id,
+          showTitle: shows[i].title,
           showPoster: shows[i].coverImage,
-          role: shows[i].roles[j],
+          roleName: shows[i].roles[j].role,
         };
         roles = [...roles, tempRole];
       }
@@ -643,6 +644,30 @@ const getCastMemberRoles = asyncHandler(async (req, res) => {
   }
 
   res.json({ roles });
+});
+
+//@desc Add Show Viewer
+//route POST /api/shows/:id/viewers
+//@access Private
+const addShowViewer = asyncHandler(async (req, res) => {
+  const { seen, performanceId } = req.body;
+  const show = await Show.findById(req.params.id);
+
+  if (show) {
+    const newViewer = {
+      seen: seen || false,
+      performanceId: performanceId,
+      user: req.user._id,
+    };
+
+    show.viewers.push(newViewer);
+
+    await show.save();
+    res.status(201).json({ message: "Viewer Added" });
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
 });
 
 export {
@@ -666,4 +691,5 @@ export {
   deleteShowReviewComment,
   getUserShowReviews,
   getCastMemberRoles,
+  addShowViewer,
 };
