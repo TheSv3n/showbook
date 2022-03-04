@@ -66,6 +66,9 @@ import {
   SHOW_CASTMEMBER_ROLES_REQUEST,
   SHOW_CASTMEMBER_ROLES_SUCCESS,
   SHOW_CASTMEMBER_ROLES_FAIL,
+  SHOW_ADD_VIEWER_REQUEST,
+  SHOW_ADD_VIEWER_SUCCESS,
+  SHOW_ADD_VIEWER_FAIL,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -472,6 +475,28 @@ export const showCastMemberRolesReducer = (state = { roles: [] }, action) => {
       };
     case SHOW_CASTMEMBER_ROLES_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const addShowViewerReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SHOW_ADD_VIEWER_REQUEST:
+      return {
+        loading: true,
+      };
+    case SHOW_ADD_VIEWER_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        show: action.payload,
+      };
+    case SHOW_ADD_VIEWER_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

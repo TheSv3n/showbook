@@ -100,7 +100,7 @@ const ShowReviewScreen = ({ match, history }) => {
       history.push(`/show/${review.showId}`);
       dispatch({ type: SHOW_DELETE_REVIEW_RESET });
     }
-  }, [dispatch, reviewId, review, success, successDelete]);
+  }, [dispatch, reviewId, review, success, successDelete, history]);
 
   return (
     <section className="p-5 ">

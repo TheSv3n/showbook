@@ -318,9 +318,13 @@ const deleteCompanyReview = asyncHandler(async (req, res) => {
     await companies[0].save();
     companies[0].numReviews = companies[0].reviews.length;
 
-    companies[0].rating =
-      companies[0].reviews.reduce((acc, review) => review.rating + acc, 0) /
-      companies[0].reviews.length;
+    if (companies[0].reviews.length === 0) {
+      companies[0].rating = 0;
+    } else {
+      companies[0].rating =
+        companies[0].reviews.reduce((acc, review) => review.rating + acc, 0) /
+        companies[0].reviews.length;
+    }
 
     await companies[0].save();
     res.status(200).json({ message: "Review deleted" });

@@ -344,6 +344,18 @@ const ShowScreen = ({ match, history }) => {
                     )}
                   </Row>
                   <Row>
+                    <h5 className="text-secondary mt-1">Viewers </h5>
+                    {show.viewers && show.viewers.length > 0 ? (
+                      <>
+                        <div>
+                          {show.reviews.length} are interested in this show
+                        </div>
+                      </>
+                    ) : (
+                      <div>No Viewers</div>
+                    )}
+                  </Row>
+                  <Row>
                     <h5 className="text-secondary mt-1">
                       Performances{" "}
                       <span className="link text-secondary ">

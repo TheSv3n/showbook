@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Button } from "react-bootstrap";
 
 const DeleteModal = ({ showModal, updateShowModal, submitDelete, type }) => {
   return (
