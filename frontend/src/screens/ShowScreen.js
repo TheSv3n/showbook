@@ -49,6 +49,9 @@ const ShowScreen = ({ match, history }) => {
   const updateShow = useSelector((state) => state.updateShow);
   const { loading: loadingUpdate, success } = updateShow;
 
+  const addShowViewer = useSelector((state) => state.addShowViewer);
+  const { loading: loadingAddViewer } = addShowViewer;
+
   const getCompanyName = async (companyId) => {
     const { data: name } = await axios.get(`/api/companies/${companyId}/name`);
     setCompanyName(name);
@@ -326,70 +329,84 @@ const ShowScreen = ({ match, history }) => {
                       <div>{synopsisText}</div>
                     )}
                   </Row>
-                  <Row>
-                    <h5 className="text-secondary mt-1">Rating </h5>
-                    {show.reviews && show.reviews.length > 0 ? (
-                      <>
-                        <span className="mx-2">
-                          <RatingWidget
-                            value={show.rating}
-                            text={""}
-                            color={"orange"}
-                          />
-                        </span>
-                        <div>from {show.reviews.length} reviews</div>
-                      </>
-                    ) : (
-                      <div>No Reviews</div>
-                    )}
-                  </Row>
-                  <Row>
-                    <h5 className="text-secondary mt-1">Viewers </h5>
-                    {show.viewers && show.viewers.length > 0 ? (
-                      <>
-                        <div>
-                          {show.reviews.length} are interested in this show
-                        </div>
-                      </>
-                    ) : (
-                      <div>No Viewers</div>
-                    )}
-                  </Row>
-                  <Row>
-                    <h5 className="text-secondary mt-1">
-                      Performances{" "}
-                      <span className="link text-secondary ">
-                        {userInfo ? (
-                          <i
-                            className="bi bi-plus-circle-fill"
-                            onClick={updateShowNewPerformanceModal}
-                          ></i>
-                        ) : (
-                          ""
-                        )}
+                </Col>
+              </Row>
+              <Row className="text-white mb-2">
+                <Col>
+                  <h5 className="text-secondary mt-1">Rating </h5>
+                  {show.reviews && show.reviews.length > 0 ? (
+                    <div className="align-items-center">
+                      <span className="mr-2">
+                        <RatingWidget
+                          value={show.rating}
+                          text={""}
+                          color={"orange"}
+                        />
                       </span>
-                    </h5>
-                    <div>
-                      <>
-                        {show.performances.length > 0 ? (
-                          <>
-                            <span>
-                              {`${show.performances.length} performances`}
-                            </span>
-                            <span
-                              className="link text-secondary"
-                              onClick={updateShowPerformanceModal}
-                            >
-                              {" "}
-                              - view
-                            </span>
-                          </>
-                        ) : (
-                          "No performances scheduled"
-                        )}
-                      </>
+                      from {show.reviews.length} reviews
                     </div>
-                  </Row>
+                  ) : (
+                    <div>No Reviews</div>
+                  )}
+                </Col>
+                <Col>
+                  <h5 className="text-secondary mt-1">
+                    Viewers{" "}
+                    <span className="link text-secondary ">
+                      {userInfo ? (
+                        <i
+                          className="bi bi-plus-circle-fill"
+                          onClick={updateShowNewPerformanceModal}
+                        ></i>
+                      ) : (
+                        ""
+                      )}
+                    </span>
+                  </h5>
+                  {show.viewers && show.viewers.length > 0 ? (
+                    <>
+                      <div>
+                        {show.reviews.length} are interested in this show
+                      </div>
+                    </>
+                  ) : (
+                    <div>No Viewers</div>
+                  )}
+                </Col>
+                <Col>
+                  <h5 className="text-secondary mt-1">
+                    Performances{" "}
+                    <span className="link text-secondary ">
+                      {userInfo ? (
+                        <i
+                          className="bi bi-plus-circle-fill"
+                          onClick={updateShowNewPerformanceModal}
+                        ></i>
+                      ) : (
+                        ""
+                      )}
+                    </span>
+                  </h5>
+                  <div>
+                    <>
+                      {show.performances.length > 0 ? (
+                        <>
+                          <span>
+                            {`${show.performances.length} performances`}
+                          </span>
+                          <span
+                            className="link text-secondary"
+                            onClick={updateShowPerformanceModal}
+                          >
+                            {" "}
+                            - view
+                          </span>
+                        </>
+                      ) : (
+                        "No performances scheduled"
+                      )}
+                    </>
+                  </div>
                 </Col>
               </Row>
               <Row>
