@@ -13,6 +13,7 @@ import Review from "../components/Review";
 import PerformanceModal from "../components/PerformanceModal";
 import NewPerformanceModal from "../components/NewPerformanceModal";
 import NewImageModal from "../components/NewImageModal";
+import NewViewerModal from "../components/NewViewerModal";
 import { VENUE_LIST_RESET } from "../constants/venueConstants";
 import { SHOW_UPDATE_RESET } from "../constants/showConstants";
 import CastMemberCard from "../components/CastMemberCard";
@@ -30,6 +31,7 @@ const ShowScreen = ({ match, history }) => {
   const [startIndex, setStartIndex] = useState(0);
   const [showNewPerformanceModal, setShowNewPerformanceModal] = useState(false);
   const [showNewImageModal, setShowNewImageModal] = useState(false);
+  const [showNewViewerModal, setShowNewViewerModal] = useState(false);
   const [titleText, setTitleText] = useState("");
   const [showEditTitleField, setShowEditTitleField] = useState(false);
   const [showEditSynopsisField, setShowEditSynopsisField] = useState(false);
@@ -73,6 +75,10 @@ const ShowScreen = ({ match, history }) => {
 
   const updateShowNewImageModal = () => {
     setShowNewImageModal(!showNewImageModal);
+  };
+
+  const updateShowNewViewerModal = () => {
+    setShowNewViewerModal(!showNewViewerModal);
   };
 
   const updateShowReviewModal = () => {
@@ -204,6 +210,11 @@ const ShowScreen = ({ match, history }) => {
               updateShowModal={updateShowNewImageModal}
               performances={show.performances}
               type={"show"}
+            />
+            <NewViewerModal
+              showId={showId}
+              showModal={showNewViewerModal}
+              updateShowModal={updateShowNewViewerModal}
             />
             <Container>
               <Row>
@@ -356,7 +367,7 @@ const ShowScreen = ({ match, history }) => {
                       {userInfo ? (
                         <i
                           className="bi bi-plus-circle-fill"
-                          onClick={updateShowNewPerformanceModal}
+                          onClick={updateShowNewViewerModal}
                         ></i>
                       ) : (
                         ""
