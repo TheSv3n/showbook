@@ -160,7 +160,9 @@ const ShowScreen = ({ match, history }) => {
       setSynopsisText(show.synopsis);
       setTitleText(show.title);
       getCompanyName(show.company);
-      getDirectorName(show.director);
+      if (show.director) {
+        getDirectorName(show.director);
+      }
     }
     if (success) {
       setTitleText(show.title);
@@ -281,15 +283,18 @@ const ShowScreen = ({ match, history }) => {
                   <Image src={show.coverImage} alt={show.title} fluid></Image>
                 </Col>
                 <Col md={3} className="text-white">
-                  <Row>
-                    <h5 className="text-secondary">Directed by </h5>
-                    <Link
-                      className="text-white"
-                      to={`/castmember/${show.director}`}
-                    >
-                      <div>{directorName}</div>
-                    </Link>
-                  </Row>
+                  {show.director && (
+                    <Row>
+                      <h5 className="text-secondary">Directed by </h5>
+                      <Link
+                        className="text-white"
+                        to={`/castmember/${show.director}`}
+                      >
+                        <div>{directorName}</div>
+                      </Link>
+                    </Row>
+                  )}
+
                   <Row>
                     <h5 className="text-secondary mt-1">
                       About{" "}

@@ -135,7 +135,7 @@ const showSchema = mongoose.Schema(
     },
     director: {
       type: String,
-      required: true,
+      required: false,
     },
     synopsis: {
       type: String,

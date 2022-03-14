@@ -27,12 +27,7 @@ const NewShowScreen = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (
-      title !== "" &&
-      synopsis !== "" &&
-      companyId !== "" &&
-      directorId !== ""
-    ) {
+    if (title !== "" && synopsis !== "" && companyId !== "") {
       dispatch(
         createShow({
           title: title,
