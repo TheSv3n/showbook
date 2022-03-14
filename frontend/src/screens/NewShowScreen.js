@@ -27,7 +27,7 @@ const NewShowScreen = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (title !== "" && synopsis !== "" && companyId !== "") {
+    if (title !== "" && synopsis !== "") {
       dispatch(
         createShow({
           title: title,
@@ -129,7 +129,7 @@ const NewShowScreen = ({ history }) => {
                 <Row className="mt-3">
                   <Col xs={6}>
                     <Form.Group controlId="company">
-                      <Form.Label>Company</Form.Label>
+                      <Form.Label>Company (optional)</Form.Label>
                       <Row className="align-items-center">
                         <Col sm={8}>{companyName}</Col>
                         <Col sm={4}>
@@ -146,7 +146,7 @@ const NewShowScreen = ({ history }) => {
                   </Col>
                   <Col xs={6}>
                     <Form.Group controlId="director">
-                      <Form.Label>Director</Form.Label>
+                      <Form.Label>Director (optional)</Form.Label>
                       <Row className="align-items-center">
                         <Col sm={8}>{directorName}</Col>
                         <Col sm={4}>

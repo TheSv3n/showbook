@@ -159,7 +159,10 @@ const ShowScreen = ({ match, history }) => {
     } else {
       setSynopsisText(show.synopsis);
       setTitleText(show.title);
-      getCompanyName(show.company);
+      if (show.company) {
+        getCompanyName(show.company);
+      }
+
       if (show.director) {
         getDirectorName(show.director);
       }
@@ -268,15 +271,17 @@ const ShowScreen = ({ match, history }) => {
                     ""
                   )}
                 </h2>
-                <h5 className="text-secondary">
-                  By{" "}
-                  <Link
-                    className="link text-secondary"
-                    to={`/company/${show.company}`}
-                  >
-                    {companyName}
-                  </Link>
-                </h5>
+                {show.company && (
+                  <h5 className="text-secondary">
+                    By{" "}
+                    <Link
+                      className="link text-secondary"
+                      to={`/company/${show.company}`}
+                    >
+                      {companyName}
+                    </Link>
+                  </h5>
+                )}
               </Row>
               <Row className="mb-4">
                 <Col md={9}>

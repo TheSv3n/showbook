@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Row, Col, Container } from "react-bootstrap";
+import { Form, Button, Row, Col, Container, FormCheck } from "react-bootstrap";
 import PerformanceModal from "./PerformanceModal";
 
 const NewViewerModal = ({ showModal, updateShowModal }) => {
+  const [viewed, setViewed] = useState(false);
   const handleClose = () => {
     updateShowModal();
+  };
+
+  const toggleViewed = () => {
+    setViewed(!viewed);
   };
 
   return (
@@ -24,7 +29,12 @@ const NewViewerModal = ({ showModal, updateShowModal }) => {
                   </Form.Label>
                 </Col>
                 <Col>
-                  <Form.Switch name="switch" type="switch" id="custom-switch" />
+                  <Form.Check
+                    id="switchViewed"
+                    type="switch"
+                    checked={viewed}
+                    onChange={toggleViewed}
+                  />
                 </Col>
               </Row>
             </Form>

@@ -17,7 +17,10 @@ const FeedShowCard = ({ show }) => {
             ></Image>
           </Link>
           <h3 className="card-title mb-3">{show.title}</h3>
-          <h4 className="card-title mb-3">By {show.companyName}</h4>
+          {show.companyName && (
+            <h4 className="card-title mb-3">By {show.companyName}</h4>
+          )}
+
           <p className="card-text">{show.synopsis}</p>
         </Card.Body>
         <Card.Footer>

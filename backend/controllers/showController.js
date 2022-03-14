@@ -60,8 +60,12 @@ const getAllShows = asyncHandler(async (req, res) => {
   //add company names
   let shows = [];
   for (let i = 0; i < tempShows.length; i++) {
-    let company = await Company.findById(tempShows[i].company);
-    let companyName = company.name;
+    let companyName;
+    if (tempShows[i].company) {
+      let company = await Company.findById(tempShows[i].company);
+      companyName = company.name;
+    }
+
     let tempShow = {
       _id: tempShows[i]._id,
       title: tempShows[i].title,
@@ -308,9 +312,14 @@ const getShowReview = asyncHandler(async (req, res) => {
 
     for (let i = 0; i < shows[0].reviews.length; i++) {
       if (shows[0].reviews[i]._id.toString() === req.params.id) {
-        let company = await Company.findById(shows[0].company);
+        let company;
+        let companyName;
+        if (shows[0].company) {
+          company = await Company.findById(shows[0].company);
+          companyName = company.name;
+        }
+
         let user = await User.findById(shows[0].reviews[i].user);
-        let companyName = company.name;
         let userName = user.userName;
         let performanceVenueId;
         let performanceDate;
@@ -559,10 +568,16 @@ const getUserReviewsById = async (userId, page) => {
   for (let i = 0; i < shows.length; i++) {
     for (let j = 0; j < shows[i].reviews.length; j++) {
       if (shows[i].reviews[j].user === userId) {
-        let company = await Company.findById(shows[i].company);
+        let company;
+        let companyName;
+        if (shows[i].company) {
+          company = await Company.findById(shows[i].company);
+          companyName = company.name;
+        }
+
         let performanceVenueId;
         let performanceDate;
-        let companyName = company.name;
+
         let performanceVenueName;
         for (let k = 0; k < shows[i].performances.length; k++) {
           if (

@@ -138,15 +138,18 @@ const ShowReviewScreen = ({ match, history }) => {
                     <Link to={`/show/${review.showId}`}>
                       <h2 className="text-white">{review.showTitle}</h2>
                     </Link>
-                    <h3 className="text-secondary">
-                      By{" "}
-                      <Link
-                        className="link text-secondary"
-                        to={`/company/${review.showCompanyId}`}
-                      >
-                        {review.showCompanyName}
-                      </Link>
-                    </h3>
+                    {review.showCompanyName && (
+                      <h3 className="text-secondary">
+                        By{" "}
+                        <Link
+                          className="link text-secondary"
+                          to={`/company/${review.showCompanyId}`}
+                        >
+                          {review.showCompanyName}
+                        </Link>
+                      </h3>
+                    )}
+
                     <h4>
                       Review by{" "}
                       <Link to={`/user/${review.user}`} className="text-white">
