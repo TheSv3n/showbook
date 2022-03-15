@@ -8,7 +8,7 @@ import User from "../models/userModel.js";
 const createVenue = asyncHandler(async (req, res) => {
   const { name, description, address, images } = req.body;
 
-  const coverImage = req.coverImage || "/uploads/defaultVenue.jpg";
+  const coverImage = req.body.coverImage || "/uploads/defaultVenue.jpg";
 
   const venue = new Venue({
     name,
