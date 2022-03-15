@@ -413,13 +413,13 @@ const ShowScreen = ({ match, history }) => {
                       </div>
                       <div>{bookedCount} people have booked to see show</div>
                       {userInfo && (
-                        <div
-                          className="link text-secondary"
+                        <Button
+                          className="btn-warning mt-1"
                           onClick={updateShowNewViewerModal}
                         >
                           {" "}
-                          - I'm interested in this show!
-                        </div>
+                          I'm interested in this show!
+                        </Button>
                       )}
                     </>
                   ) : (

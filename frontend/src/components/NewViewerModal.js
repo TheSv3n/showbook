@@ -95,7 +95,7 @@ const NewViewerModal = ({
               )}
               <Row className="justify-content-sm-center">
                 <Col sm={2} className="justify-content-sm-center">
-                  <Button type="submit" variant="primary" className="my-2">
+                  <Button type="submit" variant="warning" className="my-2">
                     Submit
                   </Button>
                 </Col>
