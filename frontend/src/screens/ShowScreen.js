@@ -38,6 +38,8 @@ const ShowScreen = ({ match, history }) => {
   const [synopsisText, setSynopsisText] = useState("");
   const [editedSynopsis, setEditedSynopsis] = useState("");
   const [editedTitle, setEditedTitle] = useState("");
+  const [viewersCount, setViewersCount] = useState(0);
+  const [bookedCount, setBookedCount] = useState(0);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -153,6 +155,20 @@ const ShowScreen = ({ match, history }) => {
     }
   };
 
+  const sortViewers = () => {
+    let tempBookedCount = 0;
+    let tempViewersCount = 0;
+    for (let i = 0; i < show.viewers.length; i++) {
+      if (show.viewers[i].seen) {
+        tempBookedCount++;
+      } else {
+        tempViewersCount++;
+      }
+    }
+    setBookedCount(tempBookedCount);
+    setViewersCount(tempViewersCount);
+  };
+
   useEffect(() => {
     if (!show || show._id !== showId) {
       dispatch(getShowInfo(showId, false));
@@ -165,6 +181,9 @@ const ShowScreen = ({ match, history }) => {
 
       if (show.director) {
         getDirectorName(show.director);
+      }
+      if (show.viewers.length > 0) {
+        sortViewers();
       }
     }
     if (success) {
@@ -219,6 +238,7 @@ const ShowScreen = ({ match, history }) => {
             <NewViewerModal
               showId={showId}
               showModal={showNewViewerModal}
+              performances={show.performances}
               updateShowModal={updateShowNewViewerModal}
             />
             <Container>
@@ -374,21 +394,33 @@ const ShowScreen = ({ match, history }) => {
                   <h5 className="text-secondary mt-1">
                     Viewers{" "}
                     <span className="link text-secondary ">
-                      {userInfo ? (
+                      {/*userInfo ? (
                         <i
                           className="bi bi-plus-circle-fill"
                           onClick={updateShowNewViewerModal}
                         ></i>
                       ) : (
                         ""
-                      )}
+                      )*/}
                     </span>
                   </h5>
-                  {show.viewers && show.viewers.length > 0 ? (
+                  {loadingAddViewer ? (
+                    <Loader />
+                  ) : show.viewers && show.viewers.length > 0 ? (
                     <>
                       <div>
-                        {show.reviews.length} are interested in this show
+                        {viewersCount} people are interested in this show
                       </div>
+                      <div>{bookedCount} people have booked to see show</div>
+                      {userInfo && (
+                        <div
+                          className="link text-secondary"
+                          onClick={updateShowNewViewerModal}
+                        >
+                          {" "}
+                          - I'm interested in this show!
+                        </div>
+                      )}
                     </>
                   ) : (
                     <div>No Viewers</div>
