@@ -391,19 +391,7 @@ const ShowScreen = ({ match, history }) => {
                   )}
                 </Col>
                 <Col>
-                  <h5 className="text-secondary mt-1">
-                    Viewers{" "}
-                    <span className="link text-secondary ">
-                      {/*userInfo ? (
-                        <i
-                          className="bi bi-plus-circle-fill"
-                          onClick={updateShowNewViewerModal}
-                        ></i>
-                      ) : (
-                        ""
-                      )*/}
-                    </span>
-                  </h5>
+                  <h5 className="text-secondary mt-1">Viewers </h5>
                   {loadingAddViewer ? (
                     <Loader />
                   ) : show.viewers && show.viewers.length > 0 ? (
@@ -412,34 +400,22 @@ const ShowScreen = ({ match, history }) => {
                         {viewersCount} people are interested in this show
                       </div>
                       <div>{bookedCount} people have booked to see show</div>
-                      {userInfo && (
-                        <Button
-                          className="btn-warning mt-1"
-                          onClick={updateShowNewViewerModal}
-                        >
-                          {" "}
-                          I'm interested in this show!
-                        </Button>
-                      )}
                     </>
                   ) : (
                     <div>No Viewers</div>
                   )}
+                  {userInfo && (
+                    <Button
+                      className="btn-warning mt-1"
+                      onClick={updateShowNewViewerModal}
+                    >
+                      {" "}
+                      I'm interested in this show!
+                    </Button>
+                  )}
                 </Col>
                 <Col>
-                  <h5 className="text-secondary mt-1">
-                    Performances{" "}
-                    <span className="link text-secondary ">
-                      {userInfo ? (
-                        <i
-                          className="bi bi-plus-circle-fill"
-                          onClick={updateShowNewPerformanceModal}
-                        ></i>
-                      ) : (
-                        ""
-                      )}
-                    </span>
-                  </h5>
+                  <h5 className="text-secondary mt-1">Performances</h5>
                   <div>
                     <>
                       {show.performances.length > 0 ? (
@@ -458,6 +434,17 @@ const ShowScreen = ({ match, history }) => {
                       ) : (
                         "No performances scheduled"
                       )}
+                      <div>
+                        {userInfo && (
+                          <Button
+                            className="btn-warning mt-1"
+                            onClick={updateShowNewPerformanceModal}
+                          >
+                            {" "}
+                            Add performance
+                          </Button>
+                        )}
+                      </div>
                     </>
                   </div>
                 </Col>

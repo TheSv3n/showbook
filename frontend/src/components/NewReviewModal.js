@@ -166,7 +166,7 @@ const NewReviewModal = ({
                   {performanceId === "" && type === "show" ? (
                     <div className="my-5" />
                   ) : (
-                    <Button type="submit" variant="primary" className="my-2">
+                    <Button type="submit" variant="warning" className="my-2">
                       Submit
                     </Button>
                   )}

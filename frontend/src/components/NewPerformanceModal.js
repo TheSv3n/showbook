@@ -17,6 +17,14 @@ const NewPerformanceModal = ({ showId, showModal, updateShowModal }) => {
   const addShowPerformance = useSelector((state) => state.addShowPerformance);
   const { loading, success } = addShowPerformance;
 
+  const handleClose = () => {
+    setVenueId("");
+    setVenueText("Not selected");
+    setDate("");
+    setTime("");
+    updateShowModal();
+  };
+
   const updateVenueModal = () => {
     setShowVenueModal(!showVenueModal);
   };
@@ -93,15 +101,23 @@ const NewPerformanceModal = ({ showId, showModal, updateShowModal }) => {
                   ) : loading ? (
                     <Loader />
                   ) : (
-                    <Button type="submit" variant="primary" className=" my-2">
-                      Submit
-                    </Button>
+                    <Row className="justify-content-sm-center">
+                      <Col sm={2} className="justify-content-sm-center">
+                        <Button
+                          type="submit"
+                          variant="warning"
+                          className=" my-2"
+                        >
+                          Submit
+                        </Button>
+                      </Col>
+                    </Row>
                   )}
                 </Form>
               </Col>
             </Row>
           </Container>
-          <button className="close-modal-btn" onClick={updateShowModal}>
+          <button className="close-modal-btn" onClick={handleClose}>
             <i className="bi bi-x-circle-fill"></i>
           </button>
         </div>
