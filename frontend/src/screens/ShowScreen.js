@@ -40,6 +40,7 @@ const ShowScreen = ({ match, history }) => {
   const [editedTitle, setEditedTitle] = useState("");
   const [viewersCount, setViewersCount] = useState(0);
   const [bookedCount, setBookedCount] = useState(0);
+  const [userViewed, setUserViewed] = useState(false);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -163,6 +164,9 @@ const ShowScreen = ({ match, history }) => {
         tempBookedCount++;
       } else {
         tempViewersCount++;
+      }
+      if (userInfo && show.viewers[i].user === userInfo._id) {
+        setUserViewed(true);
       }
     }
     setBookedCount(tempBookedCount);
@@ -404,7 +408,7 @@ const ShowScreen = ({ match, history }) => {
                   ) : (
                     <div>No Viewers</div>
                   )}
-                  {userInfo && (
+                  {userInfo && !userViewed ? (
                     <Button
                       className="btn-warning mt-1"
                       onClick={updateShowNewViewerModal}
@@ -412,6 +416,8 @@ const ShowScreen = ({ match, history }) => {
                       {" "}
                       I'm interested in this show!
                     </Button>
+                  ) : (
+                    ""
                   )}
                 </Col>
                 <Col>

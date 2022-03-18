@@ -22,12 +22,15 @@ import {
   getUserShowReviews,
   getCastMemberRoles,
   addShowViewer,
+  getMyWatchlist,
+  getUserWatchlist,
 } from "../controllers/showController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
 
 router.route("/").post(protect, createShow).get(getAllShows);
 router.route("/myreviews").get(protect, getMyShowReviews);
+router.route("/mywatchlist").get(protect, getMyWatchlist);
 router.route("/:id").get(getShow).put(protect, updateShowInfo);
 router.route("/:id/performances").put(protect, addPerformance);
 router.route("/:id/images").post(protect, addShowImage);
@@ -50,5 +53,6 @@ router
 router.route("/castmember/:id/roles").get(getCastMemberRoles);
 
 router.route("/userreviews/:id").get(getUserShowReviews);
+router.route("/userwatchlist/:id").get(getUserWatchlist);
 
 export default router;

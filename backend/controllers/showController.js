@@ -673,21 +673,83 @@ const addShowViewer = asyncHandler(async (req, res) => {
   const show = await Show.findById(req.params.id);
 
   if (show) {
-    const newViewer = {
-      seen: seen || false,
-      performanceId: performanceId,
-      user: req.user._id,
-    };
+    let userViewing = false;
+    for (let i = 0; i < show.viewers.length; i++) {
+      if (show.viewers[i].user === req.user._id.toString()) {
+        userViewing = true;
+      }
+    }
+    if (!userViewing) {
+      const newViewer = {
+        seen: seen || false,
+        performanceId: performanceId,
+        user: req.user._id,
+      };
 
-    show.viewers.push(newViewer);
+      show.viewers.push(newViewer);
 
-    await show.save();
-    res.status(201).json({ message: "Viewer Added" });
+      await show.save();
+      res.status(201).json({ message: "Viewer Added" });
+    } else {
+      res.status(400);
+      throw new Error("User already viewing");
+    }
   } else {
     res.status(404);
     throw new Error("Show not Found");
   }
 });
+
+//@desc Fetch Logged-in User's Reviews
+//@route GET /api/shows/mywatchlist
+//@access Private
+const getMyWatchlist = asyncHandler(async (req, res) => {
+  const page = Number(req.query.pageNumber) || 1;
+
+  let views = await getUserViewsById(req.user._id.toString());
+
+  res.json({ views });
+});
+
+//@desc Fetch User's Watch List
+//@route GET /api/shows/watchlist/:id
+//@access Public
+const getUserWatchlist = asyncHandler(async (req, res) => {
+  const page = Number(req.query.pageNumber) || 1;
+
+  let tempViews = await getUserViewsById(req.params.id);
+  let views = [];
+
+  for (let i = 0; i < tempViews.length; i++) {
+    if (!tempViews[i].privateView) {
+      views.push(tempViews[i]);
+    }
+  }
+
+  res.json({ views });
+});
+
+const getUserViewsById = async (userId, page) => {
+  const shows = await Show.find({
+    $or: [
+      {
+        "viewers.user": userId,
+      },
+    ],
+  });
+
+  let views = [];
+
+  for (let i = 0; i < shows.length; i++) {
+    for (let j = 0; j < shows[i].reviews.length; j++) {
+      if (shows[i].viewers[j].user === userId) {
+        let tempView = shows[i].viewers[j];
+        views = [...views, tempView];
+      }
+    }
+  }
+  return views;
+};
 
 export {
   createShow,
@@ -711,4 +773,6 @@ export {
   getUserShowReviews,
   getCastMemberRoles,
   addShowViewer,
+  getMyWatchlist,
+  getUserWatchlist,
 };
