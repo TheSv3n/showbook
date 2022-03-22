@@ -61,6 +61,9 @@ import {
   SHOW_ADD_VIEWER_REQUEST,
   SHOW_ADD_VIEWER_SUCCESS,
   SHOW_ADD_VIEWER_FAIL,
+  SHOW_MY_WATCHLIST_REQUEST,
+  SHOW_MY_WATCHLIST_SUCCESS,
+  SHOW_MY_WATCHLIST_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -711,6 +714,38 @@ export const addShowViewer = (showId, viewer) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: SHOW_ADD_VIEWER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getMyWatchlist = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: SHOW_MY_WATCHLIST_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/shows/mywatchlist`, config);
+
+    dispatch({
+      type: SHOW_MY_WATCHLIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SHOW_MY_WATCHLIST_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

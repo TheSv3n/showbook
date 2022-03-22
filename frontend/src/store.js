@@ -23,6 +23,7 @@ import {
   showUserReviewsReducer,
   showCastMemberRolesReducer,
   addShowViewerReducer,
+  showMyWatchlistReducer,
 } from "./reducers/showReducers";
 
 import {
@@ -98,6 +99,7 @@ const reducer = combineReducers({
   showUserReviews: showUserReviewsReducer,
   showCastMemberRoles: showCastMemberRolesReducer,
   addShowViewer: addShowViewerReducer,
+  showMyWatchlist: showMyWatchlistReducer,
   venueList: venueListReducer,
   venueInfo: venueInfoReducer,
   updateVenue: updateVenueReducer,

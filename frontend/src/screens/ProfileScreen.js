@@ -8,7 +8,7 @@ import {
   logout,
   updateUserProfile,
 } from "../actions/userActions";
-import { listMyShowReviews } from "../actions/showActions";
+import { listMyShowReviews, getMyWatchlist } from "../actions/showActions";
 import { listMyVenueReviews } from "../actions/venueActions";
 import { listMyCompanyReviews } from "../actions/companyActions";
 import ReviewTableRow from "../components/ReviewTableRow";
@@ -38,6 +38,13 @@ const ProfileScreen = ({ history }) => {
     reviews: showReviews,
   } = showMyReviews;
 
+  const showMyWatchlist = useSelector((state) => state.showMyWatchlist);
+  const {
+    loading: loadingShowWatchlist,
+    error: errorShowWatchlist,
+    views,
+  } = showMyWatchlist;
+
   const venueMyReviews = useSelector((state) => state.venueMyReviews);
   const {
     loading: loadingVenueReviews,
@@ -62,6 +69,7 @@ const ProfileScreen = ({ history }) => {
         dispatch(listMyShowReviews());
         dispatch(listMyVenueReviews());
         dispatch(listMyCompanyReviews());
+        dispatch(getMyWatchlist());
       } else {
         setName(user.name);
         setEmail(user.email);
@@ -154,6 +162,7 @@ const ProfileScreen = ({ history }) => {
           <Col md={10}>
             <h2>My Reviews</h2>
             <h3>Shows</h3>
+            <h4>Seen</h4>
             {loadingShowReviews ? (
               <Loader />
             ) : errorShowReviews ? (
@@ -177,6 +186,34 @@ const ProfileScreen = ({ history }) => {
                       key={review._id}
                       review={review}
                       type={"show"}
+                    />
+                  ))}
+                </tbody>
+              </Table>
+            )}
+            <h4>Watchlist</h4>
+            {loadingShowWatchlist ? (
+              <Loader />
+            ) : errorShowWatchlist ? (
+              <div>{errorShowWatchlist}</div>
+            ) : (
+              <Table striped hover responsive className="table-sm text-light">
+                <thead>
+                  <tr>
+                    <th>Poster</th>
+                    <th>Show</th>
+                    <th>Company</th>
+                    <th>Rating</th>
+                    <th>Booked At</th>
+                    <th>Date Booked</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {views.map((view) => (
+                    <ReviewTableRow
+                      key={view._id}
+                      review={view}
+                      type={"view"}
                     />
                   ))}
                 </tbody>

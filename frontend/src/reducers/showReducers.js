@@ -69,6 +69,9 @@ import {
   SHOW_ADD_VIEWER_REQUEST,
   SHOW_ADD_VIEWER_SUCCESS,
   SHOW_ADD_VIEWER_FAIL,
+  SHOW_MY_WATCHLIST_REQUEST,
+  SHOW_MY_WATCHLIST_SUCCESS,
+  SHOW_MY_WATCHLIST_FAIL,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -497,6 +500,22 @@ export const addShowViewerReducer = (state = {}, action) => {
         loading: false,
         error: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+export const showMyWatchlistReducer = (state = { views: [] }, action) => {
+  switch (action.type) {
+    case SHOW_MY_WATCHLIST_REQUEST:
+      return { loading: true, views: [] };
+    case SHOW_MY_WATCHLIST_SUCCESS:
+      return {
+        loading: false,
+        views: action.payload.views,
+      };
+    case SHOW_MY_WATCHLIST_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }
