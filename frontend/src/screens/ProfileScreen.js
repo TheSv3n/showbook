@@ -203,7 +203,6 @@ const ProfileScreen = ({ history }) => {
                     <th>Poster</th>
                     <th>Show</th>
                     <th>Company</th>
-                    <th>Rating</th>
                     <th>Booked At</th>
                     <th>Date Booked</th>
                   </tr>

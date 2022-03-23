@@ -743,7 +743,41 @@ const getUserViewsById = async (userId, page) => {
   for (let i = 0; i < shows.length; i++) {
     for (let j = 0; j < shows[i].reviews.length; j++) {
       if (shows[i].viewers[j].user === userId) {
-        let tempView = shows[i].viewers[j];
+        let company;
+        let companyName;
+        if (shows[i].company) {
+          company = await Company.findById(shows[i].company);
+          companyName = company.name;
+        }
+        let performanceVenueId;
+        let performanceDate;
+
+        let performanceVenueName;
+        for (let k = 0; k < shows[i].performances.length; k++) {
+          if (
+            shows[i].performances[k]._id.toString() ===
+            shows[i].reviews[j].performanceId
+          ) {
+            performanceVenueId = shows[i].performances[k].venueId;
+            performanceDate = shows[i].performances[k].date;
+          }
+        }
+        let venue = await Venue.findById(performanceVenueId);
+        performanceVenueName = venue.name;
+        let tempView = {
+          _id: shows[i].viewers[j]._id,
+          seen: shows[i].viewers[j].seen,
+          performanceId: shows[i].viewers[j].performanceId,
+          performanceVenueId: performanceVenueId,
+          performanceVenueName: performanceVenueName,
+          performanceDate: performanceDate,
+          showId: shows[0]._id,
+          title: shows[0].title,
+          poster: shows[0].coverImage,
+          companyId: shows[0].company,
+          companyName: companyName,
+        };
+
         views = [...views, tempView];
       }
     }

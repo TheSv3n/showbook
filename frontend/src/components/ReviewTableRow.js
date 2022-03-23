@@ -11,8 +11,11 @@ const ReviewTableRow = ({ review, type }) => {
     <tr>
       <td className="text-light">
         {" "}
-        <Link to={`/${type}/${id}`} className="link text-light">
-          <Col sm={type === "show" ? 9 : 4}>
+        <Link
+          to={`/${type === "view" ? "show" : type}/${id}`}
+          className="link text-light"
+        >
+          <Col sm={type === "show" ? 9 : type === "view" ? 6 : 4}>
             <Image
               src={image}
               alt={review.name}
@@ -23,11 +26,14 @@ const ReviewTableRow = ({ review, type }) => {
         </Link>
       </td>
       <td className="text-light">
-        <Link to={`/${type}/${id}`} className="link text-light">
+        <Link
+          to={`/${type === "view" ? "show" : type}/${id}`}
+          className="link text-light"
+        >
           {name}
         </Link>
       </td>
-      {type === "show" ? (
+      {type === "show" || "view" ? (
         <td className="text-light">
           <Link to={`/company/${review.companyId}`} className="link text-light">
             {review.companyName}
@@ -37,11 +43,13 @@ const ReviewTableRow = ({ review, type }) => {
         ""
       )}
 
-      <td className="text-light">
-        <RatingWidget value={review.rating} text={""} color={"orange"} />
-      </td>
+      {type !== "view" && (
+        <td className="text-light">
+          <RatingWidget value={review.rating} text={""} color={"orange"} />
+        </td>
+      )}
 
-      {type === "show" ? (
+      {type === "show" || "view" ? (
         <>
           <td className="text-light">
             <Link
@@ -54,15 +62,20 @@ const ReviewTableRow = ({ review, type }) => {
           <td className="text-light">
             {review.performanceDate.substring(0, 10)}
           </td>
-          <td className="text-light">{review.reviewDate.substring(0, 10)}</td>
+          {type === "show" && (
+            <td className="text-light">{review.reviewDate.substring(0, 10)}</td>
+          )}
         </>
       ) : (
         ""
       )}
-
-      <td className="text-light">
-        <Link to={`/${type}review/${review.reviewId}`}>View</Link>
-      </td>
+      {type !== "view" ? (
+        <td className="text-light">
+          <Link to={`/${type}review/${review.reviewId}`}>View</Link>
+        </td>
+      ) : (
+        <td className="text-danger link">Delete</td>
+      )}
     </tr>
   );
 };
