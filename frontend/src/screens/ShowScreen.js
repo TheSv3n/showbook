@@ -17,6 +17,7 @@ import NewViewerModal from "../components/NewViewerModal";
 import { VENUE_LIST_RESET } from "../constants/venueConstants";
 import { SHOW_UPDATE_RESET } from "../constants/showConstants";
 import CastMemberCard from "../components/CastMemberCard";
+import RemoveViewerModal from "../components/RemoveViewerModal";
 
 const ShowScreen = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const ShowScreen = ({ match, history }) => {
   const [showNewPerformanceModal, setShowNewPerformanceModal] = useState(false);
   const [showNewImageModal, setShowNewImageModal] = useState(false);
   const [showNewViewerModal, setShowNewViewerModal] = useState(false);
+  const [showRemoveViewerModal, setShowRemoveViewerModal] = useState(false);
   const [titleText, setTitleText] = useState("");
   const [showEditTitleField, setShowEditTitleField] = useState(false);
   const [showEditSynopsisField, setShowEditSynopsisField] = useState(false);
@@ -41,6 +43,7 @@ const ShowScreen = ({ match, history }) => {
   const [viewersCount, setViewersCount] = useState(0);
   const [bookedCount, setBookedCount] = useState(0);
   const [userViewed, setUserViewed] = useState(false);
+  const [userViewId, setUserViewId] = useState("");
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -82,6 +85,10 @@ const ShowScreen = ({ match, history }) => {
 
   const updateShowNewViewerModal = () => {
     setShowNewViewerModal(!showNewViewerModal);
+  };
+
+  const updateShowRemoveViewerModal = () => {
+    setShowRemoveViewerModal(!showRemoveViewerModal);
   };
 
   const updateShowReviewModal = () => {
@@ -167,6 +174,7 @@ const ShowScreen = ({ match, history }) => {
       }
       if (userInfo && show.viewers[i].user === userInfo._id) {
         setUserViewed(true);
+        setUserViewId(show.viewers[i]._id);
       }
     }
     setBookedCount(tempBookedCount);
@@ -245,6 +253,13 @@ const ShowScreen = ({ match, history }) => {
               performances={show.performances}
               updateShowModal={updateShowNewViewerModal}
             />
+            <RemoveViewerModal
+              showModal={showRemoveViewerModal}
+              updateShowModal={updateShowRemoveViewerModal}
+              viewerId={userViewId}
+              showId={showId}
+            />
+
             <Container>
               <Row>
                 <h2 className="text-white">
@@ -414,7 +429,15 @@ const ShowScreen = ({ match, history }) => {
                       onClick={updateShowNewViewerModal}
                     >
                       {" "}
-                      I'm interested in this show!
+                      Add to Watchlist
+                    </Button>
+                  ) : userInfo && userViewed ? (
+                    <Button
+                      className="btn-danger mt-1"
+                      onClick={updateShowRemoveViewerModal}
+                    >
+                      {" "}
+                      Remove from Watchlist
                     </Button>
                   ) : (
                     ""
