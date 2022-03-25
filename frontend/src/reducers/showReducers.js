@@ -72,6 +72,10 @@ import {
   SHOW_MY_WATCHLIST_REQUEST,
   SHOW_MY_WATCHLIST_SUCCESS,
   SHOW_MY_WATCHLIST_FAIL,
+  SHOW_DELETE_VIEWER_REQUEST,
+  SHOW_DELETE_VIEWER_SUCCESS,
+  SHOW_DELETE_VIEWER_FAIL,
+  SHOW_DELETE_VIEWER_RESET,
 } from "../constants/showConstants";
 
 export const showListReducer = (state = { shows: [] }, action) => {
@@ -516,6 +520,23 @@ export const showMyWatchlistReducer = (state = { views: [] }, action) => {
       };
     case SHOW_MY_WATCHLIST_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const showViewerDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SHOW_DELETE_VIEWER_REQUEST:
+      return { loading: true };
+    case SHOW_DELETE_VIEWER_SUCCESS:
+      return { loading: false, success: true };
+    case SHOW_DELETE_VIEWER_FAIL:
+      return { loading: false, error: action.payload };
+    case SHOW_DELETE_VIEWER_RESET:
+      return {
+        state: {},
+      };
     default:
       return state;
   }

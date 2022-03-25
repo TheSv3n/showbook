@@ -785,6 +785,41 @@ const getUserViewsById = async (userId, page) => {
   return views;
 };
 
+//@desc Delete Show Viewer
+//route DELETE /api/shows/viewers/:id
+//@access Private
+const deleteShowViewer = asyncHandler(async (req, res) => {
+  const shows = await Show.find({
+    $or: [
+      {
+        "viewers._id": req.params.id,
+      },
+    ],
+  });
+
+  if (shows) {
+    let tempViewers = [...shows[0].viewers];
+
+    let index = -1;
+
+    for (let i = 0; i < tempViewers.length; i++) {
+      if (tempViewers[i]._id.toString() === req.params.id) {
+        index = i;
+      }
+    }
+
+    tempViewers.splice(index, 1);
+    shows[0].viewers = tempViewers;
+
+    await shows[0].save();
+
+    res.status(200).json({ message: "Viewer deleted" });
+  } else {
+    res.status(404);
+    throw new Error("Show not Found");
+  }
+});
+
 export {
   createShow,
   getAllShows,
@@ -809,4 +844,5 @@ export {
   addShowViewer,
   getMyWatchlist,
   getUserWatchlist,
+  deleteShowViewer,
 };

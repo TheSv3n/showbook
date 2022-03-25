@@ -24,6 +24,7 @@ import {
   addShowViewer,
   getMyWatchlist,
   getUserWatchlist,
+  deleteShowViewer,
 } from "../controllers/showController.js";
 
 import { protect, admin } from "../middleware/authMiddleware.js";
@@ -51,6 +52,8 @@ router
   .put(protect, updateShowReviewComment)
   .delete(protect, deleteShowReviewComment);
 router.route("/castmember/:id/roles").get(getCastMemberRoles);
+
+router.route("/viewers/:id").delete(protect, deleteShowViewer);
 
 router.route("/userreviews/:id").get(getUserShowReviews);
 router.route("/userwatchlist/:id").get(getUserWatchlist);

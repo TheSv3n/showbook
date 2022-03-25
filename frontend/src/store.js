@@ -24,6 +24,7 @@ import {
   showCastMemberRolesReducer,
   addShowViewerReducer,
   showMyWatchlistReducer,
+  showViewerDeleteReducer,
 } from "./reducers/showReducers";
 
 import {
@@ -100,6 +101,7 @@ const reducer = combineReducers({
   showCastMemberRoles: showCastMemberRolesReducer,
   addShowViewer: addShowViewerReducer,
   showMyWatchlist: showMyWatchlistReducer,
+  showViewerDelete: showViewerDeleteReducer,
   venueList: venueListReducer,
   venueInfo: venueInfoReducer,
   updateVenue: updateVenueReducer,

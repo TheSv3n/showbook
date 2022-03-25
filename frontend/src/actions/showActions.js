@@ -64,6 +64,9 @@ import {
   SHOW_MY_WATCHLIST_REQUEST,
   SHOW_MY_WATCHLIST_SUCCESS,
   SHOW_MY_WATCHLIST_FAIL,
+  SHOW_DELETE_VIEWER_REQUEST,
+  SHOW_DELETE_VIEWER_SUCCESS,
+  SHOW_DELETE_VIEWER_FAIL,
 } from "../constants/showConstants";
 
 export const listShows =
@@ -753,3 +756,38 @@ export const getMyWatchlist = () => async (dispatch, getState) => {
     });
   }
 };
+
+export const deleteShowViewer =
+  (viewerId, showId) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: SHOW_DELETE_VIEWER_REQUEST,
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.delete(`/api/shows/viewers/${viewerId}`, config);
+
+      dispatch({
+        type: SHOW_DELETE_VIEWER_SUCCESS,
+      });
+      dispatch(getShowInfo(showId, true));
+    } catch (error) {
+      dispatch({
+        type: SHOW_DELETE_VIEWER_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };

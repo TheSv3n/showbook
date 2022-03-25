@@ -1,5 +1,7 @@
 import React from "react";
 import { Row, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteShowViewer } from "../actions/showActions";
 
 const RemoveViewerModal = ({
   showModal,
