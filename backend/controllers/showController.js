@@ -756,7 +756,7 @@ const getUserViewsById = async (userId, page) => {
         for (let k = 0; k < shows[i].performances.length; k++) {
           if (
             shows[i].performances[k]._id.toString() ===
-            shows[i].reviews[j].performanceId
+            shows[i].viewers[j].performanceId
           ) {
             performanceVenueId = shows[i].performances[k].venueId;
             performanceDate = shows[i].performances[k].date;

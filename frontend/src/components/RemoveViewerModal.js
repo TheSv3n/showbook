@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { deleteShowViewer } from "../actions/showActions";
 
 const RemoveViewerModal = ({
@@ -9,8 +9,9 @@ const RemoveViewerModal = ({
   viewerId,
   showId,
 }) => {
+  const dispatch = useDispatch();
   const submitDelete = () => {
-    //TODO
+    dispatch(deleteShowViewer(viewerId, showId));
   };
 
   return (

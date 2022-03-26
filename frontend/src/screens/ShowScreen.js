@@ -15,7 +15,10 @@ import NewPerformanceModal from "../components/NewPerformanceModal";
 import NewImageModal from "../components/NewImageModal";
 import NewViewerModal from "../components/NewViewerModal";
 import { VENUE_LIST_RESET } from "../constants/venueConstants";
-import { SHOW_UPDATE_RESET } from "../constants/showConstants";
+import {
+  SHOW_UPDATE_RESET,
+  SHOW_DELETE_VIEWER_RESET,
+} from "../constants/showConstants";
 import CastMemberCard from "../components/CastMemberCard";
 import RemoveViewerModal from "../components/RemoveViewerModal";
 
@@ -59,6 +62,10 @@ const ShowScreen = ({ match, history }) => {
 
   const addShowViewer = useSelector((state) => state.addShowViewer);
   const { loading: loadingAddViewer } = addShowViewer;
+
+  const showViewerDelete = useSelector((state) => state.showViewerDelete);
+  const { loading: loadingDeleteViewer, success: successDeleteViewer } =
+    showViewerDelete;
 
   const getCompanyName = async (companyId) => {
     const { data: name } = await axios.get(`/api/companies/${companyId}/name`);
@@ -194,7 +201,7 @@ const ShowScreen = ({ match, history }) => {
       if (show.director) {
         getDirectorName(show.director);
       }
-      if (show.viewers.length > 0) {
+      if (show.viewers.length > 0 || successDeleteViewer) {
         sortViewers();
       }
     }
@@ -204,6 +211,11 @@ const ShowScreen = ({ match, history }) => {
       setShowEditTitleField(false);
       setShowEditSynopsisField(false);
       dispatch({ type: SHOW_UPDATE_RESET });
+    }
+    if (successDeleteViewer) {
+      updateShowRemoveViewerModal();
+      dispatch({ type: SHOW_DELETE_VIEWER_RESET });
+      setUserViewed(false);
     }
   }, [dispatch, showId, show, success]);
 
