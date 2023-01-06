@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Image, Container, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import { getShowInfo } from "../actions/showActions";
 import CastListItem from "../components/CastListItem";
 import NewRoleModal from "../components/NewRoleModal";
 import axios from "axios";
 
-const CastScreen = ({ match }) => {
+const CastScreen = () => {
   const dispatch = useDispatch();
   const [companyName, setCompanyName] = useState("");
   const [showNewRoleModal, setShowNewRoleModal] = useState(false);
-  const showId = match.params.id;
+  const params = useParams();
+  const showId = params.id;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;

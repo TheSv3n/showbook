@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Image, Container, Row, Col, Table } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
 import RatingWidget from "../components/RatingWidget";
 import ImageCarousel from "../components/ImageCarousel";
 import ImageModal from "../components/ImageModal";
@@ -11,9 +12,11 @@ import NewReviewModal from "../components/NewReviewModal";
 import { listCastMemberRoles } from "../actions/showActions";
 import CastMemberRoleTableRow from "../components/CastMemberRoleTableRow";
 
-const CastMemberScreen = ({ match, history }) => {
+const CastMemberScreen = () => {
   const dispatch = useDispatch();
-  const castMemberId = match.params.id;
+  const params = useParams();
+  const navigate = useNavigate();
+  const castMemberId = params.id;
 
   const [performanceCount, setPerformanceCount] = useState(0);
   const [showImageModal, setShowImageModal] = useState(false);
@@ -44,7 +47,7 @@ const CastMemberScreen = ({ match, history }) => {
     if (userInfo) {
       updateShowReviewModal();
     } else {
-      history.push(`/login?redirect=castmember/${castMemberId}`);
+      navigate(`/login?redirect=castmember/${castMemberId}`);
     }
   };
 

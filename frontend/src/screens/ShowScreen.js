@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getShowInfo, editShow } from "../actions/showActions";
 import { Image, Container, Row, Col, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import Loader from "../components/Loader";
 import RatingWidget from "../components/RatingWidget";
@@ -22,9 +22,11 @@ import {
 import CastMemberCard from "../components/CastMemberCard";
 import RemoveViewerModal from "../components/RemoveViewerModal";
 
-const ShowScreen = ({ match, history }) => {
+const ShowScreen = () => {
   const dispatch = useDispatch();
-  const showId = match.params.id;
+  const params = useParams();
+  const navigate = useNavigate();
+  const showId = params.id;
 
   const [companyName, setCompanyName] = useState("");
   const [directorName, setDirectorName] = useState("");
@@ -110,7 +112,7 @@ const ShowScreen = ({ match, history }) => {
     if (userInfo) {
       updateShowReviewModal();
     } else {
-      history.push(`/login?redirect=show/${showId}`);
+      navigate(`/login?redirect=show/${showId}`);
     }
   };
 
@@ -118,7 +120,7 @@ const ShowScreen = ({ match, history }) => {
     if (userInfo) {
       updateShowNewImageModal();
     } else {
-      history.push(`/login?redirect=show/${showId}`);
+      navigate(`/login?redirect=show/${showId}`);
     }
   };
 

@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/App.css";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import NavBar from "./components/NavBar";
 import MainFeedScreen from "./screens/MainFeedScreen";
@@ -26,23 +26,30 @@ function App() {
     <>
       <Router>
         <NavBar />
-        <Route path="/" component={MainFeedScreen} exact />
-        <Route path="/profile" component={ProfileScreen} />
-        <Route path="/login" component={LoginScreen} />
-        <Route path="/register" component={RegisterScreen} />
-        <Route path="/show/:id" component={ShowScreen} exact />
-        <Route path="/show/:id/cast" component={CastScreen} />
-        <Route path="/venue/:id" component={VenueScreen} />
-        <Route path="/castmember/:id" component={CastMemberScreen} />
-        <Route path="/company/:id" component={CompanyScreen} />
-        <Route path="/user/:id" component={UserScreen} exact />
-        <Route path="/showreview/:id" component={ShowReviewScreen} />
-        <Route path="/venuereview/:id" component={VenueReviewScreen} />
-        <Route path="/companyreview/:id" component={CompanyReviewScreen} />
-        <Route path="/addshow" component={NewShowScreen} />
-        <Route path="/addvenue" component={NewVenueScreen} />
-        <Route path="/addcastmember" component={NewCastMemberScreen} />
-        <Route path="/addcompany" component={NewCompanyScreen} />
+        <main>
+          <Routes>
+            <Route path="/" element={<MainFeedScreen />} />
+            <Route path="/profile" element={<ProfileScreen />} />
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
+            <Route path="/show/:id" element={<ShowScreen />} />
+            <Route path="/show/:id/cast" element={<CastScreen />} />
+            <Route path="/venue/:id" element={<VenueScreen />} />
+            <Route path="/castmember/:id" element={<CastMemberScreen />} />
+            <Route path="/company/:id" element={<CompanyScreen />} />
+            <Route path="/user/:id" element={<UserScreen />} />
+            <Route path="/showreview/:id" element={<ShowReviewScreen />} />
+            <Route path="/venuereview/:id" element={<VenueReviewScreen />} />
+            <Route
+              path="/companyreview/:id"
+              element={<CompanyReviewScreen />}
+            />
+            <Route path="/addshow" element={<NewShowScreen />} />
+            <Route path="/addvenue" element={<NewVenueScreen />} />
+            <Route path="/addcastmember" element={<NewCastMemberScreen />} />
+            <Route path="/addcompany" element={<NewCompanyScreen />} />
+          </Routes>
+        </main>
       </Router>
     </>
   );

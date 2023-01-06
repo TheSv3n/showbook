@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const PerformanceListItem = ({
   performance,
   handleUpdatePerformance,
   fromReview,
 }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [performanceDate, setPerformanceDate] = useState("");
   const [performanceTime, setPerformanceTime] = useState("");
   const [performanceVenue, setPerformanceVenue] = useState("");
@@ -38,7 +38,7 @@ const PerformanceListItem = ({
             `${performanceDate} at ${performanceVenue}`
           );
         } else {
-          history.push(`/venue/${performance.venueId}`);
+          navigate(`/venue/${performance.venueId}`);
         }
       }}
     >

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { listShows } from "../actions/showActions";
 import { listVenues } from "../actions/venueActions";
 import { listCastMembers } from "../actions/castMemberActions";
@@ -12,8 +13,9 @@ import FeedCastMemberCard from "../components/FeedCastMemberCard";
 import FeedCompanyCard from "../components/FeedCompanyCard";
 import { listCompanies } from "../actions/companyActions";
 
-const MainFeedScreen = ({ match }) => {
-  const searchString = match.params.search;
+const MainFeedScreen = () => {
+  const params = useParams();
+  const searchString = params.search;
   const dispatch = useDispatch();
 
   const [showTopRated, setShowTopRated] = useState(false);

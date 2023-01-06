@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Form, Button, Row, Col, Table } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 import {
@@ -13,8 +14,9 @@ import { listMyVenueReviews } from "../actions/venueActions";
 import { listMyCompanyReviews } from "../actions/companyActions";
 import ReviewTableRow from "../components/ReviewTableRow";
 
-const ProfileScreen = ({ history }) => {
+const ProfileScreen = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState();
@@ -61,7 +63,7 @@ const ProfileScreen = ({ history }) => {
 
   useEffect(() => {
     if (!userInfo) {
-      history.push("/login");
+      navigate("/login");
     } else {
       if (!user || !user.name || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
@@ -76,7 +78,7 @@ const ProfileScreen = ({ history }) => {
         setDateOfBirth(user.dateOfBirth);
       }
     }
-  }, [dispatch, userInfo, user, history, success]);
+  }, [dispatch, userInfo, user, navigate, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import { Image, Container, Row, Col, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import RatingWidget from "../components/RatingWidget";
 import NewReviewModal from "../components/NewReviewModal";
 import Review from "../components/Review";
@@ -17,9 +17,11 @@ import {
 } from "../constants/companyConstants";
 import DeleteModal from "../components/DeleteModal";
 
-const CompanyReviewScreen = ({ match, history }) => {
+const CompanyReviewScreen = () => {
   const dispatch = useDispatch();
-  const reviewId = match.params.id;
+  const navigate = useNavigate();
+  const params = useParams();
+  const reviewId = params.id;
 
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showEditFields, setShowEditFields] = useState(false);
@@ -59,7 +61,7 @@ const CompanyReviewScreen = ({ match, history }) => {
     if (userInfo) {
       updateShowReviewModal();
     } else {
-      history.push(`/login?redirect=companyreview/${reviewId}`);
+      navigate(`/login?redirect=companyreview/${reviewId}`);
     }
   };
 
@@ -98,7 +100,7 @@ const CompanyReviewScreen = ({ match, history }) => {
       dispatch({ type: COMPANY_UPDATE_REVIEW_RESET });
     }
     if (successDelete) {
-      history.push(`/company/${review.companyId}`);
+      navigate(`/company/${review.companyId}`);
       dispatch({ type: COMPANY_DELETE_REVIEW_RESET });
     }
   }, [dispatch, reviewId, review, success, successDelete]);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import { Image, Container, Row, Col, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import RatingWidget from "../components/RatingWidget";
 import NewReviewModal from "../components/NewReviewModal";
 import Review from "../components/Review";
@@ -17,9 +17,11 @@ import {
 } from "../constants/showConstants";
 import DeleteModal from "../components/DeleteModal";
 
-const ShowReviewScreen = ({ match, history }) => {
+const ShowReviewScreen = () => {
   const dispatch = useDispatch();
-  const reviewId = match.params.id;
+  const params = useParams();
+  const navigate = useNavigate();
+  const reviewId = params.id;
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showEditFields, setShowEditFields] = useState(false);
   const [commentText, setCommentText] = useState("");
@@ -58,7 +60,7 @@ const ShowReviewScreen = ({ match, history }) => {
     if (userInfo) {
       updateShowReviewModal();
     } else {
-      history.push(`/login?redirect=review/${reviewId}`);
+      navigate(`/login?redirect=review/${reviewId}`);
     }
   };
 
@@ -97,10 +99,10 @@ const ShowReviewScreen = ({ match, history }) => {
       dispatch({ type: SHOW_UPDATE_REVIEW_RESET });
     }
     if (successDelete) {
-      history.push(`/show/${review.showId}`);
+      navigate(`/show/${review.showId}`);
       dispatch({ type: SHOW_DELETE_REVIEW_RESET });
     }
-  }, [dispatch, reviewId, review, success, successDelete, history]);
+  }, [dispatch, reviewId, review, success, successDelete, navigate]);
 
   return (
     <section className="p-5 ">
