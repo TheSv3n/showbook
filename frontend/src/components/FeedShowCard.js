@@ -4,6 +4,7 @@ import { Image, Col, Card } from "react-bootstrap";
 import RatingWidget from "./RatingWidget";
 
 const FeedShowCard = ({ show }) => {
+  const truncatedSynopsis = show.synopsis.substring(0, 150);
   return (
     <Col md={3}>
       <Card className="bg-light h-100">
@@ -21,7 +22,7 @@ const FeedShowCard = ({ show }) => {
             <h4 className="card-title mb-3">By {show.companyName}</h4>
           )}
 
-          <p className="card-text">{show.synopsis}</p>
+          <p className="card-text">{truncatedSynopsis}...</p>
         </Card.Body>
         <Card.Footer>
           <span className="mx-auto">

@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDetailsById } from "../actions/userActions";
 import { Image, Container, Row, Col, Table } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import { listUserShowReviews } from "../actions/showActions";
 import { listUserVenueReviews } from "../actions/venueActions";
 import { listUserCompanyReviews } from "../actions/companyActions";
 import ReviewTableRow from "../components/ReviewTableRow";
 
-const UserScreen = ({ match }) => {
+const UserScreen = () => {
   const dispatch = useDispatch();
-  const userId = match.params.id;
+  const params = useParams();
+  const userId = params.id;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;

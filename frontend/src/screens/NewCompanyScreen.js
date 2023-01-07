@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import axios from "axios";
 import { createCompany } from "../actions/companyActions";
 import { COMPANY_CREATE_RESET } from "../constants/companyConstants";
 
-const NewCompanyScreen = ({ history }) => {
+const NewCompanyScreen = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
   const [headquarters, setHeadQuarters] = useState("");
@@ -66,13 +68,13 @@ const NewCompanyScreen = ({ history }) => {
 
   useEffect(() => {
     if (!userInfo) {
-      history.push("/login");
+      navigate("/login");
     }
     if (success) {
       dispatch({ type: COMPANY_CREATE_RESET });
-      history.push(`/company/${company._id}`);
+      navigate(`/company/${company._id}`);
     }
-  }, [dispatch, history, userInfo, success, company]);
+  }, [dispatch, navigate, userInfo, success, company]);
 
   return (
     <>

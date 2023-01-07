@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Image, Container, Row, Col, Form, Button } from "react-bootstrap";
+import { useParams, useNavigate } from "react-router-dom";
 import RatingWidget from "../components/RatingWidget";
 import ImageCarousel from "../components/ImageCarousel";
 import ImageModal from "../components/ImageModal";
@@ -13,9 +14,11 @@ import { getCompanyInfo, editCompany } from "../actions/companyActions";
 import { listCompanyShows } from "../actions/showActions";
 import { COMPANY_UPDATE_RESET } from "../constants/companyConstants";
 
-const CompanyScreen = ({ match, history }) => {
+const CompanyScreen = () => {
   const dispatch = useDispatch();
-  const companyId = match.params.id;
+  const params = useParams();
+  const navigate = useNavigate();
+  const companyId = params.id;
 
   const [showImageModal, setShowImageModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -68,7 +71,7 @@ const CompanyScreen = ({ match, history }) => {
     if (userInfo) {
       updateShowNewImageModal();
     } else {
-      history.push(`/login?redirect=company/${companyId}`);
+      navigate(`/login?redirect=company/${companyId}`);
     }
   };
 
@@ -80,7 +83,7 @@ const CompanyScreen = ({ match, history }) => {
     if (userInfo) {
       updateShowReviewModal();
     } else {
-      history.push(`/login?redirect=company/${companyId}`);
+      navigate(`/login?redirect=company/${companyId}`);
     }
   };
 

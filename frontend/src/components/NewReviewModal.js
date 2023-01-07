@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { addShowReview, addShowReviewComment } from "../actions/showActions";
 import { addVenueReview, addVenueReviewComment } from "../actions/venueActions";

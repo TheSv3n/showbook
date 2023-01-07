@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Image, Container, Row, Col, Form, Button } from "react-bootstrap";
+import { useParams, useNavigate } from "react-router-dom";
 import RatingWidget from "../components/RatingWidget";
 import ImageCarousel from "../components/ImageCarousel";
 import ImageModal from "../components/ImageModal";
@@ -13,9 +14,11 @@ import PerformanceModal from "../components/PerformanceModal";
 import NewImageModal from "../components/NewImageModal";
 import { VENUE_UPDATE_RESET } from "../constants/venueConstants";
 
-const VenueScreen = ({ match, history }) => {
+const VenueScreen = () => {
   const dispatch = useDispatch();
-  const venueId = match.params.id;
+  const params = useParams();
+  const navigate = useNavigate();
+  const venueId = params.id;
 
   const [showImageModal, setShowImageModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -73,7 +76,7 @@ const VenueScreen = ({ match, history }) => {
     if (userInfo) {
       updateShowReviewModal();
     } else {
-      history.push(`/login?redirect=venue/${venueId}`);
+      navigate(`/login?redirect=venue/${venueId}`);
     }
   };
 
@@ -85,7 +88,7 @@ const VenueScreen = ({ match, history }) => {
     if (userInfo) {
       updateShowNewImageModal();
     } else {
-      history.push(`/login?redirect=venue/${venueId}`);
+      navigate(`/login?redirect=venue/${venueId}`);
     }
   };
 

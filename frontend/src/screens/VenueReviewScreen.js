@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import { Image, Container, Row, Col, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import RatingWidget from "../components/RatingWidget";
 import NewReviewModal from "../components/NewReviewModal";
 import Review from "../components/Review";
@@ -17,9 +17,11 @@ import {
 } from "../constants/venueConstants";
 import DeleteModal from "../components/DeleteModal";
 
-const VenueReviewScreen = ({ match, history }) => {
+const VenueReviewScreen = () => {
   const dispatch = useDispatch();
-  const reviewId = match.params.id;
+  const params = useParams();
+  const reviewId = params.id;
+  const navigate = useNavigate();
 
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showEditFields, setShowEditFields] = useState(false);
@@ -59,7 +61,7 @@ const VenueReviewScreen = ({ match, history }) => {
     if (userInfo) {
       updateShowReviewModal();
     } else {
-      history.push(`/login?redirect=venuereview/${reviewId}`);
+      navigate(`/login?redirect=venuereview/${reviewId}`);
     }
   };
 
@@ -98,10 +100,10 @@ const VenueReviewScreen = ({ match, history }) => {
       dispatch({ type: VENUE_UPDATE_REVIEW_RESET });
     }
     if (successDelete) {
-      history.push(`/venue/${review.venueId}`);
+      navigate(`/venue/${review.venueId}`);
       dispatch({ type: VENUE_DELETE_REVIEW_RESET });
     }
-  }, [dispatch, reviewId, review, success, successDelete]);
+  }, [dispatch, reviewId, review, success, successDelete, navigate]);
 
   return (
     <section className="p-5 ">

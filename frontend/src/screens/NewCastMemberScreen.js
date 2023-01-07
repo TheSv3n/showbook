@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import axios from "axios";
 import FindCompanyModal from "../components/FindCompanyModal";
@@ -8,8 +9,9 @@ import { COMPANY_LIST_RESET } from "../constants/companyConstants";
 import { CAST_MEMBER_CREATE_RESET } from "../constants/castMemberConstants";
 import { createCastMember } from "../actions/castMemberActions";
 
-const NewCastMemberScreen = ({ history }) => {
+const NewCastMemberScreen = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
   const [companyId, setCompanyId] = useState("");
@@ -81,13 +83,13 @@ const NewCastMemberScreen = ({ history }) => {
 
   useEffect(() => {
     if (!userInfo) {
-      history.push("/login");
+      navigate("/login");
     }
     if (success) {
       dispatch({ type: CAST_MEMBER_CREATE_RESET });
-      history.push(`/castmember/${castMember._id}`);
+      navigate(`/castmember/${castMember._id}`);
     }
-  }, [dispatch, history, userInfo, success, castMember]);
+  }, [dispatch, navigate, userInfo, success, castMember]);
 
   return (
     <>

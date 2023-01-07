@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import axios from "axios";
 import { createVenue } from "../actions/venueActions";
 import { VENUE_CREATE_RESET } from "../constants/venueConstants";
 
-const NewVenueScreen = ({ history }) => {
+const NewVenueScreen = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [venueName, setVenueName] = useState("");
   const [about, setAbout] = useState("");
   const [address, setAddress] = useState("");
@@ -66,13 +68,13 @@ const NewVenueScreen = ({ history }) => {
 
   useEffect(() => {
     if (!userInfo) {
-      history.push("/login");
+      navigate("/login");
     }
     if (success) {
       dispatch({ type: VENUE_CREATE_RESET });
-      history.push(`/venue/${venue._id}`);
+      navigate(`/venue/${venue._id}`);
     }
-  }, [dispatch, history, userInfo, success, venue]);
+  }, [dispatch, navigate, userInfo, success, venue]);
 
   return (
     <>

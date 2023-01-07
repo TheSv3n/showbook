@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import FindCompanyModal from "../components/FindCompanyModal";
 import { COMPANY_LIST_RESET } from "../constants/companyConstants";
@@ -11,8 +12,9 @@ import axios from "axios";
 import "../css/NewShowScreen.css";
 import FindCastMemberModal from "../components/FindCastMemberModal";
 
-const NewShowScreen = ({ history }) => {
+const NewShowScreen = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [synopsis, setSynopsis] = useState("");
   const [companyId, setCompanyId] = useState("");
@@ -87,13 +89,13 @@ const NewShowScreen = ({ history }) => {
 
   useEffect(() => {
     if (!userInfo) {
-      history.push("/login");
+      navigate("/login");
     }
     if (success) {
       dispatch({ type: SHOW_CREATE_RESET });
-      history.push(`/show/${show._id}`);
+      navigate(`/show/${show._id}`);
     }
-  }, [dispatch, history, userInfo, success, show]);
+  }, [dispatch, navigate, userInfo, success, show]);
 
   return (
     <>
