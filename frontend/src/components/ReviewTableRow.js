@@ -33,14 +33,12 @@ const ReviewTableRow = ({ review, type }) => {
           {name}
         </Link>
       </td>
-      {type === "show" || "view" ? (
+      {type === "show" && (
         <td className="text-light">
           <Link to={`/company/${review.companyId}`} className="link text-light">
             {review.companyName}
           </Link>
         </td>
-      ) : (
-        ""
       )}
 
       {type !== "view" && (
@@ -60,7 +58,7 @@ const ReviewTableRow = ({ review, type }) => {
             </Link>
           </td>
           <td className="text-light">
-            {review.performanceDate.substring(0, 10)}
+            {review.performanceDate && review.performanceDate.substring(0, 10)}
           </td>
           {type === "show" && (
             <td className="text-light">{review.reviewDate.substring(0, 10)}</td>

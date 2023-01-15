@@ -406,7 +406,7 @@ const ShowScreen = () => {
                 </Col>
               </Row>
               <Row className="text-white mb-2">
-                <Col>
+                <Col sm={4}>
                   <h5 className="text-secondary mt-1">Rating </h5>
                   {show.reviews && show.reviews.length > 0 ? (
                     <div className="align-items-center">
@@ -423,7 +423,7 @@ const ShowScreen = () => {
                     <div>No Reviews</div>
                   )}
                 </Col>
-                <Col>
+                <Col sm={4}>
                   <h5 className="text-secondary mt-1">Viewers </h5>
                   {loadingAddViewer ? (
                     <Loader />
@@ -457,7 +457,7 @@ const ShowScreen = () => {
                     ""
                   )}
                 </Col>
-                <Col>
+                <Col sm={4}>
                   <h5 className="text-secondary mt-1">Performances</h5>
                   <div>
                     <>
